@@ -5,13 +5,9 @@ L0  = 2.341440122400003e+002;	% design length [m]
 C0  = 299792458; 				% speed of light [m/s]
 H   = 372;                      % Cavity harmonic number
 
-CAV	= struct('FamName', 'RF' , 'Energy', 3e9, ...
-        'Length', 0 , 'Voltage', 3.2e+6 , 'Frequency', H*C0/L0, ...
-        'HarmNumber', H , 'PassMethod', 'CavityPass'); 
+CAV = atrfcavity('RF',0,3.2e+6,H*C0/L0,H,3e9,'IdentityPass');
 
-    
-COR = struct('FamName', 'COR' ,...
-        'Length', 0.15, 'KickAngle', [0 0], 'PassMethod', 'CorrectorPass'); 
+COR = atcorrector('COR',0.15,[0 0]);
     
 BPM.FamName = 'BPM';
 BPM.Length = 0;
@@ -269,7 +265,7 @@ else % If no output arguments - greate global variable THERING
     global THERING
     THERING = RING;
     
-    if evalin('base','exist(''THERING'')') & evalin('base','isempty(whos(''global'',''THERING''))')
+    if evalin('base','exist(''THERING'')') && evalin('base','isempty(whos(''global'',''THERING''))')
         warning('Global variable THERING was overridden');
     end
     evalin('base','global THERING');
