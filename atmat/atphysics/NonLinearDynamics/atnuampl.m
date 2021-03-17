@@ -29,20 +29,18 @@ if nargin < 3, xz=1; end
 if ~isempty(varargin) && isnumeric(varargin{1})
     orbit=varargin{1};
     varargin(1)=[];
-else
-    warning off MATLAB:singularMatrix
+elseif check_radiation(ring)
     orbit=findorbit6(ring);
-    warning on MATLAB:singularMatrix
-    if ~all(isfinite(orbit))
-        orbit=zeros(6,1);
-        orbit(1:5)=findsyncorbit(ring,0);
-    end
+    dp=orbit(5);
+else
+    dp=0.0;
+    [~, orbit]=findorbit4(ring, dp);
 end
 [nturns,varargin]=getoption(varargin,'nturns',256);
 [method,varargin]=getoption(varargin,'method',3);
 
 [~,nbper]=atenergy(ring);
-[lindata,fractune0]=atlinopt(ring,0,1:length(ring)+1);
+[lindata,fractune0]=atlinopt(ring,dp,1:length(ring)+1, 'orbit', orbit);
 tune0=nbper*lindata(end).mu/2/pi;
 offs=[nbper -nbper];
 siza=size(ampl);

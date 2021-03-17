@@ -52,6 +52,7 @@ function [orb6,fixedpoint] = findorbit6(RING,varargin)
 if ~iscell(RING)
     error('First argument must be a cell array');
 end
+check_radiation(RING, true);
 [XYStep,varargs]=getoption(varargin,'XYStep');	% Step size for numerical differentiation	%1.e-8
 [DPStep,varargs]=getoption(varargs,'DPStep');	% Step size for numerical differentiation	%1.e-6
 [dps,varargs]=getoption(varargs,'OrbConvergence');	% Convergence threshold                 %1.e-12

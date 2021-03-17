@@ -46,6 +46,7 @@ function [orb4,fixedpoint] = findorbit4(RING,dP,varargin)
 if ~iscell(RING)
     error('First argument must be a cell array');
 end
+check_radiation(RING, false);
 [XYStep,varargs]=getoption(varargin,'XYStep');	% Step size for numerical differentiation
 [dps,varargs]=getoption(varargs,'OrbConvergence');	% Convergence threshold
 [max_iterations,varargs]=getoption(varargs,'OrbMaxIter');	% Max. iterations
