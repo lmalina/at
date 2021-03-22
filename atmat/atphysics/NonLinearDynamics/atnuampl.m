@@ -26,9 +26,12 @@ function varargout=atnuampl(ring,ampl,xz,varargin)
 
 lab={'x^2','p_x^2','z^2','p_z^2'};
 if nargin < 3, xz=1; end
-if ~isempty(varargin) && isnumeric(varargin{1})
-    orbit=varargin{1};
-    varargin(1)=[];
+[nturns,varargs]=getoption(varargin,'nturns',256);
+[method,varargs]=getoption(varargs,'method',3);
+if ~isempty(varargs) && isnumeric(varargs{1})
+    orbit=varargs{1};
+    varargs(1)=[];
+    dp=orbit(5);
 elseif check_radiation(ring)
     orbit=findorbit6(ring);
     dp=orbit(5);
@@ -36,8 +39,6 @@ else
     dp=0.0;
     [~, orbit]=findorbit4(ring, dp);
 end
-[nturns,varargin]=getoption(varargin,'nturns',256);
-[method,varargin]=getoption(varargin,'method',3);
 
 [~,nbper]=atenergy(ring);
 [lindata,fractune0]=atlinopt(ring,dp,1:length(ring)+1, 'orbit', orbit);
@@ -59,7 +60,7 @@ if nargout > 0
     varargout={reshape(tunetrack(:,1),siza),reshape(tunetrack(:,2),siza)};
 else
     inttunes=floor(tune0);
-    plot((ampl.*ampl)',tunetrack-inttunes(ones(nampl,1),:),'o-',varargin{:});
+    plot((ampl.*ampl)',tunetrack-inttunes(ones(nampl,1),:),'o-',varargs{:});
     legend('\nu_x','\nu_z');
     xlabel(lab{xz});
     ylabel('\nu');
