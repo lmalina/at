@@ -8,17 +8,18 @@ function [newring,newringrad] = atfastring(ring0,varargin)
 %
 %   [FASTRING,FASTRINGRAD]=ATFASTRING(RING)
 %
-%RING:          original AT structure, with no RF and no radiation.
+%RING:          original AT structure. I f radiation is OFF, it will be
+%               turned on woth default options.
 %
-%FASTRING:      Structure containing unchanged cavities moved to the
-%               beginning, a linear 6x6 matrix and a  non-linear element
+%FASTRING:      Structure containing inactive cavities moved to the
+%               beginning, a linear 6x6 matrix and a non-linear element
 %               simulating linear chromaticities and tune shift with
 %               amplitudes
 %
 %FASTRINGRAD:   Structure containing unchanged cavities moved to the
-%               beginning, a diffusion element, a linear 6x6 transfer
-%               matrix and a non-linear element simulating linear
-%               chromaticities and tune shift with amplitudes
+%               beginning, a linear 6x6 transfer matrix, a diffusion element
+%               and a non-linear element simulating linear chromaticities
+%               and tune shift with amplitudes
 %
 %   [FASTRING,FASTRINGRAD]=ATFASTRING(RING,REFPTS)
 %
@@ -29,25 +30,26 @@ function [newring,newringrad] = atfastring(ring0,varargin)
 
 global GLOBVAL
 
-I_cav = findcells(ring0,'Frequency');
+[doplot,varargs]=getflag(varargin,'Plot');
+split=getargs(varargs,{[]});
+
+% Turn radiation on if necessary
+[~,ring0] = check_radiation(ring0, true, 'force');
+
+% Replace thick cavities by [drift, thin cavity, drift]
 ring_temp = ring0;
-for i = 1:length(I_cav)
-    if ring_temp{I_cav(i)}.Length ~= 0
-        CavElement = ring_temp{I_cav(i)};
-        CavDrift = atdrift('CavDrift',CavElement.Length);
-        ring_temp{I_cav(i)} = CavDrift;
+I_cav = findcells(ring0,'Frequency');
+for i = length(I_cav):-1:1
+    CavElement = ring_temp{I_cav(i)};
+    if CavElement.Length ~= 0
+        ring_temp{I_cav(i)} = atdrift('CavDrift',CavElement.Length);
         CavElement.Length = 0;
         ring_temp = atinsertelems(ring_temp,I_cav(i),0.5,CavElement);
-        I_cav(i+1:end) = I_cav(i+1:end)+2;
     end
 end
 ring0 = ring_temp;
 
-[doplot,varargin]=getflag(varargin,'Plot');
-split=getargs(varargin,{[]});
-if nargin < 2
-    split=[];
-end
+% Define the slices
 if islogical(split)
     iend=[find(split) length(ring0)+1];
 else
@@ -55,69 +57,81 @@ else
 end
 ibeg=[1 iend(1:end-1)];
 
-xm=0.001;
-zm=0.0005;
 GLOBVAL.E0=atenergy(ring0);
-[lindata,tunes,xsi]=atlinopt(ring0,0); %#ok<ASGLU>
+
+% Split the ring
+ringv=arrayfun(@rearrange,ibeg,iend,'UniformOutput',false);
+ringrad=cat(1,ringv{:});
+ring=atradoff(ringrad);
+
+[lindata,tunes,xsi]=atlinopt(ring, 0); %#ok<ASGLU>
 gamma=(1+lindata.alpha.*lindata.alpha)./lindata.beta;
 
-ringv=arrayfun(@rearrange,ibeg,iend,'UniformOutput',false);
-ring=cat(1,ringv{:});
+% Compute closed orbits at the ends of slices
 markers=atgetcells(ring,'FamName','xbeg|xend');
-ringrad=atradon(ring);
-
 orbit4=zeros(6,sum(markers));
 orbit4(1:5,:)=findsyncorbit(ring,0,markers);
 orbit4=num2cell(orbit4,1);
-r1=detuning(ring,gamma,xm,zm,orbit4(:,1));
-
 orbit6=num2cell(findorbit6(ringrad,markers),1);
+
+% Compute the detuning with amplitude
+xm=0.001;
+zm=0.0005;
+r1=detuning(ring,gamma,xm,zm,orbit4(:,1));
 
 counter=0;
 [rv,rvrad]=cellfun(@rebuild,ringv,orbit4(1:2:end),orbit6(1:2:end),...
     orbit4(2:2:end),orbit6(2:2:end),'UniformOutput',false);
+
 nonlin_elem=atbaselem('NonLinear','DeltaQPass',...
     'Betax',lindata.beta(1),'Betay',lindata.beta(2),...
     'Alphax',lindata.alpha(1),'Alphay',lindata.alpha(2),...
     'Qpx',xsi(1),'Qpy',xsi(2),...
     'A1',r1(1),'A2',r1(2),'A3',r1(4),...
     'T1',-orbit4{end},'T2',orbit4{end});
+
 nonlin_elemrad=atbaselem('NonLinear','DeltaQPass',...
     'Betax',lindata.beta(1),'Betay',lindata.beta(2),...
     'Alphax',lindata.alpha(1),'Alphay',lindata.alpha(2),...
     'Qpx',xsi(1),'Qpy',xsi(2),...
     'A1',r1(1),'A2',r1(2),'A3',r1(4),...
     'T1',-orbit6{end},'T2',orbit6{end});
+
 newring=cat(1,rv{:},nonlin_elem);
 newringrad=cat(1,rvrad{:},nonlin_elemrad);
 
     function rg=rearrange(i1,i2)
+        % return the ring slice form i1 to i2
         slice=ring0(i1:i2-1);
         cav=atgetcells(slice,'Frequency') | atgetcells(slice,'Class','RingParam');
         rg=[slice(cav);atmarker('xbeg');slice(~cav);atmarker('xend')];
     end
-    function [rg,rgrad]=rebuild(slice,o4b,o6b,o4e,o6e)
+
+    function [rg,rgrad]=rebuild(slicerad,o4b,o6b,o4e,o6e)
+        % Computes linear element and diffusion element for the slice
         counter=counter+1;
         cc=num2str(counter);
+        slice = atradoff(slicerad);
 %       m1=atmarker(['xbeg' cc]);
 %       m2=atmarker(['xend' cc]);
         i1=find(atgetcells(slice,'FamName','xbeg'),1);
         dipoles=atgetcells(slice,'BendingAngle');
         theta=atgetfieldvalues(slice(dipoles),'BendingAngle');
         lendp=atgetfieldvalues(slice(dipoles),'Length');
-        s=diff(findspos(slice,[1 length(slice)+1]));
+        s=findspos(slice, length(slice)+1);
         I2=sum(abs(theta.*theta./lendp));
         
-        m66norad=symplectify(findm66(slice(i1:end),[],o4b));
+        m66norad=symplectify(findm66(slice(i1:end), 'orbit', o4b));
         lin_elem=atM66(['Linear_' cc],m66norad,'T1',-o4b,'T2',o4e,'Length',s,'I2',I2);
         rg=[slice(1:i1-1);lin_elem];
         
-        [slicerad,radindex]=atradon(slice);
-        diff_elem=atQuantDiff(['Diffusion_' cc],quantumDiff(slicerad,radindex,o6b));
-        m66rad=findm66(slicerad(i1:end),[],o6b);
+        m66rad=findm66(slicerad(i1:end), 'orbit', o6b);
         lin_elemrad=atM66(['Linear_' cc],m66rad,'T1',-o6b,'T2',o6e,'Length',s,'I2',I2);
+        %diff_elem=atQuantDiff(['Diffusion_' cc],quantumDiff(slicerad,'orbit',o6b));
+        diff_elem=atQuantDiff(['Diffusion_' cc], slicerad, 'orbit0', o6b);
         rgrad=[slicerad(1:i1-1);lin_elemrad;diff_elem];
     end
+
     function r=detuning(ring,gamma,xm,zm,orbit)
         x2=linspace(0,xm.*xm,10);
         z2=linspace(0,zm.*zm,10);

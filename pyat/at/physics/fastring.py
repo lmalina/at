@@ -3,7 +3,9 @@ Functions relating to fast_ring
 """
 import numpy
 from math import sqrt, atan2, pi
-from at.lattice import uint32_refpts, get_refpts
+
+import scipy.stats
+from at.lattice import uint32_refpts, get_refpts, get_cells, checktype
 from at.lattice import Element, RFCavity, Marker, Drift
 from at.physics import find_orbit6, find_orbit4
 from at.physics import gen_m66_elem, gen_detuning_elem, gen_quantdiff_elem
@@ -11,45 +13,35 @@ from at.physics import gen_m66_elem, gen_detuning_elem, gen_quantdiff_elem
 __all__ = ['fast_ring']
 
 
-def rearrange(ring, split_inds=[]):
-    iends = numpy.concatenate((split_inds, [len(ring)+1]))
-    ibegs = numpy.concatenate(([0], iends[:-1]))
-    iends = iends[iends != 0]
-    ibegs = ibegs[ibegs != len(ring) + 1]
-    all_rings = [ring[int(ibeg):int(iend)]
-                 for ibeg, iend in zip(ibegs, iends)]
+def rearrange(ring, split_inds=None):
+    limits=[0]+list(uint32_refpts(split_inds, len(ring))) + [len(ring)+1]
+    all_rings = [ring[ibeg:iend]
+                 for ibeg, iend in zip(limits[:-1], limits[1:])]
 
     for ring_slice in all_rings:
         # replace cavity with length > 0 with drift
         # set cavity length to 0 and move to start
-        icav = get_refpts(ring_slice, RFCavity)
-        for i in numpy.arange(len(icav)):
-            cav_elem = ring_slice.pop(int(icav[i]))
-            if cav_elem.Length != 0:
-                cavdrift = Drift('CavDrift', cav_elem.Length)
-                ring_slice.insert(icav[i], cavdrift)
-                icav = icav + 1
-                cav_elem.Length = 0.0
-            ring_slice.insert(0, cav_elem)
+        cavpts = uint32_refpts(get_cells(ring, checktype(RFCavity)), len(ring))
+        cavities = []
+        for cavindex in reversed(cavpts):
+            cavity = ring_slice.pop(cavindex)
+            if cavity.Length != 0:
+                ring_slice.insert(cavindex, Drift('CavDrift', cavity.Length))
+                cavity.Length = 0.0
+            cavities.append(cavity)
 
         # merge all cavities with the same frequency
-        icav = get_refpts(ring_slice, RFCavity)
-        all_freq = numpy.array([ring_slice[ic].Frequency for ic in icav])
-        all_volt = numpy.array([ring_slice[ic].Voltage for ic in icav])
-        uni_freq = numpy.unique(all_freq)
+        freqs = numpy.array([cav.Frequency for cav in cavities])
+        volts = numpy.array([cav.Voltage for cav in cavities])
+        _, id, iv = numpy.unique(freqs, return_index=True, return_inverse=True)
 
-        for ii in numpy.arange(len(uni_freq)):
-            fr = uni_freq[ii]
-            cavmsk = all_freq == fr
-            vol = numpy.sum(all_volt[cavmsk])
-            ring_slice[ii].Frequency = fr
-            ring_slice[ii].Voltage = vol
-
-        for pp in numpy.arange(len(icav)-len(uni_freq)):
-            ring_slice.pop(len(uni_freq))
-
-        ring_slice.insert(len(uni_freq), Marker('xbeg'))
+        ring_slice.insert(0, Marker('xbeg'))
+        for ires, icav in enumerate(id):
+            cav=cavities[icav]
+            cav.Voltage = sum([volts[iv==ires]])
+            ring_slice.insert(0, cav)
         ring_slice.append(Marker('xend'))
+
     return all_rings
 
 
@@ -66,7 +58,9 @@ def merge_rings(all_rings):
     return ringnorad, ringrad
 
 
-def fast_ring(ring, split_inds=[]):
+def fast_ring(ring, split_inds=None):
+    if not ring.radiation:
+        ring=ring.radiation_on(copy=True)
     all_rings = rearrange(ring, split_inds=split_inds)
     ringnorad, ringrad = merge_rings(all_rings)
 
