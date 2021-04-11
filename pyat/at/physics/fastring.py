@@ -45,7 +45,7 @@ def fast_ring(ring, split_inds=None):
 
     def pack(counter, ring_slice):
         ibeg = get_cells(ring_slice, checkname('xbeg'))
-        ibeg = ring_slice.unit32_refpts(ibeg)[0]
+        ibeg = ring_slice.uint32_refpts(ibeg)[0]
         fastrad = ring_slice[:ibeg]
         fast=fastrad.radiation_off(copy=True)
         ring_slice_rad = ring_slice[ibeg:-1]
