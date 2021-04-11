@@ -3,8 +3,8 @@ Functions relating to fast_ring
 """
 import numpy
 import functools
-from at.lattice import uint32_refpts, get_refpts, get_cells, checktype, checkname
-from at.lattice import Element, RFCavity, Marker, Drift
+from at.lattice import uint32_refpts, get_refpts, get_cells
+from at.lattice import checktype, checkname, RFCavity, Marker, Drift
 from at.physics import gen_m66_elem, gen_detuning_elem, gen_quantdiff_elem
 
 __all__ = ['fast_ring']
@@ -13,22 +13,18 @@ __all__ = ['fast_ring']
 def fast_ring(ring, split_inds=None):
 
     def rearrange(ring, split_inds=None):
-        limits = [0] + list(uint32_refpts(split_inds, len(ring))) + [
-            len(ring) + 1]
-        all_rings = [ring[ibeg:iend]
-                     for ibeg, iend in zip(limits[:-1], limits[1:])]
+        limits = [0] + list(ring.uint32_refpts(split_inds)) + [len(ring) + 1]
+        all_rings = [ring[i1:i2] for i1, i2 in zip(limits[:-1], limits[1:])]
 
-        for ring_slice in all_rings:
+        for slice in all_rings:
             # replace cavity with length > 0 with drift
             # set cavity length to 0 and move to start
-            cavpts = uint32_refpts(get_cells(ring, checktype(RFCavity)),
-                                   len(ring))
+            cavpts = ring.uint32_refpts(get_cells(ring, checktype(RFCavity)))
             cavities = []
             for cavindex in reversed(cavpts):
-                cavity = ring_slice.pop(cavindex)
+                cavity = slice.pop(cavindex)
                 if cavity.Length != 0:
-                    ring_slice.insert(cavindex,
-                                      Drift('CavDrift', cavity.Length))
+                    slice.insert(cavindex, Drift('CavDrift', cavity.Length))
                     cavity.Length = 0.0
                 cavities.append(cavity)
 
@@ -38,17 +34,18 @@ def fast_ring(ring, split_inds=None):
             _, iu, iv = numpy.unique(freqs, return_index=True,
                                      return_inverse=True)
 
-            ring_slice.insert(0, Marker('xbeg'))
+            slice.insert(0, Marker('xbeg'))
             for ires, icav in enumerate(iu):
                 cav = cavities[icav]
                 cav.Voltage = sum([volts[iv == ires]])
-                ring_slice.insert(0, cav)
-            ring_slice.append(Marker('xend'))
+                slice.insert(0, cav)
+            slice.append(Marker('xend'))
 
         return all_rings
 
     def pack(counter, ring_slice):
-        ibeg = get_refpts(ring_slice, 'xbeg')[0]
+        ibeg = get_cells(ring_slice, checkname('xbeg'))
+        ibeg = ring_slice.unit32_refpts(ibeg)[0]
         fastrad = ring_slice[:ibeg]
         fast=fastrad.radiation_off(copy=True)
         ring_slice_rad = ring_slice[ibeg:-1]
