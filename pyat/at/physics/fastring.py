@@ -12,7 +12,7 @@ __all__ = ['fast_ring']
 
 def fast_ring(ring, split_inds=None):
 
-    def rearrange(ring, split_inds=None):
+    def rearrange(ring, marker, split_inds=None):
         limits = [0] + list(ring.uint32_refpts(split_inds)) + [len(ring) + 1]
         all_rings = [ring[i1:i2] for i1, i2 in zip(limits[:-1], limits[1:])]
 
@@ -34,21 +34,29 @@ def fast_ring(ring, split_inds=None):
             _, iu, iv = numpy.unique(freqs, return_index=True,
                                      return_inverse=True)
 
-            slice.insert(0, Marker('xbeg'))
+            slice.insert(0, marker)
             for ires, icav in enumerate(iu):
                 cav = cavities[icav]
                 cav.Voltage = sum([volts[iv == ires]])
                 slice.insert(0, cav)
-            slice.append(Marker('xend'))
+            slice.append(marker)
 
         return all_rings
 
-    def pack(counter, ring_slice):
-        ibeg = get_cells(ring_slice, checkname('xbeg'))
-        ibeg = ring_slice.uint32_refpts(ibeg)[0]
+    def pack(counter, slice, orb_beg, orb_end):
+        ibeg = ring.index(mark)
+        fastrad = slice[:ibeg]
+        lin_elem_rad = gen_m66_elem(slice[ibeg + 1:-1], orb_beg, orb_end)
+        lin_elem_rad.FamName = lin_elem_rad.FamName + '_' + str(counter)
+        fastrad.append(lin_elem_rad)
+
+        return fastrad
+
+    def pack1(counter, ring_slice):
+        ibeg = ring.index(mark)
         fastrad = ring_slice[:ibeg]
         fast=fastrad.radiation_off(copy=True)
-        ring_slice_rad = ring_slice[ibeg:-1]
+        ring_slice_rad = ring_slice[ibeg+1:-1]
         ring_slice = ring_slice_rad.radiation_off(copy=True)
 
         lin_elem = gen_m66_elem(ring_slice, orbit4[2*counter],
@@ -70,11 +78,12 @@ def fast_ring(ring, split_inds=None):
     if not ring.radiation:
         ring = ring.radiation_on(copy=True)
 
-    all_rings = rearrange(ring, split_inds=split_inds)
+    mark = Marker('')
+    all_rings = rearrange(ring, mark, split_inds=split_inds)
     ringrad = functools.reduce(lambda x, y: x + y, all_rings)
     ringnorad = ringrad.radiation_off(copy=True)
 
-    markers = get_cells(ringrad, checkname('xbeg')) | get_cells(ringrad, checkname('xend'))
+    markers = get_cells(ringrad, lambda elem: elem is mark)
 
     _, orbit4 = ringnorad.find_sync_orbit(dct=0.0, refpts=markers)
     _, orbit6 = ringrad.find_orbit6(refpts=markers)
