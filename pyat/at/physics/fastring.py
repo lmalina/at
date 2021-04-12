@@ -3,8 +3,8 @@ Functions relating to fast_ring
 """
 import numpy
 import functools
-from at.lattice import uint32_refpts, get_refpts, get_cells
-from at.lattice import checktype, checkname, RFCavity, Marker, Drift
+from at.lattice import get_cells, checktype, checkname
+from at.lattice import RFCavity, Marker, Drift
 from at.physics import gen_m66_elem, gen_detuning_elem, gen_quantdiff_elem
 
 __all__ = ['fast_ring']
@@ -43,37 +43,20 @@ def fast_ring(ring, split_inds=None):
 
         return all_rings
 
-    def pack(counter, slice, orb_beg, orb_end):
+    def pack(counter, rslice, orb_beg, orb_end):
         ibeg = ring.index(mark)
-        fastrad = slice[:ibeg]
-        lin_elem_rad = gen_m66_elem(slice[ibeg + 1:-1], orb_beg, orb_end)
+        fast = rslice[:ibeg]
+        lin_elem_rad = gen_m66_elem(rslice[ibeg + 1:-1], orb_beg, orb_end)
         lin_elem_rad.FamName = lin_elem_rad.FamName + '_' + str(counter)
-        fastrad.append(lin_elem_rad)
+        fast.append(lin_elem_rad)
+        return fast
 
-        return fastrad
-
-    def pack1(counter, ring_slice):
-        ibeg = ring.index(mark)
-        fastrad = ring_slice[:ibeg]
-        fast=fastrad.radiation_off(copy=True)
-        ring_slice_rad = ring_slice[ibeg+1:-1]
-        ring_slice = ring_slice_rad.radiation_off(copy=True)
-
-        lin_elem = gen_m66_elem(ring_slice, orbit4[2*counter],
-                                orbit4[2*counter+1])
-        lin_elem.FamName = lin_elem.FamName + '_' + str(counter)
-
-        qd_elem = gen_quantdiff_elem(ring_slice_rad, orbit=orbit6[2*counter])
+    def packrad(counter, rslice, orb_beg, orb_end):
+        fastrad = pack(counter, rslice, orb_beg, orb_end)
+        qd_elem = gen_quantdiff_elem(rslice, orbit=orb_beg)
         qd_elem.FamName = qd_elem.FamName + '_' + str(counter)
-        lin_elem_rad = gen_m66_elem(ring_slice_rad, orbit6[2*counter],
-                                    orbit6[2*counter+1])
-        lin_elem_rad.FamName = lin_elem_rad.FamName + '_' + str(counter)
-
-        fast.append(lin_elem)
-        fastrad.append(lin_elem_rad)
         fastrad.append(qd_elem)
-
-        return fast, fastrad
+        return fastrad
 
     if not ring.radiation:
         ring = ring.radiation_on(copy=True)
@@ -93,7 +76,13 @@ def fast_ring(ring, split_inds=None):
     detuning_elem_rad.T1 = -orbit6[-1]
     detuning_elem_rad.T2 = orbit6[-1]
 
-    fast, fastrad = zip(*(pack(counter, ring_slice) for counter, ring_slice in enumerate(all_rings)))
+    fast = [pack(counter, rg.radiation_off(copy=True), orb1, orb2)
+            for (counter, rg), orb1, orb2
+            in zip(enumerate(all_rings), orbit4[0::2], orbit4[1::2])]
+
+    fastrad = [packrad(counter, rg, orb1, orb2)
+            for (counter, rg), orb1, orb2
+            in zip(enumerate(all_rings), orbit6[0::2], orbit6[1::2])]
 
     resnorad = functools.reduce(lambda x, y: x + y, fast)
     resrad = functools.reduce(lambda x, y: x + y, fastrad)
