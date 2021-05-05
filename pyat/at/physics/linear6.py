@@ -90,7 +90,7 @@ def _r_analysis(a0, mstack):
     return inival, (propagate(mi.dot(astd)) for mi in mstack)
 
 
-def _find_orbit(ring, dp=None, refpts=None, orbit=None, ct=None, **kwargs):
+def _find_orbit(ring, refpts=None, dp=None, orbit=None, ct=None, **kwargs):
     """"""
     if ring.radiation:
         if dp is not None:
@@ -222,11 +222,13 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
         alpha, beta = get_alphabeta(r12)
         return (r12, a, alpha, beta) + args
 
+    # noinspection PyShadowingNames
     def get_disp(ringup, ringdn, dpup, dpdn, refpts=None, matpts=None,
                  keep_lattice=False, **kwargs):
 
+        # noinspection PyShadowingNames
         def off_momentum(rng, dp):
-            orb0, orbs = _find_orbit(rng, dp, refpts=refpts,
+            orb0, orbs = _find_orbit(rng, refpts, dp=dp,
                                      keep_lattice=keep_lattice, **kwargs)
             dp = orb0[4]      # in 6D, dp comes out of find_orbit6
             _, vps, el0, els = build_r(rng, dp, orb0, refpts=matpts,
@@ -234,15 +236,15 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
             tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
             return dp, tunes, orb0, orbs, el0, els
 
-        def chromfunc(ddp, elup, eldn):
-            aup, bup = get_alphabeta(elup[0])
-            adn, bdn = get_alphabeta(eldn[0])
+        def chromfunc(ddp, el_up, el_dn):
+            aup, bup = get_alphabeta(el_up[0])
+            adn, bdn = get_alphabeta(el_dn[0])
             db = (bup - bdn) / ddp
             mb = (bup + bdn) / 2
             da = (aup - adn) / ddp
             ma = (aup + adn) / 2
-            w = numpy.sqrt((da - ma / mb * db) ** 2 + (db / mb) ** 2)
-            return w
+            ww = numpy.sqrt((da - ma / mb * db) ** 2 + (db / mb) ** 2)
+            return ww
 
         dpup, tunesup, o0up, orbup, el0up, elup = off_momentum(ringup, dpup)
         dpdn, tunesdn, o0dn, orbdn, el0dn, eldn = off_momentum(ringdn, dpdn)
@@ -270,7 +272,7 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
         sigma = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
 
-    orb0, orbs = _find_orbit(ring, dp, refpts=refpts, orbit=orbit, **kwargs)
+    orb0, orbs = _find_orbit(ring, refpts, dp=dp, orbit=orbit, **kwargs)
     dp = orb0[4]
     ms, vps, el0, els = build_r(ring, dp, orb0, refpts=refpts, mxx=mxx,
                                 keep_lattice=keep_lattice, **kwargs)
@@ -341,4 +343,9 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
     return elemdata0, beamdata, elemdata
 
 
+def get_optics(ring, refpts=None, dp=None, method=linopt6, **kwargs):
+    return method(ring, refpts=refpts, dp=dp, **kwargs)
+
+
 Lattice.linopt6 = linopt6
+Lattice.get_optics = get_optics

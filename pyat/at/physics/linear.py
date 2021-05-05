@@ -302,7 +302,7 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
 
 
 @check_radiation(False)
-def linopt(ring, dp=0.0, refpts=None, **kwargs):
+def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
     """
     Perform linear analysis of a lattice
     lindata0, tune, chrom, lindata = linopt(ring, dp[, refpts])
@@ -374,7 +374,8 @@ def linopt(ring, dp=0.0, refpts=None, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    ld0, tune, chrom, ld = _linopt(ring, dp=dp, refpts=refpts, **kwargs)
+    ld0, tune, chrom, ld = _linopt(ring, dp=dp, refpts=refpts,
+                                   get_chrom=get_chrom, **kwargs)
     ld0 = fromarrays(ld0, dtype=_DATA1_DTYPE)
     # ld = fromarrays(ld, dtype=_DATA1_DTYPE)
     idx, s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = ld
