@@ -376,7 +376,22 @@ def linopt(ring, dp=0.0, refpts=None, **kwargs):
     """
     ld0, tune, chrom, ld = _linopt(ring, dp=dp, refpts=refpts, **kwargs)
     ld0 = fromarrays(ld0, dtype=_DATA1_DTYPE)
-    ld = fromarrays(ld, dtype=_DATA1_DTYPE)
+    # ld = fromarrays(ld, dtype=_DATA1_DTYPE)
+    idx, s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = ld
+    ld = numpy.rec.array(numpy.zeros(ring.refcount(refpts), dtype=_DATA1_DTYPE))
+    ld['idx'] = idx
+    ld['s_pos'] = s
+    ld['closed_orbit'] = orbit
+    ld['m44'] = M
+    ld['alpha'] = alpha
+    ld['beta'] = beta
+    ld['dispersion'] = disp
+    ld['mu'] = mu
+    ld['A'] = A
+    ld['B'] = B
+    ld['C'] = C
+    ld['gamma'] = g
+    ld['W'] = w
     return ld0, tune, chrom, ld
 
 
