@@ -57,15 +57,14 @@ clight = PhysConstant.speed_of_light_in_vacuum.value;   % m/s
 [get_w, varargs]=getflag(varargs, 'get_w');
 [twiss_in,varargs]=getoption(varargs,'twiss_in',[]);
 [orbitin,varargs]=getoption(varargs,'orbit',[]);
-[DPStep,varargs]=getoption(varargs,'DPStep');
-[XYStep,varargs]=getoption(varargs,'XYStep');
+[DPStep,~]=getoption(varargs,'DPStep');
 [dp,varargs]=getoption(varargs,'dp',NaN);
 [refpts,varargs]=getargs(varargs,1);
 
 lgth = findspos(ring,length(ring)+1);
 if isempty(twiss_in)        % Circular machine
     is6d=check_radiation(ring);
-    orbitin=find_orbit(ring,dp,'orbit',orbitin,varargs{:});
+    [~,orbitin]=findorbit(ring,'dp',dp,'orbit',orbitin,varargs{:});
     [vps,ms,orbs,mu,ri,ai]=build_1turn_map(ring,dp,refpts,orbitin);
 else                        % Transfer line
     if isempty(orbitin), orbitin=zeros(6,1); end
@@ -145,7 +144,7 @@ end
         if is6d
             if isfinite(dp),warning('AT:linopt','In 6D, "dp" and "ct" are ignored'); end
             if isempty(orbitin)
-                [~,orbitin]=findorbit6(ring,'XYStep',XYStep,'DPStep',DPStep);
+                [~,orbitin]=findorbit6(ring,varargs{:});
             end
         else
             if ~isempty(orbitin)
@@ -155,9 +154,9 @@ end
                 orbitin=[orbitin(1:4);dp;0];
             elseif isnan(ct)
                 if isnan(dp), dp=0; end
-                [~,orbitin]=findorbit4(ring,dp,'XYStep',XYStep);
+                [~,orbitin]=findorbit4(ring,dp,varargs{:});
             else
-                [~,orbitin]=findsyncorbit(ring,ct,'XYStep',XYStep);
+                [~,orbitin]=findsyncorbit(ring,ct,varargs{:});
             end
         end
     end
@@ -167,17 +166,17 @@ end
         [skip,vargs]=getflag(varargin,'skip');
         if skip
             if is6d
-                [mt,ms]=findm66(ring,[],'orbit',orbit,'XYStep',XYStep,'DPStep',DPStep);
+                [mt,ms]=findm66(ring,[],'orbit',orbit,varargs{:});
             else
-                [mt,ms]=findm44(ring,dp,[],'orbit',orbit,'XYStep',XYStep);
+                [mt,ms]=findm44(ring,dp,[],'orbit',orbit,varargs{:});
             end
             orbs=linepass(ring,orbit,refpts,'KeepLattice');
             orbs=orbs(1:4,:);
         else
             if is6d
-                [mt,ms,orbs]=findm66(ring,refpts,'orbit',orbit,'XYStep',XYStep,'DPStep',DPStep);
+                [mt,ms,orbs]=findm66(ring,refpts,'orbit',orbit,varargs{:});
             else
-                [mt,ms,orbs]=findm44(ring,dp,refpts,'orbit',orbit,'XYStep',XYStep);
+                [mt,ms,orbs]=findm44(ring,dp,refpts,'orbit',orbit,varargs{:});
             end
         end
         ms=squeeze(num2cell(ms,[1 2]));
@@ -232,7 +231,7 @@ end
         w=cellfun(@(r1,r2) chromfunc(deltap,r1,r2),rup,rdn,'UniformOutput',false);
         
         function [dp,tunes,orbs,rmats]=offmom(ring,dp,refpts)
-            orbit=find_orbit(ring,dp);
+            [~,orbit]=findorbit(ring,'dp',dp);
             [vals,~,orbs,~,rmats,~]=build_1turn_map(ring,dp,refpts,orbit,varargin{:});
             tunes=mod(angle(vals)/2/pi,1);
             dp=orbit(5);

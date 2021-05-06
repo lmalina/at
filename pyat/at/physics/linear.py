@@ -32,8 +32,7 @@ _DATA1_DTYPE = [('idx', numpy.uint32),
                 ('gamma', numpy.float64),
                 ('W', numpy.float64, (2,))]
 
-_DATA2_DTYPE = [('idx', numpy.uint32),
-                ('s_pos', numpy.float64),
+_DATA2_DTYPE = [('s_pos', numpy.float64),
                 ('closed_orbit', numpy.float64, (6,)),
                 ('alpha', numpy.float64, (2,)),
                 ('beta', numpy.float64, (2,)),
@@ -234,7 +233,6 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
         w = w0
 
     lindata0 = (
-         len(ring),
          get_s_pos(ring, len(ring))[0],
          orbit,
          disp0,
@@ -247,7 +245,7 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
 
     # Propagate to reference points
     if nrefs == 0:
-        lindata = ([], [], numpy.empty((0, 6)), numpy.empty((0, 4)),
+        lindata = ([], numpy.empty((0, 6)), numpy.empty((0, 4)),
                    numpy.empty((0, 2)),
                    numpy.empty((0, 2)),
                    numpy.empty((0, 2)),
@@ -287,7 +285,6 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
             tune = qtmp
 
         lindata = (
-            ring.uint32_refpts(refpts),
             get_s_pos(ring, refpts),
             orbs,
             dispersion,
@@ -301,6 +298,7 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
     return lindata0, tune, chrom, lindata
 
 
+# noinspection PyPep8Naming
 @check_radiation(False)
 def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
     """
@@ -376,11 +374,11 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
     """
     ld0, tune, chrom, ld = _linopt(ring, dp=dp, refpts=refpts,
                                    get_chrom=get_chrom, **kwargs)
-    ld0 = fromarrays(ld0, dtype=_DATA1_DTYPE)
+    ld0 = fromarrays((len(ring),)+ld0, dtype=_DATA1_DTYPE)
     # ld = fromarrays(ld, dtype=_DATA1_DTYPE)
-    idx, s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = ld
+    s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = ld
     ld = numpy.rec.array(numpy.zeros(ring.refcount(refpts), dtype=_DATA1_DTYPE))
-    ld['idx'] = idx
+    ld['idx'] = ring.uint32_refpts(refpts)
     ld['s_pos'] = s
     ld['closed_orbit'] = orbit
     ld['m44'] = M
@@ -465,8 +463,8 @@ def linopt2(ring, refpts=None, dp=0.0, get_chrom=False, get_w=False, **kwargs):
     # noinspection PyPep8Naming
     def output(data):
         dtype = list(_DATA2_DTYPE)
-        idx, s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = data
-        data2 = [idx, s, orbit, alpha, beta, mu, M]
+        s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = data
+        data2 = [s, orbit, alpha, beta, mu, M]
         if get_w:
             data2 += [disp, w]
             dtype += [('dispersion', numpy.float64, (4,)),
@@ -567,8 +565,8 @@ def linopt4(ring, refpts=None, dp=0.0, get_chrom=False, get_w=False, **kwargs):
     # noinspection PyPep8Naming
     def output(data):
         dtype = _DATA2_DTYPE + _DATA3_DTYPE
-        idx, s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = data
-        data2 = [idx, s, orbit, alpha, beta, mu, M, A, B, C, g]
+        s, orbit, disp, alpha, beta, mu, M, A, B, C, g, w = data
+        data2 = [s, orbit, alpha, beta, mu, M, A, B, C, g]
         if get_w:
             data2 += [disp, w]
             dtype += [('dispersion', numpy.float64, (4,)),
@@ -764,6 +762,7 @@ def get_tune(ring, method='linopt', dp=0.0, **kwargs):
         tunes = np.array([Qx,Qy])
     """
 
+    # noinspection PyShadowingNames
     def gen_centroid(ring, ampl, nturns, dp, remove_dc):
         orbit, _ = find_orbit4(ring, dp)
         ld, _, _, _ = linopt(ring, dp, orbit=orbit)

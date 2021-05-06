@@ -1,14 +1,12 @@
 from math import sin, cos, atan2, pi
 from itertools import repeat
-from warnings import warn
 import numpy
 from scipy.constants import c as clight
 from scipy.linalg import solve, block_diag
 from at.lattice import get_rf_frequency, set_rf_frequency, DConstant, get_s_pos
-from at.lattice import Lattice, AtWarning
+from at.lattice import Lattice
 from at.physics import a_matrix, jmat, get_mcf, find_m44, find_m66
-from at.physics import find_orbit4, find_sync_orbit, find_orbit6
-from at.tracking import lattice_pass
+from at.physics import find_orbit
 
 _S2 = numpy.array([[0, 1], [-1, 0]], dtype=numpy.float64)
 _Tn = [_S2, _S2, _S2.T]
@@ -88,31 +86,6 @@ def _r_analysis(a0, mstack):
     astd = standardize(a0, slices)
     inival = (r_matrices(astd), astd, numpy.zeros((dms,)))
     return inival, (propagate(mi.dot(astd)) for mi in mstack)
-
-
-def _find_orbit(ring, refpts=None, dp=None, orbit=None, ct=None, **kwargs):
-    """"""
-    if ring.radiation:
-        if dp is not None:
-            warn(AtWarning('In 6D, "dp" and "ct" are ignored'))
-        if orbit is None:
-            orbit, _ = find_orbit6(ring, **kwargs)
-    else:
-        if dp is None:
-            dp = 0.0
-        if orbit is None:
-            if ct is not None:
-                orbit, _ = find_sync_orbit(ring, ct, **kwargs)
-            else:
-                orbit, _ = find_orbit4(ring, dp, **kwargs)
-
-    if refpts is None:
-        orbs = []
-    else:
-        orbs = numpy.squeeze(
-            lattice_pass(ring, orbit.copy(order='K'), refpts=refpts,
-                         keep_lattice=True), axis=(1, 3)).T
-    return orbit, orbs
 
 
 def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
@@ -228,8 +201,8 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
 
         # noinspection PyShadowingNames
         def off_momentum(rng, dp):
-            orb0, orbs = _find_orbit(rng, refpts, dp=dp,
-                                     keep_lattice=keep_lattice, **kwargs)
+            orb0, orbs = find_orbit(rng, refpts, dp=dp,
+                                    keep_lattice=keep_lattice, **kwargs)
             dp = orb0[4]      # in 6D, dp comes out of find_orbit6
             _, vps, el0, els = build_r(rng, dp, orb0, refpts=matpts,
                                        keep_lattice=True, **kwargs)
@@ -272,7 +245,7 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
         sigma = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
 
-    orb0, orbs = _find_orbit(ring, refpts, dp=dp, orbit=orbit, **kwargs)
+    orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit, **kwargs)
     dp = orb0[4]
     ms, vps, el0, els = build_r(ring, dp, orb0, refpts=refpts, mxx=mxx,
                                 keep_lattice=keep_lattice, **kwargs)
