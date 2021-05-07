@@ -1,5 +1,4 @@
 from math import sin, cos, atan2, pi
-from itertools import repeat
 import numpy
 from scipy.constants import c as clight
 from scipy.linalg import solve, block_diag
@@ -88,8 +87,9 @@ def _r_analysis(a0, mstack):
     return inival, (propagate(mi.dot(astd)) for mi in mstack)
 
 
-def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
-            get_chrom=False, get_w=False, keep_lattice=False, **kwargs):
+def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
+            twiss_in=None, get_chrom=False, get_w=False,
+            keep_lattice=False, **kwargs):
     """Perform linear analysis of a fully coupled lattice
     elemdata0, beamdata, elemdata = linopt6(lattice)
 
@@ -196,18 +196,14 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
         return (r12, a, alpha, beta) + args
 
     # noinspection PyShadowingNames
-    def get_disp(ringup, ringdn, dpup, dpdn, refpts=None, matpts=None,
-                 keep_lattice=False, **kwargs):
+    def chrom_w(ringup, ringdn, orbitup, orbitdn, refpts=None, **kwargs):
 
         # noinspection PyShadowingNames
-        def off_momentum(rng, dp):
-            orb0, orbs = find_orbit(rng, refpts, dp=dp,
-                                    keep_lattice=keep_lattice, **kwargs)
+        def off_momentum(rng, orb0):
             dp = orb0[4]      # in 6D, dp comes out of find_orbit6
-            _, vps, el0, els = build_r(rng, dp, orb0, refpts=matpts,
-                                       keep_lattice=True, **kwargs)
+            _, vps, el0, els = build_r(rng, dp, orb0, refpts=refpts, **kwargs)
             tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-            return dp, tunes, orb0, orbs, el0, els
+            return dp, tunes, el0, els
 
         def chromfunc(ddp, el_up, el_dn):
             aup, bup = get_alphabeta(el_up[0])
@@ -219,15 +215,13 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
             ww = numpy.sqrt((da - ma / mb * db) ** 2 + (db / mb) ** 2)
             return ww
 
-        dpup, tunesup, o0up, orbup, el0up, elup = off_momentum(ringup, dpup)
-        dpdn, tunesdn, o0dn, orbdn, el0dn, eldn = off_momentum(ringdn, dpdn)
+        dpup, tunesup, el0up, elup = off_momentum(ringup, orbitup)
+        dpdn, tunesdn, el0dn, eldn = off_momentum(ringdn, orbitdn)
         deltap = dpup-dpdn
         chrom = (tunesup-tunesdn) / deltap
-        disp0 = (o0up-o0dn)[:4]/deltap
-        disp = ((oup-odn)[:4]/deltap for oup, odn in zip(orbup, orbdn))
         w0 = chromfunc(deltap, el0up, el0dn)
         w = (chromfunc(deltap, *v) for v in zip(elup, eldn))
-        return chrom, disp0, disp, w0, w
+        return chrom, w0, w
 
     def unwrap(mu):
         """Remove the phase jumps"""
@@ -245,8 +239,7 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
         sigma = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
 
-    orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit, **kwargs)
-    dp = orb0[4]
+    orb0, orbs = find_orbit(ring, refpts, dp=dp, ct=ct, orbit=orbit, **kwargs)
     ms, vps, el0, els = build_r(ring, dp, orb0, refpts=refpts, mxx=mxx,
                                 keep_lattice=keep_lattice, **kwargs)
 
@@ -267,39 +260,45 @@ def linopt6(ring, refpts=None, dp=None, orbit=None, cavpts=None, twiss_in=None,
             df = -dp_step * get_mcf(ring.radiation_off(copy=True)) * f0
             rgup = set_rf_frequency(ring, f0 + 0.5*df, cavpts=cavpts, copy=True)
             rgdn = set_rf_frequency(ring, f0 - 0.5*df, cavpts=cavpts, copy=True)
+            o0up, _ = find_orbit(rgup, guess=orb0, **kwargs)
+            o0dn, _ = find_orbit(rgdn, guess=orb0, **kwargs)
             if get_w:
                 dtype = W_DTYPE6 + W_DTYPEW
-                chrom, _, _, w0, ws = get_disp(rgup, rgdn, None, None,
-                                               matpts=refpts, **kwargs)
+                chrom, w0, ws = chrom_w(rgup, rgdn, o0up, o0dn, refpts=refpts,
+                                        keep_lattice=True, **kwargs)
                 data0.append(w0)
                 datas.append(ws)
             else:
-                chrom, _, _, _, _ = get_disp(rgup, rgdn, None, None)
+                chrom, _, _ = chrom_w(rgup, rgdn, o0up, o0dn,
+                                      keep_lattice=True, **kwargs)
         else:
             chrom = numpy.NaN
     else:               # 4D processsing
         output = output4
         dtype = W_DTYPE4
+        dpup = orb0[4] + 0.5*dp_step
+        dpdn = orb0[4] - 0.5*dp_step
         data0 = [*el0]
         datas = [els]
+        o0up, oup = find_orbit(ring, refpts, dpup, guess=orb0,
+                               keep_lattice=True, **kwargs)
+        o0dn, odn = find_orbit(ring, refpts, dpdn, guess=orb0,
+                               keep_lattice=True, **kwargs)
+        d0 = (o0up-o0dn)[:4]/dp_step
+        ds = ((up - dn)[:4] / dp_step for up, dn in zip(oup, odn))
+        data0 += [d0, numpy.identity(2 * dms), 0.0, orb0]
+        datas += [ds, iter(ms), iter(spos), iter(orbs)]
         if get_w:
             dtype = W_DTYPE4 + W_DTYPEW
-            chrom, d0, ds, w0, ws = get_disp(ring, ring, dp + 0.5*dp_step,
-                                             dp - 0.5*dp_step, refpts=refpts,
-                                             matpts=refpts,
-                                             keep_lattice=True, **kwargs)
-            data0 += [d0, numpy.identity(2*dms), 0.0, orb0, w0]
-            datas += [ds, iter(ms), iter(spos), iter(orbs), ws]
+            chrom, w0, ws = chrom_w(ring, ring, o0up, o0dn, refpts=refpts,
+                                    keep_lattice=True, **kwargs)
+            data0.append(w0)
+            datas.append(ws)
         elif get_chrom:
-            chrom, d0, ds, w0, ws = get_disp(ring, ring, dp + 0.5*dp_step,
-                                             dp - 0.5*dp_step, refpts=refpts,
-                                             keep_lattice=True, **kwargs)
-            data0 += [d0, numpy.identity(2*dms), 0.0, orb0]
-            datas += [ds, iter(ms), iter(spos), iter(orbs)]
+            chrom, _, _ = chrom_w(ring, ring, o0up, o0dn,
+                                  keep_lattice=True, **kwargs)
         else:
             chrom = numpy.NaN
-            data0 += [numpy.NaN, numpy.identity(2*dms), 0.0, orb0]
-            datas += [repeat(numpy.NaN), iter(ms), iter(spos), iter(orbs)]
 
     elemdata0 = numpy.array(output(*data0), dtype=dtype).view(numpy.recarray)
     elemdata = numpy.fromiter((output(*el, *v) for el, *v in zip(*datas)),

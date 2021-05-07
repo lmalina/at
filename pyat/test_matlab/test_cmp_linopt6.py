@@ -62,7 +62,7 @@ def test_4d_analysis(engine, lattices, dp):
                  atol=1.e-8, rtol=0)
     assert_close(py_ringdata.chromaticity,
                  _py_data(ml_ringdata['chromaticity']),
-                 atol=1.e-8, rtol=0)
+                 atol=5.e-4, rtol=0)
 
     _compare_6d(py_data, ml_data, fields, atol=1.e-6, rtol=1e-8)
 

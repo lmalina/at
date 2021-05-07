@@ -94,13 +94,13 @@ if is6d                     % 6D processing
         DFStep=-DPStep*mcf(atradoff(ring))*frf;
         rgup=atsetcavity(ring,'Frequency',frf+0.5*DFStep);
         rgdn=atsetcavity(ring,'Frequency',frf-0.5*DFStep);
-        [~,o1P]=findorbit(rgup,[],varargs{:});
-        [~,o1M]=findorbit(rgdn,[],varargs{:});
+        [~,o1P]=findorbit(rgup,[],orbitin,varargs{:});
+        [~,o1M]=findorbit(rgdn,[],orbitin,varargs{:});
         if get_w
-            [ringdata.chromaticity,w]=get_disp(rgup,rgdn,o1P,o1M,refpts);
+            [ringdata.chromaticity,w]=chrom_w(rgup,rgdn,o1P,o1M,refpts);
             [elemdata.W]=deal(w{:});
         else
-            [ringdata.chromaticity,~]=get_disp(rgup,rgdn,o1P,o1M,[]);
+            [ringdata.chromaticity,~]=chrom_w(rgup,rgdn,o1P,o1M,[]);
         end
     end
 else                        % 4D processing
@@ -108,16 +108,16 @@ else                        % 4D processing
     [alpha,beta]=cellfun(@output4,ri,'UniformOutput',false);
 %     [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,orbitin,varargs{:});
 %     [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,orbitin,varargs{:});
-    [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,varargs{:});
-    [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,varargs{:});
+    [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,orbitin,varargs{:});
+    [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,orbitin,varargs{:});
 %     [orbitP,o1P]=findorbit(ring,refpts,'dp',dp+0.5*DPStep,varargs{:});
 %     [orbitM,o1M]=findorbit(ring,refpts,'dp',dp-0.5*DPStep,varargs{:});
     disp = num2cell((orbitP-orbitM)/DPStep,1);
     if get_w
-            [ringdata.chromaticity,w]=get_disp(ring,ring,o1P,o1M,refpts);
+            [ringdata.chromaticity,w]=chrom_w(ring,ring,o1P,o1M,refpts);
             [elemdata.W]=deal(w{:});
     elseif get_chrom
-            [ringdata.chromaticity,~]=get_disp(ring,ring,o1P,o1M,[]);
+            [ringdata.chromaticity,~]=chrom_w(ring,ring,o1P,o1M,[]);
     end
 end
 
@@ -193,7 +193,7 @@ end
         w = sqrt((da - ma ./ mb .* db).^2 + (db ./ mb).^2);
     end
 
-    function [chrom,w]=get_disp(ringup,ringdn,orbup,orbdn,refpts)
+    function [chrom,w]=chrom_w(ringup,ringdn,orbup,orbdn,refpts)
         % Compute chromaticity, dispersion and W
         [dpup,tuneup,rup]=offmom(ringup,orbup,refpts);
         [dpdn,tunedn,rdn]=offmom(ringdn,orbdn,refpts);
