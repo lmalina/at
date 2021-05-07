@@ -64,7 +64,7 @@ def test_4d_analysis(engine, lattices, dp):
                  _py_data(ml_ringdata['chromaticity']),
                  atol=1.e-8, rtol=0)
 
-    _compare_4d(py_data, ml_data, fields, atol=1.e-6, rtol=1e-8)
+    _compare_6d(py_data, ml_data, fields, atol=1.e-6, rtol=1e-8)
 
 
 @pytest.mark.parametrize('lattices',

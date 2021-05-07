@@ -15,12 +15,12 @@ function [elemdata,ringdata] = atlinopt6(ring, varargin)
 %   SPos        - longitudinal position [m]
 %   ClosedOrbit - 6x1 closed orbit vector with components
 %                 x, px, y, py, dp/d, ct (momentums, NOT angles)
+%   Dispersion  - [eta_x; eta'_x; eta_y; eta'_y] 4x1 dispersion vector
 %   R           - DxDx(D/2) R-matrices
 %   A           - DxD A-matrix
 %   M           - DxD transfer matrix M from the beginning of RING
 %   beta        - [betax, betay]                 1x2 beta vector
 %   alpha       - [alphax, alphay]               1x2 alpha vector
-%   Dispersion  - [eta_x; eta'_x; eta_y; eta'_y] 4x1 dispersion vector
 %   mu          - [mux, muy] 	Betatron phase advances
 %   W           - [Wx, Wy]      Chromatic amplitude function [3]
 %
@@ -64,15 +64,16 @@ clight = PhysConstant.speed_of_light_in_vacuum.value;   % m/s
 lgth = findspos(ring,length(ring)+1);
 if isempty(twiss_in)        % Circular machine
     is6d=check_radiation(ring);
-    [~,orbitin]=findorbit(ring,'dp',dp,'orbit',orbitin,varargs{:});
-    [vps,ms,orbs,mu,ri,ai]=build_1turn_map(ring,dp,refpts,orbitin);
+    [orbs,orbitin]=findorbit(ring,refpts,'dp',dp,'orbit',orbitin,varargs{:});
+    [vps,ms,mu,ri,ai]=build_1turn_map(ring,dp,refpts,orbitin);
 else                        % Transfer line
     if isempty(orbitin), orbitin=zeros(6,1); end
+    orbs=linepass(ring,orbitin,refpts);
     sigma=build_sigma(twiss_in);
     nv=size(sigma,1);
     dms=nv/2;
     is6d=(dms>=3);
-    [vps,ms,orbs,mu,ri,ai]=build_1turn_map(ring,dp,refpts,orbitin,'mxx',sigma*jmat(dms));
+    [vps,ms,mu,ri,ai]=build_1turn_map(ring,dp,refpts,orbitin,'mxx',sigma*jmat(dms));
 end
 
 tunes=mod(angle(vps)/2/pi,1);
@@ -88,35 +89,41 @@ ringdata=struct('tune',tunes,'damping_time',damping_times);
 
 if is6d                     % 6D processing
     [alpha,beta,disp]=cellfun(@output6,ri,'UniformOutput',false);
-    [elemdata.alpha]=deal(alpha{:});
-    [elemdata.beta]=deal(beta{:});
-    [elemdata.Dispersion]=deal(disp{:});
     if get_w || get_chrom
         frf=get_rf_frequency(ring);
         DFStep=-DPStep*mcf(atradoff(ring))*frf;
         rgup=atsetcavity(ring,'Frequency',frf+0.5*DFStep);
         rgdn=atsetcavity(ring,'Frequency',frf-0.5*DFStep);
+        [~,o1P]=findorbit(rgup,[],varargs{:});
+        [~,o1M]=findorbit(rgdn,[],varargs{:});
         if get_w
-            [ringdata.chromaticity,~,w]=get_disp(rgup,rgdn,NaN,NaN,refpts);
+            [ringdata.chromaticity,w]=get_disp(rgup,rgdn,o1P,o1M,refpts);
             [elemdata.W]=deal(w{:});
         else
-            [ringdata.chromaticity,~,~]=get_disp(rgup,rgdn,NaN,NaN,[]);
+            [ringdata.chromaticity,~]=get_disp(rgup,rgdn,o1P,o1M,[]);
         end
     end
 else                        % 4D processing
     dp=orbitin(5);
     [alpha,beta]=cellfun(@output4,ri,'UniformOutput',false);
-    [elemdata.alpha]=deal(alpha{:});
-    [elemdata.beta]=deal(beta{:});
+%     [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,orbitin,varargs{:});
+%     [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,orbitin,varargs{:});
+    [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,varargs{:});
+    [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,varargs{:});
+%     [orbitP,o1P]=findorbit(ring,refpts,'dp',dp+0.5*DPStep,varargs{:});
+%     [orbitM,o1M]=findorbit(ring,refpts,'dp',dp-0.5*DPStep,varargs{:});
+    disp = num2cell((orbitP-orbitM)/DPStep,1);
     if get_w
-            [ringdata.chromaticity,disp,w]=get_disp(ring,ring,dp+0.5*DPStep,dp-0.5*DPStep,refpts);
-            [elemdata.Dispersion]=deal(disp{:});
+            [ringdata.chromaticity,w]=get_disp(ring,ring,o1P,o1M,refpts);
             [elemdata.W]=deal(w{:});
     elseif get_chrom
-            [ringdata.chromaticity,disp,~]=get_disp(ring,ring,dp+0.5*DPStep,dp-0.5*DPStep,refpts,'skip');
-            [elemdata.Dispersion]=deal(disp{:});
+            [ringdata.chromaticity,~]=get_disp(ring,ring,o1P,o1M,[]);
     end
 end
+
+[elemdata.alpha]=deal(alpha{:});
+[elemdata.beta]=deal(beta{:});
+[elemdata.Dispersion]=deal(disp{:});
 
     function [alpha,beta,disp]=output6(ri)
         % Extract output parameters from R matrices
@@ -137,50 +144,15 @@ end
         up = p+cumsum(jumps)*2*pi;
     end
 
-    function orbitin=find_orbit(ring,dp,varargin)
-        % Find  the closed orbit in 4D or 6D
-        [orbitin,vargs]=getoption(varargin,'orbit',[]);
-        [ct,~]=getoption(vargs,'ct',NaN);
-        if is6d
-            if isfinite(dp),warning('AT:linopt','In 6D, "dp" and "ct" are ignored'); end
-            if isempty(orbitin)
-                [~,orbitin]=findorbit6(ring,varargs{:});
-            end
-        else
-            if ~isempty(orbitin)
-                if length(orbitin) >= 5
-                    dp=orbitin(5);
-                end
-                orbitin=[orbitin(1:4);dp;0];
-            elseif isnan(ct)
-                if isnan(dp), dp=0; end
-                [~,orbitin]=findorbit4(ring,dp,varargs{:});
-            else
-                [~,orbitin]=findsyncorbit(ring,ct,varargs{:});
-            end
-        end
-    end
-
-    function [vals,ms,orbs,phis,rmats,as]=build_1turn_map(ring,dp,refpts,orbit,varargin)
+    function [vals,ms,phis,rmats,as]=build_1turn_map(ring,dp,refpts,orbit,varargin)
         % Build the initial distribution at entrance of the transfer line
-        [skip,vargs]=getflag(varargin,'skip');
-        if skip
-            if is6d
-                [mt,ms]=findm66(ring,[],'orbit',orbit,varargs{:});
-            else
-                [mt,ms]=findm44(ring,dp,[],'orbit',orbit,varargs{:});
-            end
-            orbs=linepass(ring,orbit,refpts,'KeepLattice');
-            orbs=orbs(1:4,:);
+        if is6d
+            [mt,ms]=findm66(ring,refpts,'orbit',orbit,varargs{:});
         else
-            if is6d
-                [mt,ms,orbs]=findm66(ring,refpts,'orbit',orbit,varargs{:});
-            else
-                [mt,ms,orbs]=findm44(ring,dp,refpts,'orbit',orbit,varargs{:});
-            end
+            [mt,ms]=findm44(ring,dp,refpts,'orbit',orbit,varargs{:});
         end
         ms=squeeze(num2cell(ms,[1 2]));
-        [mxx,~]=getoption(vargs,'mxx',mt);
+        [mxx,~]=getoption(varargin,'mxx',mt);
         [amat0,vals]=amat(mxx);
         [~,phis,rmats,as]=r_analysis(amat0,ms);
     end
@@ -221,20 +193,18 @@ end
         w = sqrt((da - ma ./ mb .* db).^2 + (db ./ mb).^2);
     end
 
-    function [chrom,disp,w]=get_disp(ringup,ringdn,dpup,dpdn,refpts,varargin)
+    function [chrom,w]=get_disp(ringup,ringdn,orbup,orbdn,refpts)
         % Compute chromaticity, dispersion and W
-        [dpup,tuneup,orbup,rup]=offmom(ringup,dpup,refpts);
-        [dpdn,tunedn,orbdn,rdn]=offmom(ringdn,dpdn,refpts);
+        [dpup,tuneup,rup]=offmom(ringup,orbup,refpts);
+        [dpdn,tunedn,rdn]=offmom(ringdn,orbdn,refpts);
         deltap=dpup-dpdn;
         chrom=(tuneup-tunedn)./deltap;
-        disp=num2cell((orbup-orbdn)./deltap,1)';
         w=cellfun(@(r1,r2) chromfunc(deltap,r1,r2),rup,rdn,'UniformOutput',false);
         
-        function [dp,tunes,orbs,rmats]=offmom(ring,dp,refpts)
-            [~,orbit]=findorbit(ring,'dp',dp);
-            [vals,~,orbs,~,rmats,~]=build_1turn_map(ring,dp,refpts,orbit,varargin{:});
-            tunes=mod(angle(vals)/2/pi,1);
+        function [dp,tunes,rmats]=offmom(ring,orbit,refpts)
             dp=orbit(5);
+            [vals,~,~,rmats,~]=build_1turn_map(ring,dp,refpts,orbit);
+            tunes=mod(angle(vals)/2/pi,1);
         end
     end
 
