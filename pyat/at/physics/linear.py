@@ -202,8 +202,8 @@ def _linopt(ring, dp=0.0, refpts=None, get_chrom=False, orbit=None,
         o_dn = numpy.squeeze(lattice_pass(ring, orbit_down.copy(order='K'),
                                           refpts=refpts, keep_lattice=True),
                              axis=(1, 3)).T
-        w0 = _chromfun(dp_step, ld0_up[4], ld0_dn[4], ld0_up[5], ld0_dn[5])
-        w = _chromfun(dp_step, ld_up[4], ld_dn[4], ld_up[5], ld_dn[5])
+        w0 = _chromfun(dp_step, ld0_up[3], ld0_dn[3], ld0_up[4], ld0_dn[4])
+        w = _chromfun(dp_step, ld_up[3], ld_dn[3], ld_up[4], ld_dn[4])
         chrom = (tune_up-tune_dn)/dp_step
         dispersion = [(oup - odn)[:4] / dp_step for oup, odn in zip(o_up, o_dn)]
     elif get_chrom:
