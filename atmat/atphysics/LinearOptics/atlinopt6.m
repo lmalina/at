@@ -1,7 +1,7 @@
-function [elemdata,ringdata] = atlinopt6(ring, varargin)
+function [ringdata,elemdata] = atlinopt6(ring, varargin)
 %ATLINOPT6 Performs linear analysis of the lattice
 %
-% [ELEMDATA,RINGDATA] = ATLINOPT6(RING,REFPTS)
+% [RINGDATA,ELEMDATA] = ATLINOPT6(RING,REFPTS)
 %
 %For circular machines, ATLINOPT6 analyses
 %the 4x4 1-turn transfer matrix if radiation is OFF, or
@@ -10,6 +10,11 @@ function [elemdata,ringdata] = atlinopt6(ring, varargin)
 %For a transfer line, The "twiss_in" intput must contain either:
 % - a field 'R', as provided by ATLINOPT6, or
 % - the fields 'beta' and 'alpha', as provided by ATLINOPT and ATLINOPT6
+%
+%RINGDATA is a structure array with fields:
+%   tune            Fractional tunes
+%   damping_time    Damping times [s]
+%   chromaticity    Chromaticities
 %
 %ELEMDATA is a structure array with fields:
 %   SPos        - longitudinal position [m]
@@ -23,11 +28,13 @@ function [elemdata,ringdata] = atlinopt6(ring, varargin)
 %   alpha       - [alphax, alphay]               1x2 alpha vector
 %   mu          - [mux, muy] 	Betatron phase advances
 %   W           - [Wx, Wy]      Chromatic amplitude function [3]
-%
-%RINGDATA is a structure array with fields:
-%   tune            Fractional tunes
-%   damping_time    Damping times [s]
-%   chromaticity    Chromaticities
+% 
+%   Use the Matlab function "cat" to get the data from fields of ELEMDATA as MATLAB arrays.
+%   Example: 
+%   >> [ringdata, elemdata] = ATLINOPT6(ring,1:length(ring));
+%   >> beta = cat(1,elemdata.beta);
+%   >> s = cat(1,elemdata.SPos);
+%   >> plot(S,beta)
 %
 % [...] = ATLINOPT6(...,'orbit',ORBITIN)
 %   Do not search for closed orbit. Instead ORBITIN,a 6x1 vector
@@ -106,8 +113,8 @@ if is6d                     % 6D processing
 else                        % 4D processing
     dp=orbitin(5);
     [alpha,beta]=cellfun(@output4,ri,'UniformOutput',false);
-%     [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,orbitin,varargs{:});
-%     [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,orbitin,varargs{:});
+%   [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,varargs{:});
+%   [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,varargs{:});
     [orbitP,o1P]=findorbit4(ring,dp+0.5*DPStep,refpts,orbitin,varargs{:});
     [orbitM,o1M]=findorbit4(ring,dp-0.5*DPStep,refpts,orbitin,varargs{:});
 %     [orbitP,o1P]=findorbit(ring,refpts,'dp',dp+0.5*DPStep,varargs{:});

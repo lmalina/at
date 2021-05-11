@@ -54,7 +54,7 @@ def test_4d_analysis(engine, lattices, dp):
     py_data0, py_ringdata, py_data = linopt6(py_lattice, refpts=pypts,
                                              dp=dp, get_chrom=True)
     # Matlab call
-    ml_data, ml_ringdata = engine.pyproxy('atlinopt6', ml_lattice, mlpts,
+    ml_ringdata, ml_data = engine.pyproxy('atlinopt6', ml_lattice, mlpts,
                                           'dp', dp, 'get_chrom', nargout=2)
     # Comparison
     assert_close(py_ringdata.tune,
@@ -88,7 +88,7 @@ def test_6d_analysis(engine, lattices):
     py_data0, py_ringdata, py_data = linopt6(py_lattice, refpts=pypts,
                                              get_chrom=True)
     # Matlab call
-    ml_data, ml_ringdata = engine.pyproxy('atlinopt6', ml_lattice, mlpts,
+    ml_ringdata, ml_data = engine.pyproxy('atlinopt6', ml_lattice, mlpts,
                                           'get_chrom', nargout=2)
     # Comparison
     assert_close(py_ringdata.tune,
