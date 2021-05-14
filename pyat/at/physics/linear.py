@@ -116,55 +116,56 @@ def _linopt(ring, analyze, dtype, dp=0.0, refpts=None, get_chrom=False,
         w0 = numpy.sqrt((da0 - ma0 / mb0 * db0) ** 2 + (db0 / mb0) ** 2)
         return w0
 
+    def off_momentum(rng, orb0, refpts, **kwargs):
+        vps, el0, els, _, _ = analyze(rng, orb0, refpts=refpts, **kwargs)
+        tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
+        return tunes, el0, els
+
     dp_step = kwargs.get('DPStep', DConstant.DPStep)
 
     # Get initial orbit
-    dpup = dp + 0.5*dp_step
-    dpdn = dp - 0.5*dp_step
-    if twiss_in is None:
-        o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts,
-                                keep_lattice=keep_lattice)
-        o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts,
-                                keep_lattice=True)
-    else:
+    kwup = {}
+    kwdn = {}
+    if twiss_in is None:            # Circular machine
+        mxx = None
+    else:                           # Transfer line
         orbit = numpy.zeros((6,)) if orbit is None else orbit
         sigma, d0 = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
         dorbit = numpy.hstack((0.5 * dp_step * d0,
                                numpy.array([0.5 * dp_step, 0])))
-
-        o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts, orbit=orbit+dorbit,
-                                keep_lattice=keep_lattice)
-        o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts, orbit=orbit-dorbit,
-                                keep_lattice=True)
-        kwargs['mxx'] = mxx
+        kwup['orbit'] = orbit+dorbit
+        kwdn['orbit'] = orbit-dorbit
 
     orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit,
                             keep_lattice=keep_lattice, **kwargs)
-    d0 = (o0up - o0dn)[:4] / dp_step
-    ds = numpy.array([(up - dn)[:4] / dp_step for up, dn in zip(oup, odn)])
-    vps, el0, els, m44, ms = analyze(ring, orb0, refpts, **kwargs)
+    vps, el0, els, m44, ms = analyze(ring, orb0, refpts, mxx=mxx, **kwargs)
     tune = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
 
+#   4D processing
+    dpup = orb0[4] + 0.5*dp_step
+    dpdn = orb0[4] - 0.5*dp_step
+    o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts,  # guess=orb0,
+                            keep_lattice=keep_lattice, **kwup, **kwargs)
+    o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts,  # guess=orb0,
+                            keep_lattice=True, **kwdn, **kwargs)
+    d0 = (o0up - o0dn)[:4] / dp_step
+    ds = numpy.array([(up - dn)[:4] / dp_step for up, dn in zip(oup, odn)])
     data0 = (ring.get_s_pos(len(ring)), orb0, d0, m44)
     datas = (ring.get_s_pos(ring.uint32_refpts(refpts)),
              numpy.reshape(orbs, (-1, 6)),
              numpy.reshape(ds, (-1, 4)), ms)
 
     if get_w:
-        vpup, el0up, elsup, _, _ = analyze(ring, o0up, refpts, **kwargs)
-        vpdn, el0dn, elsdn, _, _ = analyze(ring, o0dn, refpts, **kwargs)
-        tuneup = numpy.mod(numpy.angle(vpup) / 2.0 / pi, 1.0)
-        tunedn = numpy.mod(numpy.angle(vpdn) / 2.0 / pi, 1.0)
+        tuneup, el0up, elsup = off_momentum(ring, o0up, refpts, **kwargs)
+        tunedn, el0dn, elsdn = off_momentum(ring, o0dn, refpts, **kwargs)
         chrom = (tuneup - tunedn) / dp_step
         data0 = data0 + (wget(dp_step, el0up, el0dn),)
         dtype = dtype + _W_DTYPE
         datas = datas + (wget(dp_step, elsup, elsdn),)
     elif get_chrom:
-        vpup, el0up, elsup, _, _ = analyze(ring, o0up, **kwargs)
-        vpdn, el0dn, elsdn, _, _ = analyze(ring, o0dn, **kwargs)
-        tuneup = numpy.mod(numpy.angle(vpup) / 2.0 / pi, 1.0)
-        tunedn = numpy.mod(numpy.angle(vpdn) / 2.0 / pi, 1.0)
+        tuneup, el0up, elsup = off_momentum(ring, o0up, None, **kwargs)
+        tunedn, el0dn, elsdn = off_momentum(ring, o0dn, None, **kwargs)
         chrom = (tuneup - tunedn) / dp_step
     else:
         chrom = numpy.NaN

@@ -283,16 +283,14 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
         dtype = W_DTYPE4
         dpup = orb0[4] + 0.5*dp_step
         dpdn = orb0[4] - 0.5*dp_step
-        data0 = [*el0]
-        datas = [els]
         o0up, oup = find_orbit(ring, refpts, dpup, guess=orb0,
                                keep_lattice=True, **kwargs)
         o0dn, odn = find_orbit(ring, refpts, dpdn, guess=orb0,
                                keep_lattice=True, **kwargs)
         d0 = (o0up-o0dn)[:4]/dp_step
         ds = ((up - dn)[:4] / dp_step for up, dn in zip(oup, odn))
-        data0 += [d0, numpy.identity(2 * dms), 0.0, orb0]
-        datas += [ds, iter(ms), iter(spos), iter(orbs)]
+        data0 = [*el0, d0, numpy.identity(2 * dms), 0.0, orb0]
+        datas = [els, ds, iter(ms), iter(spos), iter(orbs)]
         if get_w:
             dtype = W_DTYPE4 + W_DTYPEW
             chrom, w0, ws = chrom_w(ring, ring, o0up, o0dn, refpts=refpts,
