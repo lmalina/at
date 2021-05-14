@@ -160,9 +160,10 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
         return alpha, beta
 
     # noinspection PyShadowingNames
-    def build_r(ring, orbit, refpts=None, mxx=None, **kwargs):
+    def analyze(ring, orbit, refpts=None, mxx=None, **kwargs):
         """"""
         if ring.radiation:
+
             mt, ms = find_m66(ring, refpts, orbit=orbit, **kwargs)
         else:
             mt, ms = find_m44(ring, orbit[4], refpts, orbit=orbit, **kwargs)
@@ -205,7 +206,7 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
 
         # noinspection PyShadowingNames
         def off_momentum(rng, orb0):
-            vps, el0, els, _, _ = build_r(rng, orb0, refpts=refpts, **kwargs)
+            vps, el0, els, _, _ = analyze(rng, orb0, refpts=refpts, **kwargs)
             tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
             return tunes, el0, els
 
@@ -244,7 +245,7 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
 
     orb0, orbs = find_orbit(ring, refpts, dp=dp, ct=ct, orbit=orbit, **kwargs)
-    vps, el0, els, mt, ms = build_r(ring, orb0, refpts=refpts, mxx=mxx,
+    vps, el0, els, mt, ms = analyze(ring, orb0, refpts=refpts, mxx=mxx,
                                     keep_lattice=keep_lattice, **kwargs)
 
     dms = vps.size

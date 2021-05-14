@@ -252,6 +252,7 @@ end
     end
 
     function [beta,alpha,tune] = closure(AB)
+        [vects,vals]=eig(AB);
         cosmu = (AB(1,1) + AB(2,2))/2;
         diff  = (AB(1,1) - AB(2,2))/2;
         sinmu = sign(AB(1,2))*sqrt(-AB(1,2)*AB(2,1)-diff*diff);
