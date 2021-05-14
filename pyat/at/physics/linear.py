@@ -3,7 +3,7 @@ Coupled or non-coupled 4x4 linear motion
 """
 import numpy
 from numpy.core.records import fromarrays
-from math import sqrt, atan2, pi
+from math import sqrt, pi
 from at.lattice import Lattice, check_radiation, get_s_pos, \
     bool_refpts, DConstant
 from at.tracking import lattice_pass
