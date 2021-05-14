@@ -160,16 +160,16 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
         return alpha, beta
 
     # noinspection PyShadowingNames
-    def build_r(ring, dp, orbit, refpts=None, mxx=None, **kwargs):
+    def build_r(ring, orbit, refpts=None, mxx=None, **kwargs):
         """"""
         if ring.radiation:
-            mt, ms = find_m66(ring, refpts=refpts, orbit=orbit, **kwargs)
+            mt, ms = find_m66(ring, refpts, orbit=orbit, **kwargs)
         else:
-            mt, ms = find_m44(ring, dp, refpts=refpts, orbit=orbit, **kwargs)
+            mt, ms = find_m44(ring, orbit[4], refpts, orbit=orbit, **kwargs)
 
         a0, vps = a_matrix(mt if mxx is None else mxx)
         val0, vals = _r_analysis(a0, ms)
-        return ms, vps, val0, vals
+        return vps, val0, vals, mt, ms
 
     def build_sigma(twin):
         """Build the initial distribution at entrance of the transfer line"""
@@ -182,7 +182,12 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
             for slc, (alpha, beta) in zip(slices, ab):
                 gamma = (1.0+alpha*alpha)/beta
                 sigm[slc, slc] = numpy.array([[beta, -alpha], [-alpha, gamma]])
-        return sigm
+        try:
+            d0 = twiss_in['dispersion']
+        except KeyError:
+            print('Dispersion not found in twiss_in, setting to zero')
+            d0 = numpy.zeros((4,))
+        return sigm, d0
 
     def output6(r123, a, mu, *args):
         """Extract output parameters from Bk matrices"""
@@ -200,10 +205,9 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
 
         # noinspection PyShadowingNames
         def off_momentum(rng, orb0):
-            dp = orb0[4]      # in 6D, dp comes out of find_orbit6
-            _, vps, el0, els = build_r(rng, dp, orb0, refpts=refpts, **kwargs)
+            vps, el0, els, _, _ = build_r(rng, orb0, refpts=refpts, **kwargs)
             tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-            return dp, tunes, el0, els
+            return tunes, el0, els
 
         def chromfunc(ddp, el_up, el_dn):
             aup, bup = get_alphabeta(el_up[0])
@@ -215,9 +219,9 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
             ww = numpy.sqrt((da - ma / mb * db) ** 2 + (db / mb) ** 2)
             return ww
 
-        dpup, tunesup, el0up, elup = off_momentum(ringup, orbitup)
-        dpdn, tunesdn, el0dn, eldn = off_momentum(ringdn, orbitdn)
-        deltap = dpup-dpdn
+        tunesup, el0up, elup = off_momentum(ringup, orbitup)
+        tunesdn, el0dn, eldn = off_momentum(ringdn, orbitdn)
+        deltap = orbitup[4] - orbitdn[4]    # in 6D, dp comes out of find_orbit6
         chrom = (tunesup-tunesdn) / deltap
         w0 = chromfunc(deltap, el0up, el0dn)
         w = (chromfunc(deltap, *v) for v in zip(elup, eldn))
@@ -236,12 +240,12 @@ def linopt6(ring, refpts=None, dp=None, ct=None, orbit=None, cavpts=None,
     else:                           # Transfer line
         if orbit is None:
             orbit = numpy.zeros((6,))
-        sigma = build_sigma(twiss_in)
+        sigma, _ = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
 
     orb0, orbs = find_orbit(ring, refpts, dp=dp, ct=ct, orbit=orbit, **kwargs)
-    ms, vps, el0, els = build_r(ring, dp, orb0, refpts=refpts, mxx=mxx,
-                                keep_lattice=keep_lattice, **kwargs)
+    vps, el0, els, mt, ms = build_r(ring, orb0, refpts=refpts, mxx=mxx,
+                                    keep_lattice=keep_lattice, **kwargs)
 
     dms = vps.size
     length = ring.get_s_pos(len(ring))[0]

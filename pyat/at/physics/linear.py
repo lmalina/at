@@ -88,11 +88,23 @@ def _linopt(ring, analyze, dp=0.0, refpts=None, orbit=None, twiss_in=None,
             keep_lattice=False, get_chrom=False, get_w=False,
             **kwargs):
     """"""
-    def scan(ring, dp, refpts, orb0):
-        m44, mstack = find_m44(ring, dp, refpts, orbit=orb0,
-                               keep_lattice=True, **kwargs)
-        tune, el0, els = analyze(m44, mstack)
-        return tune, el0, els, m44, mstack
+    def build_sigma(twin):
+        """Build the initial distribution at entrance of the transfer line"""
+        try:
+            sigm = numpy.sum(twin.R, axis=0)
+        except AttributeError:
+            slices = [slice(2 * i, 2 * (i + 1)) for i in range(4)]
+            ab = numpy.stack((twin.alpha, twin.beta), axis=1)
+            sigm = numpy.zeros((4, 4))
+            for slc, (alpha, beta) in zip(slices, ab):
+                gamma = (1.0+alpha*alpha)/beta
+                sigm[slc, slc] = numpy.array([[beta, -alpha], [-alpha, gamma]])
+        try:
+            d0 = twiss_in['dispersion']
+        except KeyError:
+            print('Dispersion not found in twiss_in, setting to zero')
+            d0 = numpy.zeros((4,))
+        return sigm, d0
 
     def wget(ddp, elup, eldn):
         alpha_up, beta_up = elup[:2]    # Extract alpha and beta
@@ -110,31 +122,28 @@ def _linopt(ring, analyze, dp=0.0, refpts=None, orbit=None, twiss_in=None,
     dpup = dp + 0.5*dp_step
     dpdn = dp - 0.5*dp_step
     if twiss_in is None:
-        orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit, **kwargs)
         o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts,
                                 keep_lattice=keep_lattice)
         o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts,
                                 keep_lattice=True)
     else:
-        orb0 = numpy.zeros((6,)) if orbit is None else orbit
-        try:
-            d0 = twiss_in['dispersion']
-        except KeyError:
-            print('Dispersion not found in twiss_in, setting to zero')
-            d0 = numpy.zeros((4,))
+        orbit = numpy.zeros((6,)) if orbit is None else orbit
+        sigma, d0 = build_sigma(twiss_in)
+        mxx = sigma.dot(jmat(sigma.shape[0] // 2))
         dorbit = numpy.hstack((0.5 * dp_step * d0,
                                numpy.array([0.5 * dp_step, 0])))
 
-        orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orb0,
-                                keep_lattice=keep_lattice, **kwargs)
-        o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts, orbit=orb0+dorbit,
+        o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts, orbit=orbit+dorbit,
                                 keep_lattice=keep_lattice)
-        o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts, orbit=orb0-dorbit,
+        o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts, orbit=orbit-dorbit,
                                 keep_lattice=True)
+        kwargs['mxx'] = mxx
 
+    orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit,
+                            keep_lattice=keep_lattice, **kwargs)
     d0 = (o0up - o0dn)[:4] / dp_step
     ds = numpy.array([(up - dn)[:4] / dp_step for up, dn in zip(oup, odn)])
-    tune, el0, els, m44, ms = scan(ring, dp, refpts, orb0)
+    tune, el0, els, m44, ms = analyze(ring, orb0, refpts, **kwargs)
 
     data0 = [*el0, ring.get_s_pos(len(ring)), orb0, d0, m44]
     datas = [*els, ring.get_s_pos(ring.uint32_refpts(refpts)),
@@ -142,14 +151,14 @@ def _linopt(ring, analyze, dp=0.0, refpts=None, orbit=None, twiss_in=None,
              numpy.reshape(ds, (-1, 4)), ms]
 
     if get_w:
-        tuneup, el0up, elsup, _, _ = scan(ring, dpup, refpts, o0up)
-        tunedn, el0dn, elsdn, _, _ = scan(ring, dpdn, refpts, o0dn)
+        tuneup, el0up, elsup, _, _ = analyze(ring, o0up, refpts, **kwargs)
+        tunedn, el0dn, elsdn, _, _ = analyze(ring, o0dn, refpts, **kwargs)
         chrom = (tuneup - tunedn) / dp_step
         data0.append(wget(dp_step, el0up, el0dn))
         datas.append(wget(dp_step, elsup, elsdn))
     elif get_chrom:
-        tuneup, el0up, elsup, _, _ = scan(ring, dpup, None, o0up)
-        tunedn, el0dn, elsdn, _, _ = scan(ring, dpdn, None, o0dn)
+        tuneup, el0up, elsup, _, _ = analyze(ring, o0up, **kwargs)
+        tunedn, el0dn, elsdn, _, _ = analyze(ring, o0dn, **kwargs)
         chrom = (tuneup - tunedn) / dp_step
     else:
         chrom = numpy.NaN
@@ -235,7 +244,8 @@ def linopt4(ring, refpts=None, dp=0.0, get_w=False, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze4(m44, mstack):
+    def _analyze4(ring, orb0, refpts=None, mxx=None, **kwargs):
+
         def grp1(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
@@ -246,21 +256,31 @@ def linopt4(ring, refpts=None, dp=0.0, get_w=False, **kwargs):
             f12 = (n.dot(C) + g * nn) / gamma
             return e12, f12, gamma
 
-        M = m44[:2, :2]
-        N = m44[2:, 2:]
-        m = m44[:2, 2:]
-        n = m44[2:, :2]
+        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
+                               keep_lattice=True, **kwargs)
+        mxx = m44 if mxx is None else mxx
+        M = mxx[:2, :2]
+        N = mxx[2:, 2:]
+        m = mxx[:2, 2:]
+        n = mxx[2:, :2]
         H = m + _jmt.dot(n.T.dot(_jmt.T))
-        t = numpy.trace(M - N)
-        t2 = t * t
-        t2h = t2 + 4.0 * numpy.linalg.det(H)
-        g2 = (1.0 + sqrt(t2 / t2h)) / 2
-        g = sqrt(g2)
-        C = -H * numpy.sign(t) / (g * sqrt(t2h))
-        A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
-            C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
-        B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
-            _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
+        detH = numpy.linalg.det(H)
+        if detH == 0.0:
+            g = 1.0
+            C = -H
+            A = M
+            B = N
+        else:
+            t = numpy.trace(M - N)
+            t2 = t * t
+            t2h = t2 + 4.0 * detH
+            g2 = (1.0 + sqrt(t2 / t2h)) / 2
+            g = sqrt(g2)
+            C = -H * numpy.sign(t) / (g * sqrt(t2h))
+            A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
+                C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
+            B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
+                _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
         alp0_a, bet0_a, tune_a = _closure(A)
         alp0_b, bet0_b, tune_b = _closure(B)
         tune = numpy.array([tune_a, tune_b])
@@ -277,7 +297,7 @@ def linopt4(ring, refpts=None, dp=0.0, get_w=False, **kwargs):
         else:
             val = [numpy.empty((0, 2)), numpy.empty((0, 2)),
                    numpy.empty((0, 2)), numpy.empty((0,))]
-        return tune, inival, val
+        return tune, inival, val, m44, mstack
 
     beamdata, data0, datas = _linopt(ring, refpts=refpts, dp=dp,
                                      analyze=_analyze4, get_w=get_w,
@@ -355,9 +375,12 @@ def linopt2(ring, refpts=None, dp=0.0, get_w=False, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(m44, mstack):
-        A = m44[:2, :2]
-        B = m44[2:, 2:]
+    def _analyze2(ring, orb0, refpts=None, mxx=None, **kwargs):
+        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
+                               keep_lattice=True, **kwargs)
+        mxx = m44 if mxx is None else mxx
+        A = mxx[:2, :2]
+        B = mxx[2:, 2:]
         alpha0_a, beta0_a, tune_a = _closure(A)
         alpha0_b, beta0_b, tune_b = _closure(B)
         tune = numpy.array([tune_a, tune_b])
@@ -369,7 +392,7 @@ def linopt2(ring, refpts=None, dp=0.0, get_w=False, **kwargs):
         val = [numpy.stack((alpha_a, alpha_b), axis=1),
                numpy.stack((beta_a, beta_b), axis=1),
                numpy.stack((mu_a, mu_b), axis=1)]
-        return tune, inival, val
+        return tune, inival, val, m44, mstack
 
     beamdata, data0, datas = _linopt(ring, refpts=refpts, dp=dp,
                                      analyze=_analyze2, get_w=get_w,
@@ -456,10 +479,12 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, get_w=False,
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(m44, mstack):
-        nrefs = mstack.shape[0]
-        A = m44[:2, :2]
-        B = m44[2:, 2:]
+    def _analyze2(ring, orb0, refpts=None, mxx=None, **kwargs):
+        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
+                               keep_lattice=True, **kwargs)
+        mxx = m44 if mxx is None else mxx
+        A = mxx[:2, :2]
+        B = mxx[2:, 2:]
         alpha0_a, beta0_a, tune_a = _closure(A)
         alpha0_b, beta0_b, tune_b = _closure(B)
         tune = numpy.array([tune_a, tune_b])
@@ -471,6 +496,7 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, get_w=False,
                   numpy.broadcast_to(numpy.NaN, (2, 2)))
         alpha_a, beta_a, mu_a = _twiss22(mstack[:, :2, :2], alpha0_a, beta0_a)
         alpha_b, beta_b, mu_b = _twiss22(mstack[:, 2:, 2:], alpha0_b, beta0_b)
+        nrefs = mstack.shape[0]
         val = [numpy.stack((alpha_a, alpha_b), axis=1),
                numpy.stack((beta_a, beta_b), axis=1),
                numpy.stack((mu_a, mu_b), axis=1),
@@ -478,9 +504,9 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, get_w=False,
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2))]
-        return tune, inival, val
+        return tune, inival, val, m44, mstack
 
-    def _analyze4(m44, mstack):
+    def _analyze4(ring, orb0, refpts=None, mxx=None, **kwargs):
         def grp1(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
@@ -494,21 +520,31 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, get_w=False,
             c12 = numpy.dot(mm.dot(C) + g*m, _jmt.dot(f12.T.dot(_jmt.T)))
             return e12, f12, gamma, a12, b12, c12
 
-        M = m44[:2, :2]
-        N = m44[2:, 2:]
-        m = m44[:2, 2:]
-        n = m44[2:, :2]
+        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
+                               keep_lattice=True, **kwargs)
+        mxx = m44 if mxx is None else mxx
+        M = mxx[:2, :2]
+        N = mxx[2:, 2:]
+        m = mxx[:2, 2:]
+        n = mxx[2:, :2]
         H = m + _jmt.dot(n.T.dot(_jmt.T))
-        t = numpy.trace(M - N)
-        t2 = t * t
-        t2h = t2 + 4.0 * numpy.linalg.det(H)
-        g2 = (1.0 + sqrt(t2 / t2h)) / 2
-        g = sqrt(g2)
-        C = -H * numpy.sign(t) / (g * sqrt(t2h))
-        A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
-            C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
-        B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
-            _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
+        detH = numpy.linalg.det(H)
+        if detH == 0.0:
+            g = 1.0
+            C = -H
+            A = M
+            B = N
+        else:
+            t = numpy.trace(M - N)
+            t2 = t * t
+            t2h = t2 + 4.0 * detH
+            g2 = (1.0 + sqrt(t2 / t2h)) / 2
+            g = sqrt(g2)
+            C = -H * numpy.sign(t) / (g * sqrt(t2h))
+            A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
+                C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
+            B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
+                _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
         alp0_a, bet0_a, tune_a = _closure(A)
         alp0_b, bet0_b, tune_b = _closure(B)
         tune = numpy.array([tune_a, tune_b])
@@ -529,7 +565,7 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, get_w=False,
                    numpy.empty((0, 2)), numpy.empty((0,)),
                    numpy.empty((0, 2, 2)),
                    numpy.empty((0, 2, 2)), numpy.empty((0, 2, 2))]
-        return tune, inival, val
+        return tune, inival, val, m44, mstack
 
     analyze = _analyze4 if coupled else _analyze2
     beamdata, data0, datas = _linopt(ring, dp=dp, refpts=refpts,
