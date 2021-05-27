@@ -436,62 +436,6 @@ def find_orbit(ring, refpts=None, dp=None, dct=None, **kwargs):
         return find_orbit4(ring, dp, refpts, dct=dct, **kwargs)
 
 
-def find_orbit(ring, refpts=None, dp=None, orbit=None, ct=None, **kwargs):
-    """find_orbit finds the closed orbit by numerically getting the fixed point
-    of the one turn map M calculated with lattice_pass.
-
-    Depending on the the lattice, find_orbit will:
-    - use find_orbit6 if ring.radiation is ON,
-    - use find_sync_orbit if ring.radiation is OFF and ct is specified,
-    - use find_orbit4 otherwise
-
-    PARAMETERS
-        ring            Sequence of AT elements
-        refpts          elements at which data is returned.
-
-    OUTPUT
-        orbit0          ((6,) closed orbit vector at the entrance of the
-                        1-st element
-        orbit           (6, Nrefs) closed orbit vector at each location
-                        specified in refpts
-
-    KEYWORDS
-        dp=0            Momentum deviation, when radiaiton is OFF
-        ct=0            Path lengthening, when radiation ids OFF
-        keep_lattice    Assume no lattice change since the previous tracking.
-                        Default: False
-        guess=None      Initial guess for the closed orbit. It may help
-                        convergence. The default is computed from the energy
-                        loss of the ring
-        orbit=None      Orbit at entrance of the lattice, if known. find_orbit
-                        will then transfer it to the selected reference points
-        For other keywords, refer to the underlying methods
-
-    See also find_orbit4, find_sync_orbit, find_orbit6
-    """
-    if ring.radiation:
-        if dp is not None:
-            warnings.warn(AtWarning('In 6D, "dp" and "ct" are ignored'))
-        if orbit is None:
-            orbit, _ = find_orbit6(ring, **kwargs)
-    else:
-        if orbit is None:
-            if ct is not None:
-                orbit, _ = find_sync_orbit(ring, ct, **kwargs)
-            else:
-                if dp is None:
-                    dp = 0.0
-                orbit, _ = find_orbit4(ring, dp, **kwargs)
-
-    if refpts is None:
-        orbs = []
-    else:
-        orbs = numpy.squeeze(
-            lattice_pass(ring, orbit.copy(order='K'), refpts=refpts,
-                         keep_lattice=True), axis=(1, 3)).T
-    return orbit, orbs
-
-
 Lattice.find_orbit4 = find_orbit4
 Lattice.find_sync_orbit = find_sync_orbit
 Lattice.find_orbit6 = find_orbit6
