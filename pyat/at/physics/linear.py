@@ -3,17 +3,22 @@ Coupled or non-coupled 4x4 linear motion
 """
 import numpy
 from numpy.core.records import fromarrays
-from math import sqrt, pi
-from at.lattice import Lattice, check_radiation, get_s_pos, \
-    bool_refpts, DConstant
+from math import sqrt, pi, sin, cos, atan2
+from scipy.constants import c as clight
+from scipy.linalg import solve, block_diag
+from at.lattice import get_rf_frequency, set_rf_frequency, DConstant, get_s_pos
+from at.lattice import Lattice, check_radiation, bool_refpts
 from at.tracking import lattice_pass
-from at.physics import find_orbit4, find_m44, jmat, find_orbit
+from at.physics import find_orbit4, find_orbit6, find_m44, find_m66
+from at.physics import a_matrix, jmat
 from .harmonic_analysis import get_tunes_harmonic
 
-__all__ = ['linopt', 'linopt2', 'linopt4', 'avlinopt', 'get_mcf', 'get_tune',
-           'get_chrom']
+__all__ = ['linopt', 'linopt2', 'linopt4', 'avlinopt', 'get_mcf',
+           'get_tune', 'get_chrom']
 
 _jmt = jmat(1)
+_S2 = numpy.array([[0, 1], [-1, 0]], dtype=numpy.float64)
+_Tn = [_S2, _S2, _S2.T]
 
 # dtype for structured array containing linopt parameters
 _DATA1_DTYPE = [('alpha', numpy.float64, (2,)),
@@ -22,31 +27,38 @@ _DATA1_DTYPE = [('alpha', numpy.float64, (2,)),
                 ('gamma', numpy.float64),
                 ('A', numpy.float64, (2, 2)),
                 ('B', numpy.float64, (2, 2)),
-                ('C', numpy.float64, (2, 2)),
-                ('idx', numpy.uint32),
-                ('s_pos', numpy.float64),
-                ('closed_orbit', numpy.float64, (6,)),
-                ('dispersion', numpy.float64, (4,)),
-                ('m44', numpy.float64, (4, 4))]
+                ('C', numpy.float64, (2, 2))
+                ]
 
 _DATA2_DTYPE = [('alpha', numpy.float64, (2,)),
                 ('beta', numpy.float64, (2,)),
-                ('mu', numpy.float64, (2,)),
-                ('s_pos', numpy.float64),
-                ('closed_orbit', numpy.float64, (6,)),
-                ('dispersion', numpy.float64, (4,)),
-                ('M', numpy.float64, (4, 4))]
+                ('mu', numpy.float64, (2,))
+                ]
 
 _DATA4_DTYPE = [('alpha', numpy.float64, (2,)),
                 ('beta', numpy.float64, (2,)),
                 ('mu', numpy.float64, (2,)),
-                ('gamma', numpy.float64),
-                ('s_pos', numpy.float64),
-                ('closed_orbit', numpy.float64, (6,)),
+                ('gamma', numpy.float64)
+                ]
+
+_DATA6_DTYPE = [('alpha', numpy.float64, (2,)),
+                ('beta', numpy.float64, (2,)),
+                ('mu', numpy.float64, (3,)),
+                ('R', numpy.float64, (3, 6, 6)),
+                ('A', numpy.float64, (6, 6)),
                 ('dispersion', numpy.float64, (4,)),
-                ('M', numpy.float64, (4, 4))]
+                ]
+
+_DATAX_DTYPE = [('alpha', numpy.float64, (2,)),
+                ('beta', numpy.float64, (2,)),
+                ('mu', numpy.float64, (2,)),
+                ('R', numpy.float64, (2, 4, 4)),
+                ('A', numpy.float64, (4, 4)),
+                ]
 
 _W_DTYPE = [('W', numpy.float64, (2,))]
+
+_IDX_DTYPE = [('idx', numpy.uint32)]
 
 
 def _twiss22(ms, alpha0, beta0):
@@ -83,9 +95,9 @@ def _unwrap(mu):
 
 
 # noinspection PyShadowingNames,PyPep8Naming
-def _linopt(ring, analyze, dtype, dp=0.0, refpts=None, get_chrom=False,
-            orbit=None, twiss_in=None, keep_lattice=False, get_w=False,
-            add0=(), adds=(), **kwargs):
+def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
+            twiss_in=None, get_chrom=False, get_w=False, keep_lattice=False,
+            cavpts=None, **kwargs):
     """"""
     def build_sigma(twin):
         """Build the initial distribution at entrance of the transfer line"""
@@ -105,78 +117,141 @@ def _linopt(ring, analyze, dtype, dp=0.0, refpts=None, get_chrom=False,
             d0 = numpy.zeros((4,))
         return sigm, d0
 
-    def wget(ddp, elup, eldn):
-        """Compute the chromatic amplitude function"""
-        alpha_up, beta_up = elup[:2]    # Extract alpha and beta
-        alpha_dn, beta_dn = eldn[:2]
-        db0 = (beta_up - beta_dn) / ddp
-        mb0 = (beta_up + beta_dn) / 2
-        da0 = (alpha_up - alpha_dn) / ddp
-        ma0 = (alpha_up + alpha_dn) / 2
-        w0 = numpy.sqrt((da0 - ma0 / mb0 * db0) ** 2 + (db0 / mb0) ** 2)
-        return w0
+    def chrom_w(ringup, ringdn, orbitup, orbitdn, refpts=None, **kwargs):
+        """Compute the chromaticity and W-functions"""
+        # noinspection PyShadowingNames
+        def off_momentum(rng, orb0):
+            mt, ms = get_matrix(rng, refpts, dp=orb0[4], orbit=orb0, **kwargs)
+            vps, _, el0, els = analyze(mt, ms)
+            tunes = numpy.mod(numpy.angle(vps)/2.0/pi, 1.0)
+            return tunes, el0, els
 
-    def off_momentum(rng, orb0, refpts, **kwargs):
-        vps, el0, els, _, _ = analyze(rng, orb0, refpts=refpts, **kwargs)
-        tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-        return tunes, el0, els
+        def wget(ddp, elup, eldn):
+            """Compute the chromatic amplitude function"""
+            alpha_up, beta_up = elup[:2]  # Extract alpha and beta
+            alpha_dn, beta_dn = eldn[:2]
+            db = (beta_up - beta_dn) / ddp
+            mb = (beta_up + beta_dn) / 2
+            da = (alpha_up - alpha_dn) / ddp
+            ma = (alpha_up + alpha_dn) / 2
+            ww = numpy.sqrt((da - ma / mb * db) ** 2 + (db / mb) ** 2)
+            return ww
+
+        tunesup, el0up, elsup = off_momentum(ringup, orbitup)
+        tunesdn, el0dn, elsdn = off_momentum(ringdn, orbitdn)
+        deltap = orbitup[4] - orbitdn[4]    # in 6D, dp comes out of find_orbit6
+        chrom = (tunesup-tunesdn) / deltap
+        w0 = wget(deltap, el0up, el0dn)
+        ws = wget(deltap, elsup, elsdn)
+        return chrom, w0, ws
 
     dp_step = kwargs.get('DPStep', DConstant.DPStep)
+    add0 = kwargs.pop('add0', ())
+    adds = kwargs.pop('adds', ())
+    addtype = kwargs.pop('addtype', [])
+    mname = kwargs.pop('mname', 'M')
 
-    # Get initial orbit
-    kwup = {}
-    kwdn = {}
-    if twiss_in is None:            # Circular machine
+    if twiss_in is None:
+        o0up = None
+        o0dn = None
         mxx = None
-    else:                           # Transfer line
-        orbit = numpy.zeros((6,)) if orbit is None else orbit
+    else:
+        if orbit is None:
+            orbit = numpy.zeros((6,))
         sigma, d0 = build_sigma(twiss_in)
         mxx = sigma.dot(jmat(sigma.shape[0] // 2))
         dorbit = numpy.hstack((0.5 * dp_step * d0,
                                numpy.array([0.5 * dp_step, 0])))
-        kwup['orbit'] = orbit+dorbit
-        kwdn['orbit'] = orbit-dorbit
+        o0up = orbit+dorbit
+        o0dn = orbit-dorbit
 
-    orb0, orbs = find_orbit(ring, refpts, dp=dp, orbit=orbit,
-                            keep_lattice=keep_lattice, **kwargs)
-    vps, el0, els, m44, ms = analyze(ring, orb0, refpts, mxx=mxx, **kwargs)
-    tune = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-
-#   4D processing
-    dpup = orb0[4] + 0.5*dp_step
-    dpdn = orb0[4] - 0.5*dp_step
-    o0up, oup = find_orbit4(ring, dp=dpup, refpts=refpts,  # guess=orb0,
-                            keep_lattice=keep_lattice, **kwup, **kwargs)
-    o0dn, odn = find_orbit4(ring, dp=dpdn, refpts=refpts,  # guess=orb0,
-                            keep_lattice=True, **kwdn, **kwargs)
-    d0 = (o0up - o0dn)[:4] / dp_step
-    ds = numpy.array([(up - dn)[:4] / dp_step for up, dn in zip(oup, odn)])
-    data0 = (ring.get_s_pos(len(ring)), orb0, d0, m44)
-    datas = (ring.get_s_pos(ring.uint32_refpts(refpts)),
-             numpy.reshape(orbs, (-1, 6)),
-             numpy.reshape(ds, (-1, 4)), ms)
-
-    if get_w:
-        tuneup, el0up, elsup = off_momentum(ring, o0up, refpts, **kwargs)
-        tunedn, el0dn, elsdn = off_momentum(ring, o0dn, refpts, **kwargs)
-        chrom = (tuneup - tunedn) / dp_step
-        data0 = data0 + (wget(dp_step, el0up, el0dn),)
-        dtype = dtype + _W_DTYPE
-        datas = datas + (wget(dp_step, elsup, elsdn),)
-    elif get_chrom:
-        tuneup, el0up, elsup = off_momentum(ring, o0up, None, **kwargs)
-        tunedn, el0dn, elsdn = off_momentum(ring, o0dn, None, **kwargs)
-        chrom = (tuneup - tunedn) / dp_step
+    if ring.radiation:
+        get_matrix = find_m66
+        get_orbit = find_orbit6
     else:
-        chrom = numpy.NaN
+        def get_matrix(rg, *args, dp=0.0, **kwargs):
+            return find_m44(rg, dp, *args, **kwargs)
+        def get_orbit(rg, *args, dp=0.0, **kwargs):
+            return find_orbit4(rg, dp, *args, **kwargs)
 
-    beamdata = numpy.array((tune, chrom),
-                           dtype=[('tune', numpy.float64, (2,)),
-                                  ('chromaticity', numpy.float64, (2,)),
-                                  ]).view(numpy.recarray)
+    # Get initial orbit
+    orb0, orbs = get_orbit(ring, refpts, dp=dp, dct=dct, orbit=orbit,
+                           keep_lattice=keep_lattice, **kwargs)
+    # Get 1-turn transfer matrix
+    mt, ms = get_matrix(ring, refpts, dp=orb0[4], orbit=orb0, **kwargs)
+    # Perform analysis
+    vps, dtype, el0, els = analyze(mt, ms, mxx=mxx)
 
-    elemdata0 = numpy.array(el0+add0+data0, dtype=dtype).view(numpy.recarray)
-    elemdata = fromarrays(els+adds+datas, dtype=dtype)
+    dms = vps.size
+    tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
+    spos = get_s_pos(ring, refpts)
+
+    if dms >= 3:            # 6D processing
+        dtype = dtype + [('closed_orbit', numpy.float64, (6,)),
+                         ('M', numpy.float64, (2*dms, 2*dms)),
+                         ('s_pos', numpy.float64)]
+        data0 = (orb0, numpy.identity(2*dms), 0.0)
+        datas = (orbs, ms, spos)
+        if get_chrom or get_w:
+            f0 = get_rf_frequency(ring, cavpts=cavpts)
+            df = -dp_step * get_mcf(ring.radiation_off(copy=True)) * f0
+            rgup = set_rf_frequency(ring, f0 + 0.5*df, cavpts=cavpts, copy=True)
+            rgdn = set_rf_frequency(ring, f0 - 0.5*df, cavpts=cavpts, copy=True)
+            o0up, _ = get_orbit(rgup, guess=orb0, **kwargs)
+            o0dn, _ = get_orbit(rgdn, guess=orb0, **kwargs)
+            if get_w:
+                dtype = dtype + _W_DTYPE
+                chrom, w0, ws = chrom_w(rgup, rgdn, o0up, o0dn, refpts,
+                                        **kwargs)
+                data0 = data0 + (w0,)
+                datas = datas + (ws,)
+            else:
+                chrom, _, _ = chrom_w(rgup, rgdn, o0up, o0dn, **kwargs)
+        else:
+            chrom = numpy.NaN
+        length = ring.get_s_pos(len(ring))[0]
+        damping_rates = -numpy.log(numpy.absolute(vps))
+        damping_times = length / clight / damping_rates
+        beamdata = numpy.array((tunes, chrom, damping_times),
+                               dtype=[('tune', numpy.float64, (dms,)),
+                                      ('chromaticity', numpy.float64, (dms,)),
+                                      ('damping_time', numpy.float64, (dms,))
+                                      ]).view(numpy.recarray)
+    else:               # 4D processing
+        kwargs['keep_lattice'] = True
+        dpup = orb0[4] + 0.5*dp_step
+        dpdn = orb0[4] - 0.5*dp_step
+        o0up, oup = get_orbit(ring, refpts, guess=orb0, dp=dpup, orbit=o0up,
+                              **kwargs)
+        o0dn, odn = get_orbit(ring, refpts, guess=orb0, dp=dpdn, orbit=o0dn,
+                              **kwargs)
+        d0 = (o0up - o0dn)[:4] / dp_step
+        ds = numpy.array([(up - dn)[:4] / dp_step for up, dn in zip(oup, odn)])
+        dtype = dtype + [('dispersion', numpy.float64, (4,)),
+                         ('closed_orbit', numpy.float64, (6,)),
+                         (mname, numpy.float64, (2*dms, 2*dms)),
+                         ('s_pos', numpy.float64)]
+        data0 = (d0, orb0, mt, get_s_pos(ring, len(ring)))
+        datas = (numpy.reshape(ds, (-1, 4)),
+                 numpy.reshape(orbs, (-1, 6)), ms,
+                 ring.get_s_pos(ring.uint32_refpts(refpts)))
+        if get_w:
+            dtype = dtype + _W_DTYPE
+            chrom, w0, ws = chrom_w(ring, ring, o0up, o0dn, refpts, **kwargs)
+            data0 = data0 + (w0,)
+            datas = datas + (ws,)
+        elif get_chrom:
+            chrom, _, _ = chrom_w(ring, ring, o0up, o0dn, **kwargs)
+        else:
+            chrom = numpy.NaN
+        beamdata = numpy.array((tunes, chrom),
+                               dtype=[('tune', numpy.float64, (dms,)),
+                                      ('chromaticity', numpy.float64, (dms,)),
+                                      ]).view(numpy.recarray)
+
+    dtype = dtype + addtype
+    elemdata0 = numpy.array(el0+data0+add0, dtype=dtype).view(numpy.recarray)
+    elemdata = fromarrays(els+datas+adds, dtype=dtype)
     return elemdata0, beamdata, elemdata
 
 
@@ -247,13 +322,13 @@ def linopt4(ring, *args, **kwargs):
         lindata['idx']    or
         lindata.idx
     REFERENCES
-        [1] D.Edwars,L.Teng IEEE Trans.Nucl.Sci. NS-20, No.3, p.885-888, 1973
+        [1] D.Edwards,L.Teng IEEE Trans.Nucl.Sci. NS-20, No.3, p.885-888, 1973
         [2] E.Courant, H.Snyder
         [3] D.Sagan, D.Rubin Phys.Rev.Spec.Top.-Accelerators and beams,
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze4(ring, orb0, refpts=None, mxx=None, **kwargs):
+    def _analyze4(m44, mstack, mxx=None):
 
         def grp1(t12):
             mm = t12[:2, :2]
@@ -261,18 +336,19 @@ def linopt4(ring, *args, **kwargs):
             m = t12[:2, 2:]
             n = t12[2:, :2]
             gamma = sqrt(numpy.linalg.det(numpy.dot(n, C) + g*nn))
-            e12 = (g * mm - m.dot(_jmt.dot(C.T.dot(_jmt.T)))) / gamma
-            f12 = (n.dot(C) + g * nn) / gamma
+#           e12 = (g * mm - m.dot(_jmt.dot(C.T.dot(_jmt.T)))) / gamma
+#           f12 = (n.dot(C) + g * nn) / gamma
+            e12 = (g * mm - m @ _jmt @ C.T @ _jmt.T) / gamma
+            f12 = (n @ C + g * nn) / gamma
             return e12, f12, gamma
 
-        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
-                               keep_lattice=True, **kwargs)
         mxx = m44 if mxx is None else mxx
         M = mxx[:2, :2]
         N = mxx[2:, 2:]
         m = mxx[:2, 2:]
         n = mxx[2:, :2]
-        H = m + _jmt.dot(n.T.dot(_jmt.T))
+#       H = m + _jmt.dot(n.T.dot(_jmt.T))
+        H = m + _jmt @ n.T @ _jmt.T
         detH = numpy.linalg.det(H)
         if detH == 0.0:
             g = 1.0
@@ -293,22 +369,22 @@ def linopt4(ring, *args, **kwargs):
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
-        inival = (numpy.array([alp0_a, alp0_b]),
-                  numpy.array([bet0_a, bet0_b]),
-                  numpy.mod(numpy.angle(vps), 2.0*pi), g)
+        el0 = (numpy.array([alp0_a, alp0_b]),
+               numpy.array([bet0_a, bet0_b]),
+               numpy.mod(numpy.angle(vps), 2.0*pi), g)
         if mstack.shape[0] > 0:
             e, f, g = zip(*[grp1(mi) for mi in mstack])
             alp_a, bet_a, mu_a = _twiss22(numpy.array(e), alp0_a, bet0_a)
             alp_b, bet_b, mu_b = _twiss22(numpy.array(f), alp0_b, bet0_b)
-            val = (numpy.stack((alp_a, alp_b), axis=1),
+            els = (numpy.stack((alp_a, alp_b), axis=1),
                    numpy.stack((bet_a, bet_b), axis=1),
                    numpy.stack((mu_a, mu_b), axis=1), numpy.array(g))
         else:
-            val = (numpy.empty((0, 2)), numpy.empty((0, 2)),
+            els = (numpy.empty((0, 2)), numpy.empty((0, 2)),
                    numpy.empty((0, 2)), numpy.empty((0,)))
-        return vps, inival, val, m44, mstack
+        return vps, _DATA4_DTYPE, el0, els
 
-    return _linopt(ring, _analyze4, _DATA4_DTYPE, *args, **kwargs)
+    return _linopt(ring, _analyze4, *args, **kwargs)
 
 
 @check_radiation(False)
@@ -378,26 +454,24 @@ def linopt2(ring, *args, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(ring, orb0, refpts=None, mxx=None, **kwargs):
-        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
-                               keep_lattice=True, **kwargs)
+    def _analyze2(m44, mstack, mxx=None):
         mxx = m44 if mxx is None else mxx
         A = mxx[:2, :2]
         B = mxx[2:, 2:]
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
-        inival = (numpy.array([alp0_a, alp0_b]),
-                  numpy.array([bet0_a, bet0_b]),
-                  numpy.mod(numpy.angle(vps), 2.0*pi))
+        el0 = (numpy.array([alp0_a, alp0_b]),
+               numpy.array([bet0_a, bet0_b]),
+               numpy.mod(numpy.angle(vps), 2.0*pi))
         alpha_a, beta_a, mu_a = _twiss22(mstack[:, :2, :2], alp0_a, bet0_a)
         alpha_b, beta_b, mu_b = _twiss22(mstack[:, 2:, 2:], alp0_b, bet0_b)
-        val = (numpy.stack((alpha_a, alpha_b), axis=1),
+        els = (numpy.stack((alpha_a, alpha_b), axis=1),
                numpy.stack((beta_a, beta_b), axis=1),
                numpy.stack((mu_a, mu_b), axis=1))
-        return vps, inival, val, m44, mstack
+        return vps, _DATA2_DTYPE, el0, els
 
-    return _linopt(ring, _analyze2, _DATA2_DTYPE, *args, **kwargs)
+    return _linopt(ring, _analyze2, *args, **kwargs)
 
 
 # noinspection PyPep8Naming
@@ -469,40 +543,38 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
         lindata['idx']    or
         lindata.idx
     REFERENCES
-        [1] D.Edwars,L.Teng IEEE Trans.Nucl.Sci. NS-20, No.3, p.885-888, 1973
+        [1] D.Edwards,L.Teng IEEE Trans.Nucl.Sci. NS-20, No.3, p.885-888, 1973
         [2] E.Courant, H.Snyder
         [3] D.Sagan, D.Rubin Phys.Rev.Spec.Top.-Accelerators and beams,
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(ring, orb0, refpts=None, mxx=None, **kwargs):
-        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
-                               keep_lattice=True, **kwargs)
+    def _analyze2(m44, mstack, mxx=None):
         mxx = m44 if mxx is None else mxx
         A = mxx[:2, :2]
         B = mxx[2:, 2:]
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
-        inival = (numpy.array([alp0_a, alp0_b]),
-                  numpy.array([bet0_a, bet0_b]),
-                  numpy.mod(numpy.angle(vps), 2.0*pi), numpy.NaN,
-                  numpy.broadcast_to(numpy.NaN, (2, 2)),
-                  numpy.broadcast_to(numpy.NaN, (2, 2)),
-                  numpy.broadcast_to(numpy.NaN, (2, 2)))
+        el0 = (numpy.array([alp0_a, alp0_b]),
+               numpy.array([bet0_a, bet0_b]),
+               numpy.mod(numpy.angle(vps), 2.0*pi), numpy.NaN,
+               numpy.broadcast_to(numpy.NaN, (2, 2)),
+               numpy.broadcast_to(numpy.NaN, (2, 2)),
+               numpy.broadcast_to(numpy.NaN, (2, 2)))
         alpha_a, beta_a, mu_a = _twiss22(mstack[:, :2, :2], alp0_a, bet0_a)
         alpha_b, beta_b, mu_b = _twiss22(mstack[:, 2:, 2:], alp0_b, bet0_b)
         nrefs = mstack.shape[0]
-        val = (numpy.stack((alpha_a, alpha_b), axis=1),
+        els = (numpy.stack((alpha_a, alpha_b), axis=1),
                numpy.stack((beta_a, beta_b), axis=1),
                numpy.stack((mu_a, mu_b), axis=1),
                numpy.broadcast_to(numpy.NaN, (nrefs,)),
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
                numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)))
-        return vps, inival, val, m44, mstack
+        return vps, _DATA1_DTYPE, el0, els
 
-    def _analyze4(ring, orb0, refpts=None, mxx=None, **kwargs):
+    def _analyze4(m44, mstack, mxx=None):
         def grp1(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
@@ -516,8 +588,6 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             c12 = numpy.dot(mm.dot(C) + g*m, _jmt.dot(f12.T.dot(_jmt.T)))
             return e12, f12, gamma, a12, b12, c12
 
-        m44, mstack = find_m44(ring, orb0[4], refpts, orbit=orb0,
-                               keep_lattice=True, **kwargs)
         mxx = m44 if mxx is None else mxx
         M = mxx[:2, :2]
         N = mxx[2:, 2:]
@@ -561,13 +631,15 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
                    numpy.empty((0, 2)), numpy.empty((0,)),
                    numpy.empty((0, 2, 2)),
                    numpy.empty((0, 2, 2)), numpy.empty((0, 2, 2)))
-        return vps, inival, val, m44, mstack
+        return vps, _DATA1_DTYPE, inival, val
 
-    analyze = _analyze4 if kwargs.get('coupled', True) else _analyze2
     kwargs['add0'] = (0,)
     kwargs['adds'] = (ring.uint32_refpts(refpts),)
-    eld0, bd, eld = _linopt(ring, analyze, _DATA1_DTYPE, dp=dp, refpts=refpts,
-                            get_chrom=get_chrom, **kwargs)
+    kwargs['addtype'] = [('idx', numpy.uint32)]
+
+    analyze = _analyze4 if kwargs.pop('coupled', True) else _analyze2
+    eld0, bd, eld = _linopt(ring, analyze, refpts, dp=dp, get_chrom=get_chrom,
+                            mname='m44', **kwargs)
     return eld0, bd.tune, bd.chromaticity, eld
 
 
