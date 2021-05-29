@@ -232,9 +232,7 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
                          (mname, numpy.float64, (2*dms, 2*dms)),
                          ('s_pos', numpy.float64)]
         data0 = (d0, orb0, mt, get_s_pos(ring, len(ring)))
-        datas = (numpy.reshape(ds, (-1, 4)),
-                 numpy.reshape(orbs, (-1, 6)), ms,
-                 ring.get_s_pos(ring.uint32_refpts(refpts)))
+        datas = (ds, orbs, ms, spos)
         if get_w:
             dtype = dtype + _W_DTYPE
             chrom, w0, ws = chrom_w(ring, ring, o0up, o0dn, refpts, **kwargs)
@@ -251,7 +249,12 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
 
     dtype = dtype + addtype
     elemdata0 = numpy.array(el0+data0+add0, dtype=dtype).view(numpy.recarray)
-    elemdata = fromarrays(els+datas+adds, dtype=dtype)
+#   elemdata = fromarrays(els+datas+adds, dtype=dtype)
+    nrefs=orbs.shape[0]
+    elemdata = numpy.recarray((nrefs,), dtype=dtype)
+    if nrefs > 0:
+        for name, value in zip(numpy.dtype(dtype).names, els+datas+adds):
+            elemdata[name] = value
     return elemdata0, beamdata, elemdata
 
 
