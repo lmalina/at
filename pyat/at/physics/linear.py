@@ -354,11 +354,10 @@ def linopt4(ring, *args, **kwargs):
             nn = t12[2:, 2:]
             m = t12[:2, 2:]
             n = t12[2:, :2]
-            gamma = sqrt(numpy.linalg.det(numpy.dot(n, C) + g*nn))
-#           e12 = (g * mm - m.dot(_jmt.dot(C.T.dot(_jmt.T)))) / gamma
-#           f12 = (n.dot(C) + g * nn) / gamma
+            ff = n @ C + g * nn
+            gamma = sqrt(numpy.linalg.det(ff))
             e12 = (g * mm - m @ _jmt @ C.T @ _jmt.T) / gamma
-            f12 = (n @ C + g * nn) / gamma
+            f12 = ff / gamma
             return e12, f12, gamma
 
         mxx = mt if mxx is None else mxx
@@ -366,7 +365,6 @@ def linopt4(ring, *args, **kwargs):
         N = mxx[2:, 2:]
         m = mxx[:2, 2:]
         n = mxx[2:, :2]
-#       H = m + _jmt.dot(n.T.dot(_jmt.T))
         H = m + _jmt @ n.T @ _jmt.T
         detH = numpy.linalg.det(H)
         if detH == 0.0:
@@ -381,10 +379,10 @@ def linopt4(ring, *args, **kwargs):
             g2 = (1.0 + sqrt(t2 / t2h)) / 2
             g = sqrt(g2)
             C = -H * numpy.sign(t) / (g * sqrt(t2h))
-            A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
-                C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
-            B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
-                _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
+            A = g2*M - g*(m @ _jmt @ C.T @ _jmt.T + C @ n) + \
+                C @ N @ _jmt @ C.T @ _jmt.T
+            B = g2*N + g*(_jmt @ C.T @ _jmt.T @ m + n @ C) + \
+                _jmt @ C.T @ _jmt.T @ M @ C
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
@@ -697,12 +695,13 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             nn = t12[2:, 2:]
             m = t12[:2, 2:]
             n = t12[2:, :2]
-            gamma = sqrt(numpy.linalg.det(numpy.dot(n, C) + g*nn))
-            e12 = (g * mm - m.dot(_jmt.dot(C.T.dot(_jmt.T)))) / gamma
-            f12 = (n.dot(C) + g * nn) / gamma
-            a12 = e12.dot(A.dot(_jmt.dot(e12.T.dot(_jmt.T))))
-            b12 = f12.dot(B.dot(_jmt.dot(f12.T.dot(_jmt.T))))
-            c12 = numpy.dot(mm.dot(C) + g*m, _jmt.dot(f12.T.dot(_jmt.T)))
+            ff = n @ C + g * nn
+            gamma = sqrt(numpy.linalg.det(ff))
+            e12 = (g * mm - m @ _jmt @ C.T @ _jmt.T) / gamma
+            f12 = ff / gamma
+            a12 = e12 @ A @ _jmt @ e12.T @ _jmt.T
+            b12 = f12 @ B @ _jmt @ f12.T @ _jmt.T
+            c12 = mm @ C + g*m @ _jmt @ f12.T @ _jmt.T
             return e12, f12, gamma, a12, b12, c12
 
         mxx = mt if mxx is None else mxx
@@ -710,7 +709,7 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
         N = mxx[2:, 2:]
         m = mxx[:2, 2:]
         n = mxx[2:, :2]
-        H = m + _jmt.dot(n.T.dot(_jmt.T))
+        H = m + _jmt @ n.T @ _jmt.T
         detH = numpy.linalg.det(H)
         if detH == 0.0:
             g = 1.0
@@ -724,10 +723,10 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             g2 = (1.0 + sqrt(t2 / t2h)) / 2
             g = sqrt(g2)
             C = -H * numpy.sign(t) / (g * sqrt(t2h))
-            A = g2*M - g*(m.dot(_jmt.dot(C.T.dot(_jmt.T))) + C.dot(n)) + \
-                C.dot(N.dot(_jmt.dot(C.T.dot(_jmt.T))))
-            B = g2*N + g*(_jmt.dot(C.T.dot(_jmt.T.dot(m))) + n.dot(C)) + \
-                _jmt.dot(C.T.dot(_jmt.T.dot(M.dot(C))))
+            A = g2*M - g*(m @ _jmt @ C.T @ _jmt.T + C @ n) + \
+                C @ N @ _jmt @ C.T @ _jmt.T
+            B = g2*N + g*(_jmt @ C.T @ _jmt.T @ m + n @ C) + \
+                _jmt @ C.T @ _jmt.T @ M @ C
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
