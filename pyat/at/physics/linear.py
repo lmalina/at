@@ -1,13 +1,14 @@
 """
 Coupled or non-coupled 4x4 linear motion
 """
+import warnings
 import numpy
 # from numpy.core.records import fromarrays
 from math import sqrt, pi, sin, cos, atan2
 from scipy.constants import c as clight
 from scipy.linalg import solve, block_diag
 from at.lattice import get_rf_frequency, set_rf_frequency, DConstant, get_s_pos
-from at.lattice import Lattice, check_radiation, bool_refpts
+from at.lattice import AtWarning, Lattice, check_radiation
 from at.tracking import lattice_pass
 from at.physics import find_orbit4, find_orbit6, find_m44, find_m66
 from at.physics import a_matrix, jmat
@@ -176,6 +177,8 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
         o0dn = orbit-dorbit
 
     if ring.radiation:
+        if not (dp is None and dct is None):
+            warnings.warn(AtWarning('In 6D, "dp" and "dct" are ignored'))
         get_matrix = find_m66
         get_orbit = find_orbit6
     else:
@@ -822,10 +825,10 @@ def avlinopt(ring, dp=0.0, refpts=None, **kwargs):
     def dispfoc(dispp0, dispp1, k2, lg):
         return (dispp0 - dispp1) / k2 / lg
 
-    boolrefs = bool_refpts([] if refpts is None else refpts, len(ring))
+    boolrefs = ring.bool_refpts(refpts)
     length = numpy.array([el.Length for el in ring[boolrefs]])
     strength = numpy.array([get_strength(el) for el in ring[boolrefs]])
-    longelem = bool_refpts([], len(ring))
+    longelem = ring.bool_refpts([])
     longelem[boolrefs] = (length != 0)
 
     shorti_refpts = (~longelem) & boolrefs
