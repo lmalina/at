@@ -87,7 +87,7 @@ def _closure(m22):
 
 
 def _analyze2(mt, ms, mxx=None):
-    """Uncoupled analysis"""
+    """Analysis of a 2D 1-turn transfer matrix"""
     mxx = mt if mxx is None else mxx
     A = mxx[:2, :2]
     B = mxx[2:, 2:]
@@ -191,6 +191,7 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
     # Get initial orbit
     orb0, orbs = get_orbit(ring, refpts, dp=dp, dct=dct, orbit=orbit,
                            keep_lattice=keep_lattice, **kwargs)
+    nrefs = orbs.shape[0]
     # Get 1-turn transfer matrix
     mt, ms = get_matrix(ring, refpts, dp=orb0[4], orbit=orb0, **kwargs)
     # Perform analysis
@@ -266,7 +267,6 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
     dtype = dtype + addtype
     elemdata0 = numpy.array(el0+data0+add0, dtype=dtype).view(numpy.recarray)
 #   elemdata = fromarrays(els+datas+adds, dtype=dtype)
-    nrefs = ms.shape[0]
     elemdata = numpy.recarray((nrefs,), dtype=dtype)
     if nrefs > 0:
         for name, value in zip(numpy.dtype(dtype).names, els+datas+adds):
@@ -348,7 +348,7 @@ def linopt4(ring, *args, **kwargs):
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
     def _analyze4(mt, ms, mxx=None):
-        """Coupled 4D analysis"""
+        """Analysis of a 4D 1-turn transfer matrix according to Sagan, Rubin"""
         def propagate(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
@@ -543,7 +543,8 @@ def linopt6(ring, *args, **kwargs):
         [3] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
     def analyze(mt, ms, mxx=None):
-        """Compute phase advance and R-matrices in 2D, 4D or 6D"""
+        """Analysis of a 2D, 4D, 6D 1-turn transfer matrix
+        according to Wolski"""
         def get_phase(a22):
             """Return the phase for A standardization"""
             return atan2(a22[0, 1], a22[0, 0])
@@ -690,7 +691,7 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
     def _analyze4(mt, ms, mxx=None):
-        """Coupled 4D analysis"""
+        """Analysis of a 4D 1-turn transfer matrix according to Sagan, Rubin"""
         def propagate(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
