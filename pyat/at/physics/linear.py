@@ -2,6 +2,7 @@
 Coupled or non-coupled 4x4 linear motion
 """
 import numpy
+# from numpy.core.records import fromarrays
 from math import sqrt, pi, sin, cos, atan2
 from scipy.constants import c as clight
 from scipy.linalg import solve, block_diag
@@ -91,6 +92,24 @@ def _unwrap(mu):
     dmu = numpy.diff(numpy.concatenate((numpy.zeros((1, 2)), mu)), axis=0)
     jumps = dmu < -1.e-3
     mu += numpy.cumsum(jumps, axis=0) * 2.0 * numpy.pi
+
+def _analyze2(mt, ms, mxx=None):
+    """Uncoupled analysis"""
+    mxx = mt if mxx is None else mxx
+    A = mxx[:2, :2]
+    B = mxx[2:, 2:]
+    alp0_a, bet0_a, vp_a = _closure(A)
+    alp0_b, bet0_b, vp_b = _closure(B)
+    vps = numpy.array([vp_a, vp_b])
+    el0 = (numpy.array([alp0_a, alp0_b]),
+           numpy.array([bet0_a, bet0_b]),
+           numpy.mod(numpy.angle(vps), 2.0*pi))
+    alpha_a, beta_a, mu_a = _twiss22(ms[:, :2, :2], alp0_a, bet0_a)
+    alpha_b, beta_b, mu_b = _twiss22(ms[:, 2:, 2:], alp0_b, bet0_b)
+    els = (numpy.stack((alpha_a, alpha_b), axis=1),
+           numpy.stack((beta_a, beta_b), axis=1),
+           numpy.stack((mu_a, mu_b), axis=1))
+    return vps, _DATA2_DTYPE, el0, els
 
 
 # noinspection PyShadowingNames,PyPep8Naming
@@ -183,8 +202,8 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
 
     dms = vps.size
     tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-    spos = get_s_pos(ring, refpts)
-
+    spos = ring.get_s_pos(ring.uint32_refpts(refpts)) # avoid problem if
+                                                      # refpts is None
     if dms >= 3:            # 6D processing
         dtype = dtype + [('closed_orbit', numpy.float64, (6,)),
                          ('M', numpy.float64, (2*dms, 2*dms)),
@@ -231,6 +250,8 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
                          (mname, numpy.float64, (2*dms, 2*dms)),
                          ('s_pos', numpy.float64)]
         data0 = (d0, orb0, mt, get_s_pos(ring, len(ring)))
+#       datas = (numpy.reshape(ds, (-1, 4)),
+#                numpy.reshape(orbs, (-1, 6)), ms, spos)
         datas = (ds, orbs, ms, spos)
         if get_w:
             dtype = dtype + _W_DTYPE
@@ -456,23 +477,6 @@ def linopt2(ring, *args, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(m44, mstack, mxx=None):
-        mxx = m44 if mxx is None else mxx
-        A = mxx[:2, :2]
-        B = mxx[2:, 2:]
-        alp0_a, bet0_a, vp_a = _closure(A)
-        alp0_b, bet0_b, vp_b = _closure(B)
-        vps = numpy.array([vp_a, vp_b])
-        el0 = (numpy.array([alp0_a, alp0_b]),
-               numpy.array([bet0_a, bet0_b]),
-               numpy.mod(numpy.angle(vps), 2.0*pi))
-        alpha_a, beta_a, mu_a = _twiss22(mstack[:, :2, :2], alp0_a, bet0_a)
-        alpha_b, beta_b, mu_b = _twiss22(mstack[:, 2:, 2:], alp0_b, bet0_b)
-        els = (numpy.stack((alpha_a, alpha_b), axis=1),
-               numpy.stack((beta_a, beta_b), axis=1),
-               numpy.stack((mu_a, mu_b), axis=1))
-        return vps, _DATA2_DTYPE, el0, els
-
     return _linopt(ring, _analyze2, *args, **kwargs)
 
 
@@ -596,11 +600,15 @@ def linopt6(ring, *args, **kwargs):
         if ms.shape[0] > 0:
             phis, rs, aas = zip(*[r_matrices(mi @ astd) for mi in ms])
             els = propagate(numpy.array(rs), numpy.array(phis), numpy.array(aas))
-        else:
+        elif dms >= 3:
             els = (numpy.empty((0, dms)), numpy.empty((0, dms)),
                    numpy.empty((0, dms)),
                    numpy.empty((0, dms, nv, nv)), numpy.empty((0, nv, nv)),
                    numpy.empty((0,4)))
+        else:
+            els = (numpy.empty((0, dms)), numpy.empty((0, dms)),
+                   numpy.empty((0, dms)),
+                   numpy.empty((0, dms, nv, nv)), numpy.empty((0, nv, nv)))
         return vps, dtype, el0, els
 
     return _linopt(ring, analyze, *args, **kwargs)
@@ -685,31 +693,6 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze2(m44, mstack, mxx=None):
-        mxx = m44 if mxx is None else mxx
-        A = mxx[:2, :2]
-        B = mxx[2:, 2:]
-        alp0_a, bet0_a, vp_a = _closure(A)
-        alp0_b, bet0_b, vp_b = _closure(B)
-        vps = numpy.array([vp_a, vp_b])
-        el0 = (numpy.array([alp0_a, alp0_b]),
-               numpy.array([bet0_a, bet0_b]),
-               numpy.mod(numpy.angle(vps), 2.0*pi), numpy.NaN,
-               numpy.broadcast_to(numpy.NaN, (2, 2)),
-               numpy.broadcast_to(numpy.NaN, (2, 2)),
-               numpy.broadcast_to(numpy.NaN, (2, 2)))
-        alpha_a, beta_a, mu_a = _twiss22(mstack[:, :2, :2], alp0_a, bet0_a)
-        alpha_b, beta_b, mu_b = _twiss22(mstack[:, 2:, 2:], alp0_b, bet0_b)
-        nrefs = mstack.shape[0]
-        els = (numpy.stack((alpha_a, alpha_b), axis=1),
-               numpy.stack((beta_a, beta_b), axis=1),
-               numpy.stack((mu_a, mu_b), axis=1),
-               numpy.broadcast_to(numpy.NaN, (nrefs,)),
-               numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
-               numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)),
-               numpy.broadcast_to(numpy.NaN, (nrefs, 2, 2)))
-        return vps, _DATA1_DTYPE, el0, els
-
     def _analyze4(m44, mstack, mxx=None):
         def grp1(t12):
             mm = t12[:2, :2]
@@ -765,8 +748,8 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
         else:
             val = (numpy.empty((0, 2)), numpy.empty((0, 2)),
                    numpy.empty((0, 2)), numpy.empty((0,)),
-                   numpy.empty((0, 2, 2)),
-                   numpy.empty((0, 2, 2)), numpy.empty((0, 2, 2)))
+                   numpy.empty((0, 2, 2)), numpy.empty((0, 2, 2)),
+                   numpy.empty((0, 2, 2)))
         return vps, _DATA1_DTYPE, inival, val
 
     kwargs['add0'] = (0,)
