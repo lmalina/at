@@ -61,15 +61,13 @@ _W_DTYPE = [('W', numpy.float64, (2,))]
 _IDX_DTYPE = [('idx', numpy.uint32)]
 
 
-def _twiss22(ms, alpha0, beta0):
-    """Calculate Twiss parameters from the standard 2x2 transfer matrix
-    (i.e. x or y).
-    """
-    bbb = ms[:, 0, 1]
-    aaa = ms[:, 0, 0] * beta0 - bbb * alpha0
+def _twiss22(t12, alpha0, beta0):
+    """Propagate Twiss parameters"""
+    bbb = t12[:, 0, 1]
+    aaa = t12[:, 0, 0] * beta0 - bbb * alpha0
     beta = (aaa * aaa + bbb * bbb) / beta0
-    alpha = -(aaa * (ms[:, 1, 0] * beta0 - ms[:, 1, 1] * alpha0) +
-              bbb * ms[:, 1, 1]) / beta0
+    alpha = -(aaa * (t12[:, 1, 0] * beta0 - t12[:, 1, 1] * alpha0) +
+              bbb * t12[:, 1, 1]) / beta0
     mu = numpy.arctan2(bbb, aaa)
     # Unwrap negative jumps in betatron phase advance
     dmu = numpy.diff(numpy.append([0], mu))
@@ -86,12 +84,6 @@ def _closure(m22):
     beta = m22[0, 1] / sinmu
     return alpha, beta, cosmu + sinmu*1j
 
-
-def _unwrap(mu):
-    """Remove the phase jumps"""
-    dmu = numpy.diff(numpy.concatenate((numpy.zeros((1, 2)), mu)), axis=0)
-    jumps = dmu < -1.e-3
-    mu += numpy.cumsum(jumps, axis=0) * 2.0 * numpy.pi
 
 def _analyze2(mt, ms, mxx=None):
     """Uncoupled analysis"""
@@ -189,6 +181,7 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
     else:
         def get_matrix(rg, *args, dp=0.0, **kwargs):
             return find_m44(rg, dp, *args, **kwargs)
+
         def get_orbit(rg, *args, dp=0.0, **kwargs):
             return find_orbit4(rg, dp, *args, **kwargs)
 
@@ -202,8 +195,8 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
 
     dms = vps.size
     tunes = numpy.mod(numpy.angle(vps) / 2.0 / pi, 1.0)
-    spos = ring.get_s_pos(ring.uint32_refpts(refpts)) # avoid problem if
-                                                      # refpts is None
+    spos = ring.get_s_pos(ring.uint32_refpts(refpts))   # avoid problem if
+                                                        # refpts is None
     if dms >= 3:            # 6D processing
         dtype = dtype + [('closed_orbit', numpy.float64, (6,)),
                          ('M', numpy.float64, (2*dms, 2*dms)),
@@ -270,7 +263,7 @@ def _linopt(ring, analyze, refpts=None, dp=None, dct=None, orbit=None,
     dtype = dtype + addtype
     elemdata0 = numpy.array(el0+data0+add0, dtype=dtype).view(numpy.recarray)
 #   elemdata = fromarrays(els+datas+adds, dtype=dtype)
-    nrefs=orbs.shape[0]
+    nrefs = ms.shape[0]
     elemdata = numpy.recarray((nrefs,), dtype=dtype)
     if nrefs > 0:
         for name, value in zip(numpy.dtype(dtype).names, els+datas+adds):
@@ -351,9 +344,9 @@ def linopt4(ring, *args, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze4(m44, mstack, mxx=None):
-
-        def grp1(t12):
+    def _analyze4(mt, ms, mxx=None):
+        """Coupled 4D analysis"""
+        def propagate(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
             m = t12[:2, 2:]
@@ -365,7 +358,7 @@ def linopt4(ring, *args, **kwargs):
             f12 = (n @ C + g * nn) / gamma
             return e12, f12, gamma
 
-        mxx = m44 if mxx is None else mxx
+        mxx = mt if mxx is None else mxx
         M = mxx[:2, :2]
         N = mxx[2:, 2:]
         m = mxx[:2, 2:]
@@ -395,8 +388,8 @@ def linopt4(ring, *args, **kwargs):
         el0 = (numpy.array([alp0_a, alp0_b]),
                numpy.array([bet0_a, bet0_b]),
                numpy.mod(numpy.angle(vps), 2.0*pi), g)
-        if mstack.shape[0] > 0:
-            e, f, g = zip(*[grp1(mi) for mi in mstack])
+        if ms.shape[0] > 0:
+            e, f, g = zip(*[propagate(mi) for mi in ms])
             alp_a, bet_a, mu_a = _twiss22(numpy.array(e), alp0_a, bet0_a)
             alp_b, bet_b, mu_b = _twiss22(numpy.array(f), alp0_b, bet0_b)
             els = (numpy.stack((alp_a, alp_b), axis=1),
@@ -598,13 +591,13 @@ def linopt6(ring, *args, **kwargs):
         phi0, r0, _ = r_matrices(astd)
         el0 = propagate(r0, phi0, astd)
         if ms.shape[0] > 0:
-            phis, rs, aas = zip(*[r_matrices(mi @ astd) for mi in ms])
-            els = propagate(numpy.array(rs), numpy.array(phis), numpy.array(aas))
+            ps, rs, aas = zip(*[r_matrices(mi @ astd) for mi in ms])
+            els = propagate(numpy.array(rs), numpy.array(ps), numpy.array(aas))
         elif dms >= 3:
             els = (numpy.empty((0, dms)), numpy.empty((0, dms)),
                    numpy.empty((0, dms)),
                    numpy.empty((0, dms, nv, nv)), numpy.empty((0, nv, nv)),
-                   numpy.empty((0,4)))
+                   numpy.empty((0, 4)))
         else:
             els = (numpy.empty((0, dms)), numpy.empty((0, dms)),
                    numpy.empty((0, dms)),
@@ -693,8 +686,9 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             vol.2 (1999)
         [4] Brian W. Montague Report LEP Note 165, CERN, 1979
     """
-    def _analyze4(m44, mstack, mxx=None):
-        def grp1(t12):
+    def _analyze4(mt, ms, mxx=None):
+        """Coupled 4D analysis"""
+        def propagate(t12):
             mm = t12[:2, :2]
             nn = t12[2:, 2:]
             m = t12[:2, 2:]
@@ -707,7 +701,7 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
             c12 = numpy.dot(mm.dot(C) + g*m, _jmt.dot(f12.T.dot(_jmt.T)))
             return e12, f12, gamma, a12, b12, c12
 
-        mxx = m44 if mxx is None else mxx
+        mxx = mt if mxx is None else mxx
         M = mxx[:2, :2]
         N = mxx[2:, 2:]
         m = mxx[:2, 2:]
@@ -733,24 +727,24 @@ def linopt(ring, dp=0.0, refpts=None, get_chrom=False, **kwargs):
         alp0_a, bet0_a, vp_a = _closure(A)
         alp0_b, bet0_b, vp_b = _closure(B)
         vps = numpy.array([vp_a, vp_b])
-        inival = (numpy.array([alp0_a, alp0_b]),
-                  numpy.array([bet0_a, bet0_b]),
-                  numpy.mod(numpy.angle(vps), 2.0*pi), g, A, B, C)
-        if mstack.shape[0] > 0:
-            e, f, g, ai, bi, ci = zip(*[grp1(mi) for mi in mstack])
+        el0 = (numpy.array([alp0_a, alp0_b]),
+               numpy.array([bet0_a, bet0_b]),
+               numpy.mod(numpy.angle(vps), 2.0*pi), g, A, B, C)
+        if ms.shape[0] > 0:
+            e, f, g, ai, bi, ci = zip(*[propagate(mi) for mi in ms])
             alp_a, bet_a, mu_a = _twiss22(numpy.array(e), alp0_a, bet0_a)
             alp_b, bet_b, mu_b = _twiss22(numpy.array(f), alp0_b, bet0_b)
-            val = (numpy.stack((alp_a, alp_b), axis=1),
+            els = (numpy.stack((alp_a, alp_b), axis=1),
                    numpy.stack((bet_a, bet_b), axis=1),
                    numpy.stack((mu_a, mu_b), axis=1), numpy.array(g),
                    numpy.stack(ai, axis=0), numpy.stack(bi, axis=0),
                    numpy.stack(ci, axis=0))
         else:
-            val = (numpy.empty((0, 2)), numpy.empty((0, 2)),
+            els = (numpy.empty((0, 2)), numpy.empty((0, 2)),
                    numpy.empty((0, 2)), numpy.empty((0,)),
                    numpy.empty((0, 2, 2)), numpy.empty((0, 2, 2)),
                    numpy.empty((0, 2, 2)))
-        return vps, _DATA1_DTYPE, inival, val
+        return vps, _DATA1_DTYPE, el0, els
 
     kwargs['add0'] = (0,)
     kwargs['adds'] = (ring.uint32_refpts(refpts),)
