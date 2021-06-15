@@ -1003,6 +1003,8 @@ def get_chrom(ring, method='linopt', dp=0, **kwargs):
 Lattice.linopt = linopt
 Lattice.linopt2 = linopt2
 Lattice.linopt4 = linopt4
+Lattice.linopt6 = linopt6
+Lattice.get_optics = get_optics
 Lattice.avlinopt = avlinopt
 Lattice.get_mcf = get_mcf
 Lattice.avlinopt = avlinopt
