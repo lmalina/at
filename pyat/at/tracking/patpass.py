@@ -4,6 +4,7 @@ Simple parallelisation of atpass() using multiprocessing.
 import multiprocessing
 from at.tracking import atpass
 from at.lattice import uint32_refpts
+from sys import platform
 import numpy
 
 
@@ -42,13 +43,11 @@ def patpass(ring, r_in, nturns, refpts=None, reuse=True, pool_size=None):
     if refpts is None:
         refpts = len(ring)
     refs = uint32_refpts(refpts, len(ring))
-    if pool_size is None:
-        pool_size = multiprocessing.cpu_count()
     global globring
     globring = ring
-    pool = multiprocessing.Pool(pool_size)
     args = [(r_in[:, i], nturns, refs) for i in range(r_in.shape[1])]
-    results = pool.map(_atpass_one, args)
+    with multiprocessing.Pool(pool_size) as pool:
+        results = pool.map(_atpass_one, args)
     vals = numpy.concatenate(results, axis=1)
     globring = None
     return vals
