@@ -6,8 +6,9 @@ import numpy
 from scipy.linalg import inv, det, solve_sylvester
 from at.lattice import Lattice, check_radiation, uint32_refpts
 from at.lattice import Element, Dipole, Wiggler, DConstant, Multipole
+from at.lattice import Quadrupole, Sextupole, checkattr
 from at.lattice import get_refpts, get_cells, get_value_refpts
-from at.lattice import uint32_refpts, set_value_refpts
+from at.lattice import uint32_refpts, set_value_refpts, checktype
 from at.tracking import lattice_pass
 from at.physics import clight, e_mass, get_tunes_damp
 from at.physics import find_orbit6, find_m66, find_elem_m66
@@ -422,6 +423,28 @@ def tapering(ring, multipoles=True, niter=1, **kwargs):
         set_value_refpts(ring, dipoles, 'PolynomB', k0, index=0)
 
 
+def quantdiff_on(ring, quadrupole=True, sextupole=False):
+    ring.radiation_off(cavity_pass='CavityPass')
+    elements = get_cells(ring, checktype(Dipole)
+                         and checkattr('PassMethod','BndMPoleSymplectic4Pass'))
+    if quadrupole:
+        elements = elements | get_cells(ring, checktype(Quadrupole)
+                                        and checkattr('PassMethod','StrMPoleSymplectic4Pass'))        
+    if sextupole:
+        elements = elements | get_cells(ring, checktype(Sextupole))
+    for elem in ring[elements]:
+        elem.PassMethod = ''.join((elem.PassMethod[:-4], 'QuantPass'))
+        elem.Energy = ring.energy
+     
+
+def quantdiff_off(ring):
+    for elem in ring:
+        if 'QuantPass' in elem.PassMethod:
+            elem.PassMethod = ''.join((elem.PassMethod[:-9], 'Pass'))
+    
+
+Lattice.quantdiff_on = quantdiff_on
+Lattice.quantdiff_off = quantdiff_off
 Lattice.ohmi_envelope = ohmi_envelope
 Lattice.get_radiation_integrals = get_radiation_integrals
 Lattice.tapering = tapering
