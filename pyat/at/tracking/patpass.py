@@ -10,11 +10,27 @@ import numpy
 
 __all__ = ['patpass']
 
-globring = None
+if platform.startswith('linux'):
+    globring = None
 
+    def _atpass_one(args):
+        return atpass(globring, *args)
 
-def _atpass_one(args):
-    return atpass(globring, *args)
+    def _atpass(ring, r_in, nturns, refs, pool_size=None):
+        global globring
+        globring = ring
+        args = [(r_in[:, i], nturns, refs) for i in range(r_in.shape[1])]
+        with multiprocessing.Pool(pool_size) as pool:
+            results = pool.map(_atpass_one, args)
+        vals = numpy.concatenate(results, axis=1)
+        globring = None
+        return vals
+else:
+    def _atpass(ring, r_in, nturns, refs, pool_size=None):
+        args = [(ring, r_in[:, i], nturns, refs) for i in range(r_in.shape[1])]
+        with multiprocessing.Pool(pool_size) as pool:
+            results = pool.starmap(atpass, args)
+        return numpy.concatenate(results, axis=1)
 
 
 def patpass(ring, r_in, nturns, refpts=None, reuse=True, pool_size=None):
@@ -43,11 +59,4 @@ def patpass(ring, r_in, nturns, refpts=None, reuse=True, pool_size=None):
     if refpts is None:
         refpts = len(ring)
     refs = uint32_refpts(refpts, len(ring))
-    global globring
-    globring = ring
-    args = [(r_in[:, i], nturns, refs) for i in range(r_in.shape[1])]
-    with multiprocessing.Pool(pool_size) as pool:
-        results = pool.map(_atpass_one, args)
-    vals = numpy.concatenate(results, axis=1)
-    globring = None
-    return vals
+    return _atpass(ring, r_in, nturns, refs, pool_size=pool_size)
