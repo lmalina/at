@@ -1,9 +1,10 @@
 """
 Simple parallelisation of atpass() using multiprocessing.
 """
+from warnings import warn
 import multiprocessing
 from at.tracking import atpass
-from at.lattice import uint32_refpts
+from at.lattice import AtWarning
 from sys import platform
 import numpy
 
@@ -33,7 +34,8 @@ else:
         return numpy.concatenate(results, axis=1)
 
 
-def patpass(ring, r_in, nturns, refpts=None, reuse=True, pool_size=None):
+def patpass(ring, r_in, nturns=1, refpts=None, keep_lattice=False,
+            pool_size=None):
     """
     Simple parallel implementation of atpass().  If more than one particle
     is supplied, use multiprocessing to run each particle in a separate
@@ -54,9 +56,9 @@ def patpass(ring, r_in, nturns, refpts=None, reuse=True, pool_size=None):
                         Defaults to None, meaning no refpts, equivelent to
                         passing an empty array for calculation purposes.
     """
-    if not reuse:
-        raise ValueError('patpass does not support altering lattices')
+    if keep_lattice:
+        warn(AtWarning('keep_lattice ignored: patpass always uses  a new lattice'))
     if refpts is None:
         refpts = len(ring)
-    refs = uint32_refpts(refpts, len(ring))
+    refs = ring.uint32_refpts(refpts)
     return _atpass(ring, r_in, nturns, refs, pool_size=pool_size)
