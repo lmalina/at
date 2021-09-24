@@ -1,8 +1,9 @@
 from enum import Enum
 import numpy
-from scipy.constants import c as clight
-from at.lattice import elements, AtError, checktype, make_copy, get_cells
-from at.lattice import Lattice
+from .constants import clight
+from .elements import RFCavity
+from .utils import AtError, checktype, make_copy, get_cells
+from .lattice_object import Lattice
 
 __all__ = ['get_rf_frequency', 'get_rf_harmonic_number', 'get_rf_voltage',
            'set_rf_frequency', 'set_rf_harmonic_number', 'set_rf_voltage',
@@ -16,7 +17,7 @@ class Frf(Enum):
 
 def _get_rf_attr(ring, attr, cavpts=None):
     if cavpts is None:
-        cavpts = checktype(elements.RFCavity)
+        cavpts = checktype(RFCavity)
     cavities = ring.select(cavpts)
     return numpy.array([getattr(cavity, attr) for cavity in cavities])
 
@@ -162,7 +163,7 @@ def set_cavity(ring, Voltage=None, Frequency=None, HarmNumber=None,
             return ring.get_rf_harmonic_number(cavpts=cavpts)
 
     if cavpts is None:
-        cavpts = get_cells(ring, checktype(elements.RFCavity))
+        cavpts = get_cells(ring, checktype(RFCavity))
     n_cavities = ring.refcount(cavpts)
     if n_cavities < 1:
         raise AtError('No cavity found in the lattice')
@@ -188,6 +189,8 @@ def set_cavity(ring, Voltage=None, Frequency=None, HarmNumber=None,
 
     return apply(ring, cavpts, modif)
 
+def get_revolution_requency():
+    pass
 
 Lattice.get_rf_voltage = get_rf_voltage
 Lattice.get_rf_frequency = get_rf_frequency

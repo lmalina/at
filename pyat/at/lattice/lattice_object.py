@@ -16,6 +16,7 @@ import numpy
 import math
 import itertools
 from warnings import warn
+from at.lattice import e_mass, clight
 from at.lattice import AtError, AtWarning
 from at.lattice import uint32_refpts as uint32_refs, bool_refpts as bool_refs
 from at.lattice import refpts_iterator, refpts_len
@@ -98,7 +99,7 @@ class Lattice(list):
             runs through ringparam_filter(params, *args), looks for energy and
             periodicity if not yet defined.
     """
-    _1st_attributes = ('name', 'energy', 'periodicity')
+    _1st_attributes = ('name', 'energy', 'periodicity', 'particle')
 
     def __init__(self, *args, **kwargs):
         """Lattice constructor"""
@@ -123,6 +124,8 @@ class Lattice(list):
         # set default values
         kwargs.setdefault('name', '')
         kwargs.setdefault('periodicity', 1)
+        kwargs.setdefault('particle',
+                          dict(name='electron', mass=e_mass, charge=1.0))
         if 'energy' not in kwargs:
             raise AtError('Lattice energy is not defined')
         # set attributes
@@ -295,6 +298,10 @@ class Lattice(list):
     def circumference(self):
         """Ring circumference"""
         return self.periodicity * self.get_s_pos(len(self))[0]
+
+    @property
+    def revolution_frequency(self):
+        return clight / ring.circumference
 
     @property
     def radiation(self):

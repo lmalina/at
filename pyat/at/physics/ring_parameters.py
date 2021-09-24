@@ -104,7 +104,7 @@ def radiation_parameters(ring, dp=None, params=None, **kwargs):
     revolution_period = circumference / c
     voltage = ring.voltage
     E0 = ring.energy
-    gamma = E0 / e_mass
+    gamma = ring.energy / ring.particle['mass']
     gamma2 = gamma * gamma
     beta = sqrt(1.0 - 1.0/gamma2)
     U0 = Cgamma / 2.0 / pi * E0**4 * rp.i2
