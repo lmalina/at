@@ -189,8 +189,6 @@ def set_cavity(ring, Voltage=None, Frequency=None, HarmNumber=None,
 
     return apply(ring, cavpts, modif)
 
-def get_revolution_requency():
-    pass
 
 Lattice.get_rf_voltage = get_rf_voltage
 Lattice.get_rf_frequency = get_rf_frequency

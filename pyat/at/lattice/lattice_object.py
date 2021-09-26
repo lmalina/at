@@ -16,7 +16,8 @@ import numpy
 import math
 import itertools
 from warnings import warn
-from at.lattice import e_mass, clight
+from at.lattice import clight
+from at.lattice import Particle
 from at.lattice import AtError, AtWarning
 from at.lattice import uint32_refpts as uint32_refs, bool_refpts as bool_refs
 from at.lattice import refpts_iterator, refpts_len
@@ -30,6 +31,7 @@ __all__ = ['Lattice', 'type_filter', 'params_filter', 'lattice_filter',
            'no_filter']
 
 
+# noinspection PyAttributeOutsideInit
 class Lattice(list):
     """Lattice object
     An AT lattice is a sequence of AT elements.
@@ -99,7 +101,7 @@ class Lattice(list):
             runs through ringparam_filter(params, *args), looks for energy and
             periodicity if not yet defined.
     """
-    _1st_attributes = ('name', 'energy', 'periodicity', 'particle')
+    _1st_attributes = ('name', 'energy', 'periodicity')
 
     def __init__(self, *args, **kwargs):
         """Lattice constructor"""
@@ -124,8 +126,7 @@ class Lattice(list):
         # set default values
         kwargs.setdefault('name', '')
         kwargs.setdefault('periodicity', 1)
-        kwargs.setdefault('particle',
-                          dict(name='electron', mass=e_mass, charge=1.0))
+        kwargs.setdefault('particle', 'electron')
         if 'energy' not in kwargs:
             raise AtError('Lattice energy is not defined')
         # set attributes
@@ -161,15 +162,17 @@ class Lattice(list):
     def __repr__(self):
         attrs = vars(self).copy()
         k1 = [(k, attrs.pop(k)) for k in Lattice._1st_attributes]
-        k2 = [(k, v) for k, v in attrs.items() if not k.startswith('_')]
-        keys = ', '.join('{0}={1!r}'.format(k, v) for k, v in (k1 + k2))
+        k2 = [('particle', self.particle)]
+        k3 = [(k, v) for k, v in attrs.items() if not k.startswith('_')]
+        keys = ', '.join('{0}={1!r}'.format(k, v) for k, v in (k1 + k2 + k3))
         return 'Lattice({0}, {1})'.format(super(Lattice, self).__repr__(), keys)
 
     def __str__(self):
         attrs = vars(self).copy()
         k1 = [(k, attrs.pop(k)) for k in Lattice._1st_attributes]
-        k2 = [(k, v) for k, v in attrs.items() if not k.startswith('_')]
-        keys = ', '.join('{0}={1!r}'.format(k, v) for k, v in (k1 + k2))
+        k2 = [('particle', self.particle)]
+        k3 = [(k, v) for k, v in attrs.items() if not k.startswith('_')]
+        keys = ', '.join('{0}={1!r}'.format(k, v) for k, v in (k1 + k2 + k3))
         return 'Lattice(<{0} elements>, {1})'.format(len(self), keys)
 
     def __add__(self, elems):
@@ -235,7 +238,6 @@ class Lattice(list):
         RETURN
             New Lattice object
        """
-
         def slice_iter(ibeg, iend):
             for elem in self[:ibeg]:
                 yield elem
@@ -258,6 +260,14 @@ class Lattice(list):
         i1 = self._i_range[0]
         i2 = self._i_range[-1]
         return Lattice(slice_iter(i1, i2), s_range=s_range, **vars(self))
+
+    def get_revolution_frequency(self, dp=None):
+        gamma = self.energy / self.particle.mass
+        beta = math.sqrt(1.0 - 1.0/gamma/gamma)
+        circ = self.circumference
+        if dp is not None:
+            pass
+        return beta * clight / circ
 
     @property
     def s_range(self):
@@ -300,8 +310,21 @@ class Lattice(list):
         return self.periodicity * self.get_s_pos(len(self))[0]
 
     @property
+    def particle(self):
+        return self._particle
+
+    @particle.setter
+    def particle(self, particle):
+        if isinstance(particle, Particle):
+            self._particle = particle
+        else:
+            self._particle = Particle(particle)
+
+    @property
     def revolution_frequency(self):
-        return clight / ring.circumference
+        gamma = self.energy / self.particle.mass
+        beta = math.sqrt(1.0 - 1.0/gamma/gamma)
+        return beta * clight / self.circumference
 
     @property
     def radiation(self):

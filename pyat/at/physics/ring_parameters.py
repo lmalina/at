@@ -3,7 +3,7 @@ import numpy
 from numpy import nan
 from scipy.constants import c
 from at.lattice import Lattice
-from at.physics import Cgamma, Cq, e_mass
+from at.physics import Cgamma, Cq
 
 __all__ = ['RingParameters', 'radiation_parameters', 'envelope_parameters']
 
@@ -104,7 +104,7 @@ def radiation_parameters(ring, dp=None, params=None, **kwargs):
     revolution_period = circumference / c
     voltage = ring.voltage
     E0 = ring.energy
-    gamma = ring.energy / ring.particle['mass']
+    gamma = E0 / ring.particle.mass
     gamma2 = gamma * gamma
     beta = sqrt(1.0 - 1.0/gamma2)
     U0 = Cgamma / 2.0 / pi * E0**4 * rp.i2
