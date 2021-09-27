@@ -58,7 +58,7 @@ def test_lattice_string_ordering():
                   name='lat', energy=5, periodicity=1, attr2=3)
     # Default dictionary ordering is only in Python >= 3.6
     assert str(lat).startswith("Lattice(<1 elements>, name='lat', "
-                                    "energy=5, periodicity=1")
+                               "energy=5, periodicity=1")
     assert str(lat).endswith("attr2=3)")
     assert repr(lat).startswith("Lattice([Drift('D0', 1.0, attr1=array(0))], "
                                 "name='lat', energy=5, periodicity=1")
@@ -107,7 +107,7 @@ def test_deepcopy(hmba_lattice):
 
 
 def test_property_values_against_known(hmba_lattice):
-    assert hmba_lattice.voltage == 6000000
+    assert hmba_lattice.rf_voltage == 6000000
     assert hmba_lattice.harmonic_number == 992
     assert hmba_lattice.radiation is False
     numpy.testing.assert_almost_equal(hmba_lattice.energy_loss,

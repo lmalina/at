@@ -19,6 +19,7 @@ from .amat import *
 from .energy_loss import *
 from .orbit import *
 from .matrix import *
+from .revolution import *
 from .linear import *
 from .ring_parameters import *
 # noinspection PyUnresolvedReferences

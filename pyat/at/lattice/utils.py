@@ -70,14 +70,17 @@ def make_copy(copy):
     by refpts are deep-copied, then func is applied to the copy, and the new
     ring is returned.
     """
-    def copy_decorator(func):
-        @functools.wraps(func)
-        def wrapper(ring, refpts, *args, **kwargs):
-            if copy:
+    if copy:
+        def copy_decorator(func):
+            @functools.wraps(func)
+            def wrapper(ring, refpts, *args, **kwargs):
                 ring = ring.replace(refpts)
-            func(ring, refpts, *args, **kwargs)
-            return ring if copy else None
-        return wrapper
+                func(ring, refpts, *args, **kwargs)
+                return ring
+            return wrapper
+    else:
+        def copy_decorator(func):
+            return func
     return copy_decorator
 
 
@@ -267,11 +270,13 @@ def refpts_iterator(ring, refpts):
     2) a sequence of booleans marking the selected elements
     3) a callable f such that f(elem) is True for selected elements
     """
-    if callable(refpts):
+    if refpts is None:
+        return iter(())
+    elif callable(refpts):
         return filter(refpts, ring)
     else:
         refs = numpy.ravel(refpts)
-        if (refpts is None) or (refs.size == 0):
+        if refs.size == 0:
             return iter(())
         elif refs.dtype == bool:
             return compress(ring, refs)
@@ -279,21 +284,9 @@ def refpts_iterator(ring, refpts):
             return (ring[i] for i in refs)
 
 
-def refpts_len(ring, refpts):
-    if callable(refpts):
-        return len(list(filter(refpts, ring)))
-    else:
-        refs = numpy.ravel(refpts)
-        if (refpts is None) or (refs.size == 0):
-            return 0
-        elif refs.dtype == bool:
-            return numpy.count_nonzero(refs)
-        else:
-            return len(refs)
-
-
 # noinspection PyUnusedLocal
 def refpts_count(refpts, n_elements):
+    """Number of reference points"""
     refs = numpy.ravel(refpts)
     if (refpts is None) or (refs.size == 0):
         return 0
@@ -301,6 +294,16 @@ def refpts_count(refpts, n_elements):
         return numpy.count_nonzero(refs)
     else:
         return len(refs)
+
+
+def refpts_len(ring, refpts):
+    """Number of reference points"""
+    if refpts is None:
+        return 0
+    elif callable(refpts):
+        return len(list(filter(refpts, ring)))
+    else:
+        return refpts_count(refpts, len(ring))
 
 
 def get_refpts(ring, key, quiet=True):

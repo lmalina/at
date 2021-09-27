@@ -135,7 +135,7 @@ def find_orbit4(ring, dp=0.0, refpts=None, dct=None, orbit=None,
     2.  have any time dependence (localized impedance, fast kickers etc)
 
     PARAMETERS
-        ring            Sequence of AT elements
+        ring            lattice description (radiation must be OFF)
         dp              momentum deviation. Defaults to 0
         refpts          elements at which data is returned. It can be:
                         1) an integer in the range [-len(ring), len(ring)-1]
@@ -210,7 +210,7 @@ def find_sync_orbit(ring, dct=0.0, refpts=None, dp=None, orbit=None,
     2.  have any time dependence (localized impedance, fast kickers etc).
 
     PARAMETERS
-        ring            Sequence of AT elements
+        ring            lattice description (radiation must be OFF)
         dct             Path length deviation. Default: 0
         refpts          elements at which data is returned. It can be:
                         1) an integer in the range [-len(ring), len(ring)-1]
@@ -353,7 +353,7 @@ def find_orbit6(ring, refpts=None, orbit=None, dp=None, dct=None,
         the equilibrium RF phase. If there is no radiation the phase is 0;
 
     PARAMETERS
-        ring            Sequence of AT elements
+        ring            lattice description (radiation must be ON)
         refpts          elements at which data is returned. It can be:
                         1) an integer in the range [-len(ring), len(ring)-1]
                            selecting the element according to python indexing

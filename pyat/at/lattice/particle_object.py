@@ -2,7 +2,21 @@ from .constants import e_mass, p_mass
 
 
 class Particle(object):
+    """Particle object
 
+    This object defines the properties of the particles circulating in a ring
+
+    Particle(name, **params)
+
+    PARAMETERS
+        name        Particle name. 'electron' and 'proton' are predefined. For
+                    other particles, the mass and charge must be provided.
+
+    KEYWORDS
+        mass        Particle rest mass [ev]
+        charge      Particle charge
+        *           Other keywords will be set as attributes of the particle
+    """
     _known = dict(
         electron=dict(mass=e_mass, charge=-1.0),
         proton=dict(mass=p_mass, charge=1.0)

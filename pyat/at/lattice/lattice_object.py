@@ -21,7 +21,8 @@ from at.lattice import Particle
 from at.lattice import AtError, AtWarning
 from at.lattice import uint32_refpts as uint32_refs, bool_refpts as bool_refs
 from at.lattice import refpts_iterator, refpts_len
-from at.lattice import elements, get_s_pos, get_elements
+from at.lattice import elements, get_s_pos, get_elements, get_cells, get_refpts
+from at.lattice import set_shift, set_tilt
 # noinspection PyProtectedMember
 from .utils import _uint32_refs, _bool_refs
 
@@ -48,12 +49,15 @@ class Lattice(list):
             elems:          any iterable of AT elements
 
         KEYWORDS
-            iterator=None   Custom iterator (see below)
-            scan=False      Scan elements, looking for energy and periodicity
-            name            Name of the lattice
-            energy          Energy of the lattice
-            periodicity     Number of periods
-            *               all other keywords will be set as Lattice attributes
+            name=''             Name of the lattice
+            energy              Energy of the lattice
+            periodicity=1       Number of periods
+            particle='electron' Circulating particle. May be 'electron',
+                                'proton' or a Particle object
+            iterator=None       Custom iterator (see below)
+            scan=False          Scan elements, looking for energy and periodicity
+            *                   all other keywords will be set as attributes of
+                                the Lattice object
 
     To reduce the inter-package dependencies, some methods of the
     lattice object are defined in other AT packages, in the module where
@@ -261,14 +265,6 @@ class Lattice(list):
         i2 = self._i_range[-1]
         return Lattice(slice_iter(i1, i2), s_range=s_range, **vars(self))
 
-    def get_revolution_frequency(self, dp=None):
-        gamma = self.energy / self.particle.mass
-        beta = math.sqrt(1.0 - 1.0/gamma/gamma)
-        circ = self.circumference
-        if dp is not None:
-            pass
-        return beta * clight / circ
-
     @property
     def s_range(self):
         """Range of interest. 'None' means the full cell."""
@@ -311,6 +307,7 @@ class Lattice(list):
 
     @property
     def particle(self):
+        """Circulating particle"""
         return self._particle
 
     @particle.setter
@@ -322,9 +319,11 @@ class Lattice(list):
 
     @property
     def revolution_frequency(self):
+        """Revolution frequency [Hz]"""
         gamma = self.energy / self.particle.mass
-        beta = math.sqrt(1.0 - 1.0/gamma/gamma)
-        return beta * clight / self.circumference
+        beta = math.sqrt(1.0 - 1.0 / gamma / gamma)
+        frev = beta * clight / self.circumference
+        return frev
 
     @property
     def radiation(self):
@@ -703,6 +702,9 @@ def params_filter(params, elem_iterator, *args):
 
 Lattice.uint32_refpts = _uint32_refs
 Lattice.bool_refpts = _bool_refs
+Lattice.get_cells = get_cells
+Lattice.get_refpts = get_refpts
+Lattice.set_shift = set_shift
 Lattice.get_elements = get_elements
 Lattice.get_s_pos = get_s_pos
 Lattice.select = refpts_iterator
