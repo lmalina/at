@@ -2,8 +2,7 @@
 Closed orbit related functions
 """
 import numpy
-import scipy.constants as constants
-from at.lattice import AtWarning, AtError, check_radiation, DConstant
+from at.lattice import AtWarning, AtError, check_radiation, DConstant, clight
 from at.lattice import Lattice, get_s_pos, elements, uint32_refpts
 from at.tracking import lattice_pass
 from at.physics import ELossMethod, get_timelag_fromU0
@@ -288,7 +287,7 @@ def _orbit6(ring, cavpts=None, guess=None, keep_lattice=False, **kwargs):
         ref_in = numpy.copy(guess)
 
     theta = numpy.zeros((6,))
-    theta[5] = constants.speed_of_light * harm_number / f_rf - l0
+    theta[5] = clight * harm_number / f_rf - l0
 
     scaling = xy_step * numpy.array([1.0, 1.0, 1.0, 1.0, 0.0, 0.0]) + \
               dp_step * numpy.array([0.0, 0.0, 0.0, 0.0, 1.0, 1.0])

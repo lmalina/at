@@ -4,11 +4,11 @@ from warnings import warn
 from math import sqrt, pi
 import numpy
 from scipy.optimize import least_squares
-from at.lattice import Lattice, Dipole, Wiggler, RFCavity
+from at.lattice import Lattice, Dipole, Wiggler, RFCavity, clight, e_mass
 from at.lattice import check_radiation, AtError
 from at.lattice import checktype, set_value_refpts, get_cells, refpts_len
 from at.tracking import lattice_pass
-from at.physics import clight, Cgamma, e_mass
+from at.physics import Cgamma
 
 __all__ = ['get_energy_loss', 'set_cavity_phase', 'ELossMethod',
            'get_timelag_fromU0']
