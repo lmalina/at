@@ -1,5 +1,5 @@
 from ..lattice import Lattice, get_rf_frequency, check_radiation, get_s_pos
-from ..lattice import DConstant
+from ..lattice import DConstant, clight
 from ..tracking import lattice_pass
 from .orbit import find_orbit4
 import numpy
@@ -49,28 +49,31 @@ def get_slip_factor(ring, **kwargs):
     return etac
 
 
-def get_revolution_frequency(ring, dp=None, **kwargs):
-    """Compute the revolution frequency
+def get_revolution_frequency(ring, dp=None, dct=None, **kwargs):
+    """Compute the revolution frequency of the full ring [Hz]
 
     PARAMETERS
         ring            lattice description
 
     KEYWORDS
         dp=0.0          momentum deviation.
+        dct=0.0         Path length deviation
         keep_lattice    Assume no lattice change since the previous tracking.
                         Defaults to False
         dp_step=1.0E-6  momentum deviation used for differentiation
     """
     frev = ring.revolution_frequency
-    if dp is not None:
-        if ring.radiation:
-            ring = ring.radiation_off(copy=True)
-        etac = get_slip_factor(ring, **kwargs)
+    if dct is not None:
+        frev -= frev * frev / clight * ring.periodicity * dct
+    elif dp is not None:
+        rnorad = ring.radiation_off(copy=True) if ring.radiation else ring
+        etac = get_slip_factor(rnorad, **kwargs)
         frev += frev * etac * dp
     return frev
 
 
-def set_rf_frequency(ring, frequency=None, dp=None, cavpts=None, copy=False):
+def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
+                     copy=False):
     """Set the RF frequency
 
     PARAMETERS
@@ -78,14 +81,16 @@ def set_rf_frequency(ring, frequency=None, dp=None, cavpts=None, copy=False):
         frequency           RF frequency. Default: nominal frequency.
 
     KEYWORDS
-        dp=None             momentum deviation
-        cavpts=None         Cavity location. If None, use all cavities.
-                            This allows to ignore harmonic cavities.
-        copy=False          If True, returns a shallow copy of ring with new
-                            cavity elements. Otherwise, modify ring in-place
+        dp=0.0          momentum deviation.
+        dct=0.0         Path length deviation
+        cavpts=None     Cavity location. If None, use all cavities.
+                        This allows to ignore harmonic cavities.
+        copy=False      If True, returns a shallow copy of ring with new
+                        cavity elements. Otherwise, modify ring in-place
     """
     if frequency is None:
-        frequency = ring.get_revolution_frequency(dp=dp) * ring.harmonic_number
+        frequency = ring.get_revolution_frequency(dp=dp, dct=dct) \
+                    * ring.harmonic_number
     return ring.set_cavity(Frequency=frequency, cavpts=cavpts, copy=copy)
 
 

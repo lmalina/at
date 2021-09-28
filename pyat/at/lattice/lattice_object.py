@@ -55,7 +55,7 @@ class Lattice(list):
             particle='electron' Circulating particle. May be 'electron',
                                 'proton' or a Particle object
             iterator=None       Custom iterator (see below)
-            scan=False          Scan elements, looking for energy and periodicity
+            scan=False          Scan elements, look for energy and periodicity
             *                   all other keywords will be set as attributes of
                                 the Lattice object
 
@@ -267,7 +267,7 @@ class Lattice(list):
 
     @property
     def s_range(self):
-        """Range of interest. 'None' means the full cell."""
+        """Range of interest: [s_min, s_max]. 'None' means the full cell."""
         try:
             return self._s_range
         except AttributeError:
@@ -302,7 +302,7 @@ class Lattice(list):
 
     @property
     def circumference(self):
-        """Ring circumference"""
+        """Ring circumference (full ring) [m]"""
         return self.periodicity * self.get_s_pos(len(self))[0]
 
     @property
@@ -319,7 +319,7 @@ class Lattice(list):
 
     @property
     def revolution_frequency(self):
-        """Revolution frequency [Hz]"""
+        """Revolution frequency (full ring) [Hz]"""
         gamma = self.energy / self.particle.mass
         beta = math.sqrt(1.0 - 1.0 / gamma / gamma)
         frev = beta * clight / self.circumference
