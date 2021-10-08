@@ -460,7 +460,7 @@ class DynamicAperture(object):
                 print('[{x:2.2g}, {xp:2.2g}, {y:2.2g}, {yp:2.2g}, {delta:2.2g}, {ct:2.2g}] '
                       '| {tot:02d} coord: {surv} for {nt} turns'.format(
                     tot=1, surv=self.survived, nt=self.n_turns,
-                    x=self.coordinates['x'], y=cself.oordinates['y'], xp=self.coordinates['xp'],
+                    x=self.coordinates['x'], y=self.coordinates['y'], xp=self.coordinates['xp'],
                     ct=self.coordinates['ct'], yp=self.coordinates['yp'], delta=self.coordinates['delta']))
             else:
                 for x, xp, y, yp, delta, ct, s in zip(self.coordinates['x'],
