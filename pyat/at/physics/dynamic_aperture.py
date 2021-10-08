@@ -13,7 +13,7 @@ import time
 
 import warnings
 
-__all__ = ['DynamicAperture', 'Acceptance6D', 'dynamic_aperture', 'off_energy_dynamic_aperture', 'momentum_acceptance']
+__all__ = ['DynamicAperture']
 
 class DynamicAperture(object):
 
