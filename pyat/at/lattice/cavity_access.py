@@ -69,7 +69,6 @@ def get_rf_cavities(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
         return list(filter(filtfunc, ring))
     
 
-
 def get_rf_frequency(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
     """Return the RF frequency
     KEYWORDS
@@ -160,7 +159,6 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
                             sets the frequency to the nominal value, given
                             ring length and harmonic number.
         Voltage=None        RF voltage for the full ring.
-        HarmNumber=None     Harmonic number for the full ring.
         TimeLag=None
         cavpts=None         Cavity location. If None, look for ring.cavpts,
                             otherwise take all cavities. This allows to ignore
@@ -173,7 +171,6 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
     n_cavities = ring.refcount(cavpts)
     if n_cavities < 1:
         raise AtError('No cavity found in the lattice')
-    n_periods = ring.periodicity
 
     modif = {}
     if Frequency is not None:
@@ -183,7 +180,7 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
     if TimeLag is not None:
         modif['TimeLag'] = TimeLag
     if Voltage is not None:
-        modif['Voltage'] = Voltage / n_periods / n_cavities
+        modif['Voltage'] = Voltage / ring.periodicity / n_cavities
 
     # noinspection PyShadowingNames
     @make_copy(copy)
