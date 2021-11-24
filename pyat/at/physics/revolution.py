@@ -1,12 +1,12 @@
 from ..lattice import Lattice, get_rf_frequency, check_radiation, get_s_pos
-from ..lattice import DConstant
+from ..lattice import DConstant, RFMode
 from ..lattice.constants import clight, e_mass
 from ..tracking import lattice_pass
 from .orbit import find_orbit4
 import numpy
 
 __all__ = ['get_mcf', 'get_slip_factor', 'get_revolution_frequency',
-           'set_rf_frequency']
+           'tune_rf_frequency']
 
 
 @check_radiation(False)
@@ -73,8 +73,8 @@ def get_revolution_frequency(ring, dp=None, dct=None, **kwargs):
     return frev
 
 
-def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
-                     copy=False):
+def tune_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
+                      copy=False, rfmode=RFMode.FUNDAMENTAL):
     """Set the RF frequency
 
     PARAMETERS
@@ -92,7 +92,8 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
     if frequency is None:
         frequency = ring.get_revolution_frequency(dp=dp, dct=dct) \
                     * ring.harmonic_number
-    return ring.set_cavity(Frequency=frequency, cavpts=cavpts, copy=copy)
+    return ring.set_rf_frequency(Frequency=frequency, cavpts=cavpts,
+                                 copy=copy, rfmode=rfmode)
 
 
 Lattice.mcf = property(get_mcf, doc="Momentum compaction factor")
@@ -100,6 +101,4 @@ Lattice.slip_factor = property(get_slip_factor, doc="Slip factor")
 Lattice.get_revolution_frequency = get_revolution_frequency
 Lattice.get_mcf = get_mcf
 Lattice.get_slip_factor = get_slip_factor
-Lattice.set_rf_frequency = set_rf_frequency
-Lattice.rf_frequency = property(get_rf_frequency, set_rf_frequency,
-                                doc="RF frequency [Hz]")
+Lattice.tune_rf_frequency = tune_rf_frequency

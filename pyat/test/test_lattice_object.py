@@ -30,7 +30,6 @@ def test_lattice_voltage_harmonic_number():
     lat = Lattice([rf, d], name='lattice')
     assert lat.energy == 3.e+6
     assert lat.periodicity == 10
-    assert lat.rf_voltage == 2e6
     assert lat.revolution_frequency == 10.e6
     assert lat.harmonic_number == 50
     assert lat.radiation is True
@@ -68,12 +67,14 @@ def test_lattice_string_ordering():
     lat = Lattice([elements.Drift('D0', 1.0, attr1=numpy.array(0))],
                   name='lat', energy=5, periodicity=1, attr2=3)
     latstr = str(lat)
+    print(latstr)
     assert latstr.startswith("Lattice(<1 elements>, name='lat', "
                                "energy=5, particle=Particle('relativistic'), "
                                "periodicity=1")
     assert latstr.endswith("attr2=3)")
 
     latrepr = repr(lat)
+    print(latrepr)
     assert latrepr.startswith("Lattice([Drift('D0', 1.0, attr1=array(0))], "
                                 "name='lat', "
                                 "energy=5, particle=Particle('relativistic'), "
@@ -123,7 +124,6 @@ def test_deepcopy(hmba_lattice):
 
 
 def test_property_values_against_known(hmba_lattice):
-    assert hmba_lattice.rf_voltage == 6000000
     assert hmba_lattice.harmonic_number == 992
     assert hmba_lattice.radiation is False
     numpy.testing.assert_almost_equal(hmba_lattice.energy_loss,
