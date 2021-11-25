@@ -6,12 +6,7 @@ from .lattice_object import Lattice
 
 __all__ = ['get_rf_frequency', 'get_rf_voltage', 'set_rf_voltage',
            'get_rf_timelag', 'set_rf_timelag', 'set_cavity', 
-           'set_rf_frequency', 'Frf', 'RFMode', 'get_rf_cavities']
-
-
-class Frf(Enum):
-    """Enum class for frequency setting"""
-    NOMINAL = 'nominal'
+           'set_rf_frequency', 'RFMode', 'get_rf_cavities']
 
 
 class RFMode(Enum):
@@ -95,9 +90,8 @@ def get_rf_voltage_array(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
 
         rfmode        Selection mode: FUNDAMENTAL (default) returns the minimum, 
                                       UNIQUE checks that only a single cavity 
-                                      is present
-          
-                            ALL returns all cavities
+                                      is present         
+                                      ALL returns all cavities
     """
     vcell = _get_rf_attr(ring, 'Voltage', cavpts=cavpts, rfmode=rfmode)
     if rfmode is RFMode.UNIQUE or rfmode is RFMode.FUNDAMENTAL:
@@ -107,7 +101,7 @@ def get_rf_voltage_array(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
     return vcell
 
 
-def get_rf_voltage(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
+def get_rf_voltage(ring, cavpts=None, rfmode=RFMode.ALL):
     """Return the total RF voltage
     KEYWORDS
         cavpts=None   Cavity location. If None, look for ring.cavpts,
@@ -133,37 +127,12 @@ def get_rf_timelag(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
     return _get_rf_attr(ring, 'TimeLag', cavpts=cavpts, rfmode=rfmode)
 
 
-def set_rf_frequency(ring, frequency, cavpts=None, copy=False, rfmode=RFMode.FUNDAMENTAL):
-    """Set the RF voltage
-
-    PARAMETERS
-        ring                lattice description
-        frequency           RF frequency
-
-    KEYWORDS
-        cavpts=None         Cavity location. If None, look for ring.cavpts,
-                            otherwise take all cavities. This allows to ignore
-                            harmonic cavities.
-        copy=False          If True, returns a shallow copy of ring with new
-                            cavity elements. Otherwise, modify ring in-place
-        rfmode              Selection mode: FUNDAMENTAL (default) keeps ratio between
-                                            fundamental and harmonics, inputs is applied
-                                            to the fundmental 
-                                            UNIQUE checks that only a single cavity 
-                                            is present
-                                            ALL set all cavities
-                            FUNDAMENTAL and UNIQUE require scalr inputs, ALL requires
-                            vectors with shape (n_cavities,)
-    """
-    return set_cavity(ring, Frequency=frequency, cavpts=cavpts, copy=copy, rfmode=rfmode)
-
-
 def set_rf_voltage(ring, voltage, cavpts=None, copy=False, rfmode=RFMode.FUNDAMENTAL):
     """Set the RF voltage
 
     PARAMETERS
         ring                lattice description
-        voltage             Total RF voltage for the full ring
+        voltage             RF voltage [V]
 
     KEYWORDS
         cavpts=None         Cavity location. If None, look for ring.cavpts,
@@ -187,7 +156,7 @@ def set_rf_timelag(ring, timelag, cavpts=None, copy=False, rfmode=RFMode.FUNDAME
 
     PARAMETERS
         ring                lattice description
-        timelag
+        timelag             RF time shift (-ct)
 
     KEYWORDS
         cavpts=None         Cavity location. If None, look for ring.cavpts,
@@ -217,11 +186,9 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
         ring                lattice description
 
     KEYWORDS
-        Frequency=None      RF frequency. The special enum value Frf.NOMINAL
-                            sets the frequency to the nominal value, given
-                            ring length and harmonic number.
-        Voltage=None        RF voltage for the full ring.
-        TimeLag=None
+        Frequency=None      RF frequency [Hz]
+        Voltage=None        RF voltage [V]
+        TimeLag=None        RF time shift [-ct]
         cavpts=None         Cavity location. If None, look for ring.cavpts,
                             otherwise take all cavities. This allows to ignore
                             harmonic cavities.
@@ -252,8 +219,6 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
 
     modif = {}
     if Frequency is not None:
-        if Frequency is Frf.NOMINAL:
-            Frequency = ring.revolution_frequency * ring.harmonic_number
         if rfmode is RFMode.FUNDAMENTAL:
             fall = get_rf_frequency(ring, cavpts=cavpts, rfmode=RFMode.ALL) 
             ffund = get_rf_frequency(ring, cavpts=cavpts, rfmode=RFMode.FUNDAMENTAL)
@@ -296,3 +261,6 @@ Lattice.set_rf_frequency = set_rf_frequency
 Lattice.set_rf_timelag = set_rf_timelag
 Lattice.get_rf_cavities = get_rf_cavities
 Lattice.set_cavity = set_cavity
+Lattice.rf_voltage = property(get_rf_voltage, set_rf_voltage,
+                              doc="Total RF voltage of the full ring [V]")
+
