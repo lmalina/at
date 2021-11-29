@@ -9,7 +9,7 @@ import numpy
 import math
 
 __all__ = ['get_mcf', 'get_slip_factor', 'get_revolution_frequency',
-           'set_rf_frequency','FRFMethod']
+           'set_rf_frequency', 'FRFMethod']
 
 
 class FRFMethod(Enum):
@@ -83,9 +83,9 @@ def get_revolution_frequency(ring, dp=None, dct=None, **kwargs):
     return frev
 
 
-def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=False,
-                     rfmode=RFMode.FUNDAMENTAL, method=FRFMethod.TRACKING, niter=3,
-                     **kwargs):
+def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
+                     copy=False, rfmode=RFMode.FUNDAMENTAL,
+                     method=FRFMethod.TRACKING, niter=3, **kwargs):
     """Set the RF voltage
 
     PARAMETERS
@@ -100,10 +100,10 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=
         dct=0.0             Path length deviation used for analytic method
         copy=False          If True, returns a shallow copy of ring with new
                             cavity elements. Otherwise, modify ring in-place
-        rfmode              Selection mode: FUNDAMENTAL (default) keeps ratio between
-                                            fundamental and harmonics, inputs is applied
-                                            to the fundmental 
-                                            UNIQUE checks that only a single cavity 
+        rfmode              Selection mode: FUNDAMENTAL (default) keeps ratio
+                                            between fundamental and harmonics,
+                                            inputs are applied to the fundmental
+                                            UNIQUE checks that only a single cavity
                                             is present
                                             ALL set all cavities
                             FUNDAMENTAL and UNIQUE require scalr inputs, ALL requires
@@ -121,7 +121,7 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=
             ringtmp = ring
             for i in range(niter):
                 frequency = ringtmp.get_rf_frequency(cavpts=cavpts)
-                orb0, _ = ringtmp.find_orbit()                            
+                orb0, _ = ringtmp.find_orbit()
                 frequency -= frequency * etac * orb0[4]
                 ringtmp = ringtmp.set_rf_frequency(frequency, cavpts=cavpts,
                                                    copy=True)
@@ -138,7 +138,9 @@ Lattice.mcf = property(get_mcf, doc="Momentum compaction factor")
 Lattice.slip_factor = property(get_slip_factor, doc="Slip factor")
 Lattice.get_revolution_frequency = get_revolution_frequency
 Lattice.revolution_frequency = property(get_revolution_frequency,
-    doc="Revolution frequency of on-momentum particles (full ring) [Hz]")
+                                        doc="Revolution frequency"
+                                        " of on-momentum particles"
+                                        " (full ring) [Hz]")
 Lattice.get_mcf = get_mcf
 Lattice.get_slip_factor = get_slip_factor
 Lattice.set_rf_frequency = set_rf_frequency
