@@ -4,6 +4,7 @@ from ..lattice.constants import clight, e_mass
 from ..tracking import lattice_pass
 from .orbit import find_orbit4
 import numpy
+import math
 
 __all__ = ['get_mcf', 'get_slip_factor', 'get_revolution_frequency',
            'compute_rf_frequency']
@@ -72,6 +73,7 @@ def get_revolution_frequency(ring, dp=None, dct=None,
                             this approach is approximate in the presence of radiations
                             TRACKING computes frequency using 6D orbit
     """
+<<<<<<< HEAD
     frev = ring.revolution_frequency
     if method is FRFMethod.TRACKING and ring.radiation:
         frev = frev
@@ -84,6 +86,17 @@ def get_revolution_frequency(ring, dp=None, dct=None,
             frev += frev * etac * dp
     else:
         raise AtError('Unknown FRFMethod {0}'.format(method))
+=======
+    gamma = ring.gamma
+    beta = math.sqrt(1.0 - 1.0 / gamma / gamma)
+    frev = beta * clight / ring.circumference
+    if dct is not None:
+        frev -= frev * frev / clight * ring.periodicity * dct
+    elif dp is not None:
+        rnorad = ring.radiation_off(copy=True) if ring.radiation else ring
+        etac = get_slip_factor(rnorad, **kwargs)
+        frev += frev * etac * dp
+>>>>>>> master
     return frev
 
 
@@ -125,6 +138,8 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=
 Lattice.mcf = property(get_mcf, doc="Momentum compaction factor")
 Lattice.slip_factor = property(get_slip_factor, doc="Slip factor")
 Lattice.get_revolution_frequency = get_revolution_frequency
+Lattice.revolution_frequency = property(get_revolution_frequency,
+    doc="Revolution frequency of on-momentum particles (full ring) [Hz]")
 Lattice.get_mcf = get_mcf
 Lattice.get_slip_factor = get_slip_factor
 Lattice.set_rf_frequency = set_rf_frequency

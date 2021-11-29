@@ -263,4 +263,3 @@ Lattice.get_rf_cavities = get_rf_cavities
 Lattice.set_cavity = set_cavity
 Lattice.rf_voltage = property(get_rf_voltage, set_rf_voltage,
                               doc="Total RF voltage of the full ring [V]")
-
