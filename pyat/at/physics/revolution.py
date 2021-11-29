@@ -1,6 +1,6 @@
 from ..lattice import Lattice, check_radiation, get_s_pos
 from ..lattice import set_cavity, RFMode, get_rf_frequency
-from ..lattice import DConstant
+from ..lattice import DConstant, AtError
 from ..lattice.constants import clight, e_mass
 from ..tracking import lattice_pass
 from .orbit import find_orbit4
@@ -129,7 +129,7 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=
             frequency = ring.get_revolution_frequency(dp=dp, dct=dct) \
                         * ring.harmonic_number
         else:
-            raise(AtError('Unknow FRFMethod in set_rf_frequency'))
+            raise AtError('Unknow FRFMethod in set_rf_frequency')
     return set_cavity(ring, Frequency=frequency, cavpts=cavpts, copy=copy,
                       rfmode=rfmode)
 
