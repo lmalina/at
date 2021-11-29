@@ -88,7 +88,7 @@ def get_revolution_frequency(ring, dp=None, dct=None,
 
 
 def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=False,
-                     rfmode=RFMode.FUNDAMENTAL, method=FRFMethod.ANALYTIC):
+                     rfmode=RFMode.FUNDAMENTAL, method=FRevMethod.ANALYTIC):
     """Set the RF voltage
 
     PARAMETERS
