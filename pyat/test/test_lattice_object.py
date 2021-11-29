@@ -123,6 +123,7 @@ def test_deepcopy(hmba_lattice):
 
 
 def test_property_values_against_known(hmba_lattice):
+    assert hmba_lattice.rf_voltage = 6000000
     assert hmba_lattice.harmonic_number == 992
     assert hmba_lattice.radiation is False
     numpy.testing.assert_almost_equal(hmba_lattice.energy_loss,
