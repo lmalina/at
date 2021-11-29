@@ -1,16 +1,18 @@
 from ..lattice import Lattice, check_radiation, get_s_pos
 from ..lattice import set_cavity, RFMode, get_rf_frequency
+from ..lattice import DConstant
 from ..lattice.constants import clight, e_mass
 from ..tracking import lattice_pass
 from .orbit import find_orbit4
+from enum import Enum
 import numpy
 import math
 
 __all__ = ['get_mcf', 'get_slip_factor', 'get_revolution_frequency',
-           'compute_rf_frequency']
+           'set_rf_frequency','FRFMethod']
 
 
-class FRevMethod(Enum):
+class FRFMethod(Enum):
     ANALYTIC = 'analytic'
     TRACKING = 'tracking'
 
@@ -56,8 +58,7 @@ def get_slip_factor(ring, **kwargs):
     return etac
 
 
-def get_revolution_frequency(ring, dp=None, dct=None,
-                             method=FRevMethod.ANALYTIC, **kwargs):
+def get_revolution_frequency(ring, dp=None, dct=None, **kwargs):
     """Compute the revolution frequency of the full ring [Hz]
 
     PARAMETERS
@@ -69,24 +70,7 @@ def get_revolution_frequency(ring, dp=None, dct=None,
         keep_lattice    Assume no lattice change since the previous tracking.
                         Defaults to False
         dp_step=1.0E-6  momentum deviation used for differentiation
-        method              ANALYTIC computes frequency form dp, ct and slip factor,
-                            this approach is approximate in the presence of radiations
-                            TRACKING computes frequency using 6D orbit
     """
-<<<<<<< HEAD
-    frev = ring.revolution_frequency
-    if method is FRFMethod.TRACKING and ring.radiation:
-        frev = frev
-    elif method is FRFMethod.ANALYTIC
-        if dct is not None:
-            frev -= frev * frev / clight * ring.periodicity * dct
-        elif dp is not None:
-            rnorad = ring.radiation_off(copy=True) if ring.radiation else ring
-            etac = get_slip_factor(rnorad, **kwargs)
-            frev += frev * etac * dp
-    else:
-        raise AtError('Unknown FRFMethod {0}'.format(method))
-=======
     gamma = ring.gamma
     beta = math.sqrt(1.0 - 1.0 / gamma / gamma)
     frev = beta * clight / ring.circumference
@@ -96,12 +80,12 @@ def get_revolution_frequency(ring, dp=None, dct=None,
         rnorad = ring.radiation_off(copy=True) if ring.radiation else ring
         etac = get_slip_factor(rnorad, **kwargs)
         frev += frev * etac * dp
->>>>>>> master
     return frev
 
 
 def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=False,
-                     rfmode=RFMode.FUNDAMENTAL, method=FRevMethod.ANALYTIC):
+                     rfmode=RFMode.FUNDAMENTAL, method=FRFMethod.TRACKING, niter=3,
+                     **kwargs):
     """Set the RF voltage
 
     PARAMETERS
@@ -127,12 +111,27 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None, copy=
         method              ANALYTIC computes frequency form dp, ct and harmonic
                             number
                             TRACKING computes frequency to match to orbit6 computation
+        niter               number of iterations for the TRACKING method
     """
     if frequency is None:
-        frequency = ring.get_revolution_frequency(dp=dp, dct=dct, method=method) \
-                    * ring.harmonic_number
+        if method is FRFMethod.TRACKING and ring.radiation:
+            # this is approximate because it uses etac, need to iterate
+            # 3 iterations to converge on HMBA lattice
+            etac = get_slip_factor(ring.radiation_off(copy=True), **kwargs)
+            ringtmp = ring
+            for i in range(niter):
+                frequency = ringtmp.get_rf_frequency(cavpts=cavpts)
+                orb0, _ = ringtmp.find_orbit()                            
+                frequency -= frequency * etac * orb0[4]
+                ringtmp = ringtmp.set_rf_frequency(frequency, cavpts=cavpts,
+                                                   copy=True)
+        elif method is FRFMethod.ANALYTIC or not ring.radiation:
+            frequency = ring.get_revolution_frequency(dp=dp, dct=dct) \
+                        * ring.harmonic_number
+        else:
+            raise(AtError('Unknow FRFMethod in set_rf_frequency'))
     return set_cavity(ring, Frequency=frequency, cavpts=cavpts, copy=copy,
-                      rfmode=rfmode, method=method)
+                      rfmode=rfmode)
 
 
 Lattice.mcf = property(get_mcf, doc="Momentum compaction factor")

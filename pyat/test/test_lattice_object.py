@@ -30,10 +30,7 @@ def test_lattice_voltage_harmonic_number():
     lat = Lattice([rf, d], name='lattice')
     assert lat.energy == 3.e+6
     assert lat.periodicity == 10
-<<<<<<< HEAD
-=======
     assert lat.rf_voltage == 2e6
->>>>>>> master
     assert lat.revolution_frequency == 10.e6
     assert lat.harmonic_number == 50
     assert lat.radiation is True

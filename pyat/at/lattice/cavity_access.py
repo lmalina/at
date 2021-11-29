@@ -6,7 +6,7 @@ from .lattice_object import Lattice
 
 __all__ = ['get_rf_frequency', 'get_rf_voltage', 'set_rf_voltage',
            'get_rf_timelag', 'set_rf_timelag', 'set_cavity', 
-           'set_rf_frequency', 'RFMode', 'get_rf_cavities']
+           'RFMode', 'get_rf_cavities']
 
 
 class RFMode(Enum):
@@ -61,7 +61,8 @@ def get_rf_cavities(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
     if rfmode is RFMode.ALL:
         return list(ring.select(cavpts))   
     else:
-        filtfunc = checkattr('Frequency', get_rf_frequency(ring, cavpts=cavpts, rfmode=rfmode))
+        filtfunc = checkattr('Frequency', get_rf_frequency(ring, cavpts=cavpts,
+                                                           rfmode=rfmode))
         return list(filter(filtfunc, ring))
     
 
@@ -205,13 +206,12 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
     if cavpts is None:
         cavpts = getattr(ring, 'cavpts', checktype(RFCavity))
     cavities = get_rf_cavities(ring, cavpts=cavpts, rfmode=rfmode)
-    n_cavities = len(cavities)
+    n_cavities = ring.refcount(cavpts)
     if n_cavities < 1:
         raise AtError('No cavity found in the lattice')
 
     if rfmode is RFMode.UNIQUE or rfmode is RFMode.FUNDAMENTAL:
-        cond = ((numpy.isscalar(Frequency) or Frequency is Frf.NOMINAL
-                 or Frequency is None)
+        cond = ((numpy.isscalar(Frequency) or Frequency is None)
                 and (numpy.isscalar(TimeLag) or TimeLag is None)
                 and (numpy.isscalar(Voltage) or Voltage is None))
         if not cond:
@@ -235,7 +235,7 @@ def set_cavity(ring, Voltage=None, Frequency=None, TimeLag=None, cavpts=None,
     if Voltage is not None:
         if  rfmode is RFMode.FUNDAMENTAL:
             vall = get_rf_voltage_array(ring, cavpts=cavpts, rfmode=RFMode.ALL) 
-            Voltage *= vall/sum(vall) * n_cavities
+            Voltage *= vall / sum(vall) * n_cavities
         modif['Voltage'] = Voltage  / ring.periodicity / n_cavities
 
     # noinspection PyShadowingNames
@@ -257,7 +257,6 @@ Lattice.get_rf_voltage = get_rf_voltage
 Lattice.get_rf_frequency = get_rf_frequency
 Lattice.get_rf_timelag = get_rf_timelag
 Lattice.set_rf_voltage = set_rf_voltage
-Lattice.set_rf_frequency = set_rf_frequency
 Lattice.set_rf_timelag = set_rf_timelag
 Lattice.get_rf_cavities = get_rf_cavities
 Lattice.set_cavity = set_cavity

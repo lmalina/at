@@ -273,14 +273,7 @@ def _orbit6(ring, cavpts=None, guess=None, keep_lattice=False, **kwargs):
     method = kwargs.pop('method', ELossMethod.TRACKING)
 
     l0 = get_s_pos(ring, len(ring))[0]
-    # Get the main RF frequency (the lowest)
-    try:
-        f_rf = min(elm.Frequency for elm in ring if iscavity(elm))
-    except ValueError:
-        raise AtError('No cavity found in the lattice.')
-    # gamma = self.energy / self.particle.mass
-    # beta = math.sqrt(1.0 - 1.0 / gamma / gamma)
-    # h = round(fmin*l0/beta/clight)
+    f_rf = ring.get_rf_frequency()
     harm_number = round(f_rf*l0/clight)
 
     if guess is None:
