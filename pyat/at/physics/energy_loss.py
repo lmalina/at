@@ -8,6 +8,7 @@ from at.lattice import check_radiation, AtError
 from at.lattice import checktype, set_value_refpts, get_cells, refpts_len
 from at.lattice.constants import clight, e_mass, Cgamma
 from at.tracking import lattice_pass
+from at.lattice import RFMode
 
 __all__ = ['get_energy_loss', 'set_cavity_phase', 'ELossMethod',
            'get_timelag_fromU0']
@@ -106,9 +107,9 @@ def get_timelag_fromU0(ring, method=ELossMethod.INTEGRAL, cavpts=None):
         cavpts = get_cells(ring, checktype(RFCavity))
     u0 = get_energy_loss(ring, method=method)
     try:
-        rfv = ring.get_rf_voltage(cavpts=cavpts)
-        freq = ring.get_rf_frequency(cavpts=cavpts)
-        tl0 = ring.get_rf_timelag(cavpts=cavpts)
+        rfv = ring.get_rf_voltage(cavpts=cavpts, rfmode=RFMode.UNIQUE)
+        freq = ring.get_rf_frequency(cavpts=cavpts, rfmode=RFMode.UNIQUE)
+        tl0 = ring.get_rf_timelag(cavpts=cavpts, rfmode=RFMode.UNIQUE)
     except AtError:
         freq = numpy.array([cav.Frequency for cav in ring.select(cavpts)])
         rfv = numpy.array([cav.Voltage for cav in ring.select(cavpts)])
