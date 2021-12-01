@@ -134,7 +134,7 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
     if frequency is None:
         if method is FRFMethod.TRACKING and ring.radiation:
             frequency = ring.get_rf_frequency(cavpts=cavpts)
-            df = rf_resp(ring, df, bpms)
+            resp_rf = rf_resp(ring, df, bpms)
             avorb = av_horbit(ring, bpms)
             frequency -= avorb/resp_rf
         elif method is FRFMethod.ANALYTIC or not ring.radiation:
