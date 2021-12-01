@@ -109,9 +109,10 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
                             FUNDAMENTAL and UNIQUE require scalr inputs, ALL requires
                             vectors with shape (n_cavities,)
         method              ANALYTIC computes frequency form dp, ct and harmonic
-                            number
-                            TRACKING computes frequency to match to orbit6 computation
-        niter               number of iterations for the TRACKING method
+                            number [default]
+                            TRACKING cancels average orbit
+        bpms                refpts used for average orbit calculation
+        df                  delta used for frequency response
     """
 
     def av_horbit(ring, bpms):
