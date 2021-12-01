@@ -97,7 +97,6 @@ def get_rf_voltage_array(ring, cavpts=None, rfmode=RFMode.FUNDAMENTAL):
     vcell = _get_rf_attr(ring, 'Voltage', cavpts=cavpts, rfmode=rfmode)
     if rfmode is RFMode.UNIQUE or rfmode is RFMode.FUNDAMENTAL:
        n_cavity = len(get_rf_cavities(ring, cavpts=cavpts, rfmode=rfmode))
-       print(n_cavity)
        vcell = numpy.broadcast_to(vcell,(n_cavity,))
     return vcell
 

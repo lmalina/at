@@ -85,7 +85,7 @@ def get_revolution_frequency(ring, dp=None, dct=None, **kwargs):
 
 def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
                      copy=False, rfmode=RFMode.FUNDAMENTAL,
-                     method=FRFMethod.TRACKING, niter=3, **kwargs):
+                     method=FRFMethod.ANALYTIC, df=1.0e-3, bpms=None, **kwargs):
     """Set the RF voltage
 
     PARAMETERS
@@ -113,18 +113,29 @@ def set_rf_frequency(ring, frequency=None, dp=None, dct=None, cavpts=None,
                             TRACKING computes frequency to match to orbit6 computation
         niter               number of iterations for the TRACKING method
     """
+
+    def av_horbit(ring, bpms):
+        if bpms is None:
+            bpms = range(len(ring))
+        _, o = ring.find_orbit(refpts=bpms)
+        return numpy.mean(o[:,0])
+
+    def rf_resp(ring, df, bpms):
+        frequency = ring.get_rf_frequency(cavpts=cavpts)
+        ringp = ring.set_rf_frequency(frequency+0.5*df,
+                                      cavpts=cavpts, copy=True)
+        ringm = ring.set_rf_frequency(frequency-0.5*df,
+                                      cavpts=cavpts, copy=True)
+        op = av_horbit(ringp, bpms)
+        om = av_horbit(ringm, bpms)
+        return (op-om)/df
+
     if frequency is None:
         if method is FRFMethod.TRACKING and ring.radiation:
-            # this is approximate because it uses etac, need to iterate
-            # 3 iterations to converge on HMBA lattice
-            etac = get_slip_factor(ring.radiation_off(copy=True), **kwargs)
-            ringtmp = ring
-            for i in range(niter):
-                frequency = ringtmp.get_rf_frequency(cavpts=cavpts)
-                orb0, _ = ringtmp.find_orbit()
-                frequency -= frequency * etac * orb0[4]
-                ringtmp = ringtmp.set_rf_frequency(frequency, cavpts=cavpts,
-                                                   copy=True)
+            frequency = ring.get_rf_frequency(cavpts=cavpts)
+            df = rf_resp(ring, df, bpms)
+            avorb = av_horbit(ring, bpms)
+            frequency -= avorb/resp_rf
         elif method is FRFMethod.ANALYTIC or not ring.radiation:
             frequency = ring.get_revolution_frequency(dp=dp, dct=dct) \
                         * ring.harmonic_number
