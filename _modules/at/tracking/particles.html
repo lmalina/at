@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>at.tracking.particles &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/at/tracking/particles';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">at.tracking....</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for at.tracking.particles</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions relating to particle generation</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="kn">import</span> <span class="n">cholesky</span><span class="p">,</span> <span class="n">LinAlgError</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">..lattice</span> <span class="kn">import</span> <span class="n">AtError</span><span class="p">,</span> <span class="n">AtWarning</span><span class="p">,</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">Orbit</span><span class="p">,</span> <span class="n">random</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;beam&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma_matrix&#39;</span><span class="p">]</span>
+
+
+<span class="c1"># noinspection PyPep8Naming</span>
+<div class="viewcode-block" id="sigma_matrix">
+<a class="viewcode-back" href="../../../p/api/at.tracking.particles.html#at.tracking.particles.sigma_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">sigma_matrix</span><span class="p">(</span><span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the correlation matrix :math:`\Sigma` to be used for particle</span>
+<span class="sd">    generation</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        ring:           Lattice object or list of twiss parameters.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        beam:               Particle coordinates</span>
+<span class="sd">        twiss_in:           Data structure containing input twiss parameters.</span>
+<span class="sd">        betax (float):      Input horizontal beta function [m]</span>
+<span class="sd">        alphax (float):     Input horizontal alpha function [m]</span>
+<span class="sd">        emitx (float):      Horizontal emittance [m.rad]</span>
+<span class="sd">        betay (float):      Input vertical beta function [m]</span>
+<span class="sd">        alphay (float):     Input vertical alpha function [m]</span>
+<span class="sd">        emity (float):      Vertical emittance [m.rad]</span>
+<span class="sd">        blength (float):    One sigma bunch length [m]</span>
+<span class="sd">        espread (float):    One sigma energy spread [dp/p]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        sigma_matrix:       (6, 6) :math:`\Sigma`-matrix</span>
+
+<span class="sd">    *beam* is a (6, nparticles) coordinates array of a particle population.</span>
+<span class="sd">    If provided, all other parameters are ignored.</span>
+
+<span class="sd">    If *twiss_in* is provided, its *R* or *alpha* and *beta* fields are used,</span>
+<span class="sd">    *emitx* and *emity* must be provided.</span>
+
+<span class="sd">    If *ring* is provided:</span>
+
+<span class="sd">    * for a 6d lattice, :py:func:`.ohmi_envelope` is called to compute the</span>
+<span class="sd">      equilibrium emittances. *emitx*, *emity* may overload these values.</span>
+<span class="sd">    * for a 4d lattice, *emitx*, *emity* must be provided.</span>
+
+<span class="sd">    Otherwise, *alphax*, *betax*, *emitx*, *alphay*, *betay* and *emity*</span>
+<span class="sd">    must be provided. The result is an uncoupled :math:`\Sigma`-matrix</span>
+
+<span class="sd">    If *espread* and *blength* are not specified, the results is a</span>
+<span class="sd">    monochromatic beam.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">require</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+        <span class="n">miss</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">miss</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AtError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: missing </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">miss</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">ignore</span><span class="p">(</span><span class="n">mess</span><span class="p">):</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">ok</span><span class="p">):</span>
+            <span class="n">warn</span><span class="p">(</span><span class="n">AtWarning</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: </span><span class="si">{1}</span><span class="s1"> ignored&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mess</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ok</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">r_s</span><span class="p">():</span>
+        <span class="n">rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">((</span><span class="s1">&#39;espread&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">,</span> <span class="s1">&#39;blength&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)):</span>
+            <span class="n">blength</span><span class="p">,</span> <span class="n">espread</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span>
+                <span class="s1">&#39;Both &quot;blength&quot; and &quot;espread&quot; are required&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;blength&#39;</span><span class="p">,</span> <span class="s1">&#39;espread&#39;</span><span class="p">)</span>
+            <span class="n">ems</span> <span class="o">=</span> <span class="n">blength</span> <span class="o">*</span> <span class="n">espread</span>
+            <span class="k">if</span> <span class="n">ems</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="n">rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">espread</span> <span class="o">/</span> <span class="n">blength</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">blength</span> <span class="o">/</span> <span class="n">espread</span><span class="p">]])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ems</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">ems</span><span class="p">,</span> <span class="n">rs</span>
+
+    <span class="k">def</span> <span class="nf">r_4d</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">rs</span><span class="p">):</span>
+        <span class="n">r6</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">r6</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">bx</span><span class="p">,</span> <span class="o">-</span><span class="n">ax</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">ax</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">ax</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">bx</span><span class="p">]])</span>
+        <span class="n">r6</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">by</span><span class="p">,</span> <span class="o">-</span><span class="n">ay</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">ay</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">ay</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">by</span><span class="p">]])</span>
+        <span class="n">r6</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:,</span> <span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="n">rs</span>
+        <span class="k">return</span> <span class="n">r6</span>
+
+    <span class="k">def</span> <span class="nf">r_expand</span><span class="p">(</span><span class="n">rmat</span><span class="p">,</span> <span class="n">rs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">rmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">r6</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+            <span class="n">r6</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmat</span>
+            <span class="n">r6</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">:,</span> <span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="n">rs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">r6</span> <span class="o">=</span> <span class="n">rmat</span>
+        <span class="k">return</span> <span class="n">r6</span>
+
+    <span class="k">def</span> <span class="nf">sigma_from_rmat</span><span class="p">(</span><span class="n">rmat</span><span class="p">,</span> <span class="n">emit</span><span class="p">,</span> <span class="n">embl</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">emit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">emx</span><span class="p">,</span> <span class="n">emy</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;Emittances must be provided&#39;</span><span class="p">,</span> <span class="s1">&#39;emitx&#39;</span><span class="p">,</span> <span class="s1">&#39;emity&#39;</span><span class="p">)</span>
+            <span class="n">ems</span> <span class="o">=</span> <span class="n">embl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">emx</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;emitx&#39;</span><span class="p">,</span> <span class="n">emit</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">emy</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;emity&#39;</span><span class="p">,</span> <span class="n">emit</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ems</span> <span class="o">=</span> <span class="n">emit</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">embl</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">embl</span>
+
+        <span class="n">sigm</span> <span class="o">=</span> <span class="n">emx</span> <span class="o">*</span> <span class="n">rmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">emy</span> <span class="o">*</span> <span class="n">rmat</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">if</span> <span class="n">ems</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span><span class="n">AtWarning</span><span class="p">(</span><span class="s1">&#39;Monochromatic beam: no energy spread&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sigm</span> <span class="o">+=</span> <span class="n">ems</span> <span class="o">*</span> <span class="n">rmat</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="n">sigm</span>
+
+    <span class="k">if</span> <span class="n">ring</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;ring&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ring</span>
+
+    <span class="k">if</span> <span class="s1">&#39;beam&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;beam&#39; is provided&quot;</span>
+        <span class="n">beam</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;beam&#39;</span><span class="p">)</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;orbit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">orbit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">orbit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">beam</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">beam</span> <span class="o">-=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">sigmat</span> <span class="o">=</span> <span class="p">(</span><span class="n">beam</span> <span class="o">@</span> <span class="n">beam</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="n">beam</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">elif</span> <span class="s1">&#39;twiss_in&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">twin</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;twiss_in&#39;</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;twiss_in&#39; is provided&quot;</span>
+        <span class="n">em56</span><span class="p">,</span> <span class="n">r56</span> <span class="o">=</span> <span class="n">r_s</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Rin</span> <span class="o">=</span> <span class="n">twin</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>  <span class="c1"># record arrays throw ValueError !</span>
+            <span class="n">Rm</span> <span class="o">=</span> <span class="n">r_4d</span><span class="p">(</span><span class="n">twin</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">twin</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">twin</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">twin</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">r56</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Rm</span> <span class="o">=</span> <span class="n">r_expand</span><span class="p">(</span><span class="n">Rin</span><span class="p">,</span> <span class="n">r56</span><span class="p">)</span>
+        <span class="n">sigmat</span> <span class="o">=</span> <span class="n">sigma_from_rmat</span><span class="p">(</span><span class="n">Rm</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">em56</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="s1">&#39;ring&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">ring</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ring&#39;</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&#39;ring&#39; is provided&quot;</span>
+        <span class="n">em56</span><span class="p">,</span> <span class="n">r56</span> <span class="o">=</span> <span class="n">r_s</span><span class="p">()</span>
+        <span class="n">el0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">linopt6</span><span class="p">(</span><span class="n">orbit</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;orbit&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">el0</span><span class="o">.</span><span class="n">closed_orbit</span>
+        <span class="n">Rm</span> <span class="o">=</span> <span class="n">r_expand</span><span class="p">(</span><span class="n">el0</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">],</span> <span class="n">r56</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ring</span><span class="o">.</span><span class="n">is_6d</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">beam0</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">ohmi_envelope</span><span class="p">(</span><span class="n">orbit</span><span class="o">=</span><span class="n">orbit</span><span class="p">)</span>
+            <span class="n">sigmat</span> <span class="o">=</span> <span class="n">sigma_from_rmat</span><span class="p">(</span><span class="n">Rm</span><span class="p">,</span> <span class="n">beam0</span><span class="o">.</span><span class="n">mode_emittances</span><span class="p">,</span> <span class="n">em56</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sigmat</span> <span class="o">=</span> <span class="n">sigma_from_rmat</span><span class="p">(</span><span class="n">Rm</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">em56</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Uncoupled beam&quot;</span>
+        <span class="n">alphax</span><span class="p">,</span> <span class="n">alphay</span><span class="p">,</span> <span class="n">betax</span><span class="p">,</span> <span class="n">betay</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span>
+            <span class="s1">&#39;Neither &quot;twiss_in&quot; nor &quot;ring&quot; is provided&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;alphax&#39;</span><span class="p">,</span> <span class="s1">&#39;alphay&#39;</span><span class="p">,</span> <span class="s1">&#39;betax&#39;</span><span class="p">,</span> <span class="s1">&#39;betay&#39;</span><span class="p">)</span>
+        <span class="c1"># orbit = kwargs.pop(&#39;orbit&#39;, np.zeros(6))</span>
+        <span class="n">em56</span><span class="p">,</span> <span class="n">r56</span> <span class="o">=</span> <span class="n">r_s</span><span class="p">()</span>
+        <span class="n">Rm</span> <span class="o">=</span> <span class="n">r_4d</span><span class="p">(</span><span class="n">alphax</span><span class="p">,</span> <span class="n">alphay</span><span class="p">,</span> <span class="n">betax</span><span class="p">,</span> <span class="n">betay</span><span class="p">,</span> <span class="n">r56</span><span class="p">)</span>
+        <span class="n">sigmat</span> <span class="o">=</span> <span class="n">sigma_from_rmat</span><span class="p">(</span><span class="n">Rm</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">em56</span><span class="p">)</span>
+
+    <span class="n">ignore</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sigmat</span></div>
+
+
+
+<div class="viewcode-block" id="beam">
+<a class="viewcode-back" href="../../../p/api/at.tracking.particles.html#at.tracking.particles.beam">[docs]</a>
+<span class="k">def</span> <span class="nf">beam</span><span class="p">(</span><span class="n">nparts</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">orbit</span><span class="p">:</span> <span class="n">Orbit</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates an array of random particles according to the given</span>
+<span class="sd">    :math:`\Sigma`-matrix</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        nparts:         Number of particles</span>
+<span class="sd">        sigma:          :math:`\Sigma`-matrix as calculated by</span>
+<span class="sd">          :py:func:`sigma_matrix`</span>
+<span class="sd">        orbit:          An orbit can be provided to give a center of</span>
+<span class="sd">          mass offset to the distribution</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        particle_dist:  a (6, *nparts*) matrix of coordinates</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_get_single_plane</span><span class="p">(</span><span class="n">slc</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="n">slc</span><span class="p">,</span> <span class="n">slc</span><span class="p">])</span>
+        <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">v</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">sigma</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nparts</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Try full 6x6 matrix</span>
+        <span class="n">lmat</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h, v, delta&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+        <span class="n">lmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Try x-y 4x4 matrix</span>
+            <span class="n">sel</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sel</span><span class="p">,</span> <span class="n">sel</span><span class="p">)</span>
+            <span class="n">lmat</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+            <span class="n">lmat</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="n">_get_single_plane</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h, v&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Try x-delta 4x4 matrix</span>
+                <span class="n">sel</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">sel</span><span class="p">,</span> <span class="n">sel</span><span class="p">)</span>
+                <span class="n">lmat</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">cholesky</span><span class="p">(</span><span class="n">sigma</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                <span class="n">lmat</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_single_plane</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;h, delta&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">LinAlgError</span><span class="p">:</span>
+                <span class="c1"># Uncoupled</span>
+                <span class="n">lmat</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_single_plane</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">lmat</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_single_plane</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+                <span class="n">lmat</span><span class="p">[</span><span class="mi">4</span><span class="p">:,</span> <span class="mi">4</span><span class="p">:]</span> <span class="o">=</span> <span class="n">_get_single_plane</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;uncoupled&quot;</span><span class="p">)</span>
+
+    <span class="n">particle_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfortranarray</span><span class="p">(</span><span class="n">lmat</span> <span class="o">@</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">orbit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">particle_dist</span> <span class="o">+=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">particle_dist</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

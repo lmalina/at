@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>at.physics.fastring &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/at/physics/fastring';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">at.physics.fastring</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for at.physics.fastring</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions relating to fast_ring</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">at.lattice</span> <span class="kn">import</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">Particle</span>
+<span class="kn">from</span> <span class="nn">at.lattice</span> <span class="kn">import</span> <span class="n">RFCavity</span><span class="p">,</span> <span class="n">Element</span><span class="p">,</span> <span class="n">Marker</span><span class="p">,</span> <span class="n">get_cells</span><span class="p">,</span> <span class="n">checkname</span>
+<span class="kn">from</span> <span class="nn">at.lattice</span> <span class="kn">import</span> <span class="n">get_elements</span><span class="p">,</span> <span class="n">M66</span><span class="p">,</span> <span class="n">SimpleQuantDiff</span><span class="p">,</span> <span class="n">AtError</span><span class="p">,</span> <span class="n">SimpleRadiation</span>
+<span class="kn">from</span> <span class="nn">at.physics</span> <span class="kn">import</span> <span class="n">gen_m66_elem</span><span class="p">,</span> <span class="n">gen_detuning_elem</span><span class="p">,</span> <span class="n">gen_quantdiff_elem</span>
+<span class="kn">from</span> <span class="nn">at.constants</span> <span class="kn">import</span> <span class="n">clight</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;fast_ring&#39;</span><span class="p">,</span> <span class="s1">&#39;simple_ring&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_rearrange</span><span class="p">(</span><span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">split_inds</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">split_inds</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">inds</span><span class="p">)</span>
+    <span class="n">all_rings</span> <span class="o">=</span> <span class="p">[</span><span class="n">ring</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">b</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span> <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inds</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">inds</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+
+    <span class="n">ringm</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ring_slice</span> <span class="ow">in</span> <span class="n">all_rings</span><span class="p">:</span>
+        <span class="n">ring_slice</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;xbeg&#39;</span><span class="p">))</span>
+        <span class="n">ring_slice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Marker</span><span class="p">(</span><span class="s1">&#39;xend&#39;</span><span class="p">))</span>
+        <span class="n">cavs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ring_slice</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">RFCavity</span><span class="p">)]</span>
+        <span class="n">newpass</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IdentityPass&#39;</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">Length</span> <span class="o">==</span> <span class="mi">0</span>
+                   <span class="k">else</span> <span class="s1">&#39;DriftPass&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cavs</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">pm</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cavs</span><span class="p">,</span> <span class="n">newpass</span><span class="p">):</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">PassMethod</span> <span class="o">=</span> <span class="n">pm</span>
+        <span class="n">uni_freq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">Frequency</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">cavs</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">fr</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">uni_freq</span><span class="p">):</span>
+            <span class="n">cavf</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cavs</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">Frequency</span> <span class="o">==</span> <span class="n">fr</span><span class="p">]</span>
+            <span class="n">vol</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">Voltage</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cavf</span><span class="p">))</span>
+            <span class="n">cavl</span> <span class="o">=</span> <span class="n">RFCavity</span><span class="p">(</span><span class="s1">&#39;CAVL&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vol</span><span class="p">,</span> <span class="n">fr</span><span class="p">,</span>
+                            <span class="n">cavf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">HarmNumber</span><span class="p">,</span> <span class="n">cavf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">Energy</span><span class="p">)</span>
+            <span class="n">cavl</span><span class="o">.</span><span class="n">TimeLag</span> <span class="o">=</span> <span class="n">cavf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">TimeLag</span>
+            <span class="n">ring_slice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cavl</span><span class="p">)</span>
+        <span class="n">ringm</span> <span class="o">=</span> <span class="n">ringm</span> <span class="o">+</span> <span class="n">ring_slice</span>
+    <span class="k">return</span> <span class="n">all_rings</span><span class="p">,</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">ringm</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">ring</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_fring</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">split_inds</span><span class="o">=</span><span class="p">[],</span> <span class="n">detuning_elem</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">all_rings</span><span class="p">,</span> <span class="n">merged_ring</span> <span class="o">=</span> <span class="n">_rearrange</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">split_inds</span><span class="o">=</span><span class="n">split_inds</span><span class="p">)</span>
+    <span class="n">ibegs</span> <span class="o">=</span> <span class="n">get_cells</span><span class="p">(</span><span class="n">merged_ring</span><span class="p">,</span> <span class="n">checkname</span><span class="p">(</span><span class="s1">&#39;xbeg&#39;</span><span class="p">))</span>
+    <span class="n">iends</span> <span class="o">=</span> <span class="n">get_cells</span><span class="p">(</span><span class="n">merged_ring</span><span class="p">,</span> <span class="n">checkname</span><span class="p">(</span><span class="s1">&#39;xend&#39;</span><span class="p">))</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">orbit</span> <span class="o">=</span> <span class="n">merged_ring</span><span class="o">.</span><span class="n">find_orbit</span><span class="p">(</span><span class="n">refpts</span><span class="o">=</span><span class="n">ibegs</span> <span class="o">|</span> <span class="n">iends</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">detuning_elem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">detuning_elem</span> <span class="o">=</span> <span class="n">gen_detuning_elem</span><span class="p">(</span><span class="n">merged_ring</span><span class="p">,</span> <span class="n">orbit</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">detuning_elem</span><span class="o">.</span><span class="n">T1</span> <span class="o">=</span> <span class="o">-</span><span class="n">orbit</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">detuning_elem</span><span class="o">.</span><span class="n">T2</span> <span class="o">=</span> <span class="n">orbit</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">fastring</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_rings</span><span class="p">):</span>
+        <span class="n">cavs</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">r</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">PassMethod</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;CavityPass&#39;</span><span class="p">)]</span>
+        <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cavs</span><span class="p">]</span>
+        <span class="n">lin_elem</span> <span class="o">=</span> <span class="n">gen_m66_elem</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">orbit</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">counter</span><span class="p">],</span>
+                                <span class="n">orbit</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">counter</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">lin_elem</span><span class="o">.</span><span class="n">FamName</span> <span class="o">=</span> <span class="n">lin_elem</span><span class="o">.</span><span class="n">FamName</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+        <span class="p">[</span><span class="n">fastring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cavs</span><span class="p">]</span>
+        <span class="n">fastring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lin_elem</span><span class="p">)</span>
+    <span class="n">fastring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">detuning_elem</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">qd_elem</span> <span class="o">=</span> <span class="n">gen_quantdiff_elem</span><span class="p">(</span><span class="n">merged_ring</span><span class="p">)</span>
+        <span class="n">fastring</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qd_elem</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># No synchrotron radiation =&gt; no diffusion element</span>
+        <span class="k">pass</span>
+    <span class="n">fastring</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">fastring</span><span class="p">,</span> <span class="o">**</span><span class="nb">vars</span><span class="p">(</span><span class="n">ring</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">fastring</span>
+
+
+<div class="viewcode-block" id="fast_ring">
+<a class="viewcode-back" href="../../../p/api/at.physics.fastring.html#at.physics.fastring.fast_ring">[docs]</a>
+<span class="k">def</span> <span class="nf">fast_ring</span><span class="p">(</span><span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">split_inds</span><span class="o">=</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Lattice</span><span class="p">,</span> <span class="n">Lattice</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a &quot;fast ring&quot;</span>
+
+<span class="sd">    A fast ring consisting in:</span>
+
+<span class="sd">    * a RF cavity per distinct frequency,</span>
+<span class="sd">    * a 6x6 linear transfer map,</span>
+<span class="sd">    * a detuning and chromaticity element,</span>
+<span class="sd">    * a quantum diffusion element (for radiation ring).</span>
+
+<span class="sd">    2 new lattices are returned, one with radiation and one without</span>
+<span class="sd">    It is possible to split the original ring in multiple &quot;fastrings&quot;</span>
+<span class="sd">    using the ``split_inds`` argument</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        ring:       Lattice description</span>
+<span class="sd">        split_inds: List of indexes where to split the ring</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        fring (Lattice):    Fast ring without radiation</span>
+<span class="sd">        fringrad (Lattice): Fast ring with radiation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ringi</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+    <span class="n">fastringnorad</span> <span class="o">=</span> <span class="n">_fring</span><span class="p">(</span><span class="n">ringi</span><span class="o">.</span><span class="n">radiation_off</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                           <span class="n">split_inds</span><span class="o">=</span><span class="n">split_inds</span><span class="p">)</span>
+    <span class="n">detuning_elem</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">get_elements</span><span class="p">(</span><span class="n">fastringnorad</span><span class="p">,</span>
+                                               <span class="s1">&#39;NonLinear&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">fastringrad</span> <span class="o">=</span> <span class="n">_fring</span><span class="p">(</span><span class="n">ringi</span><span class="o">.</span><span class="n">radiation_on</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                         <span class="n">split_inds</span><span class="o">=</span><span class="n">split_inds</span><span class="p">,</span>
+                         <span class="n">detuning_elem</span><span class="o">=</span><span class="n">detuning_elem</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fastringnorad</span><span class="p">,</span> <span class="n">fastringrad</span></div>
+
+
+
+<div class="viewcode-block" id="simple_ring">
+<a class="viewcode-back" href="../../../p/api/at.physics.fastring.html#at.physics.fastring.simple_ring">[docs]</a>
+<span class="k">def</span> <span class="nf">simple_ring</span><span class="p">(</span><span class="n">energy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">circumference</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="n">harmonic_number</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+                <span class="n">Qx</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Qy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="n">Vrf</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
+                <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="n">betax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">betay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="n">alphax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">alphay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">dispx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dispxp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">dispy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dispyp</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">Qpx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">Qpy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">A1</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">A2</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">A3</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">emitx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">emity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">espread</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">taux</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">tauy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">tauz</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">U0</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">particle</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Particle</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;relativistic&#39;</span><span class="p">,</span>
+                <span class="n">TimeLag</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Lattice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a &quot;simple ring&quot; based on a given dictionary</span>
+<span class="sd">       of global parameters</span>
+
+<span class="sd">    A simple ring consists of:</span>
+
+<span class="sd">    * an RF cavity,</span>
+<span class="sd">    * a 6x6 linear transfer map with no radiation damping,</span>
+<span class="sd">    * a detuning and chromaticity element,</span>
+<span class="sd">    * a simple radiation damping element</span>
+<span class="sd">    * a simplified quantum diffusion element which contains equilibrium emittance</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        energy: [eV]</span>
+<span class="sd">        circumference: [m]</span>
+<span class="sd">        harmonic_number: can be scalar or sequence of scalars. The RF</span>
+<span class="sd">          frequency is derived from this and the ring circumference</span>
+<span class="sd">        Qx: horizontal tune</span>
+<span class="sd">        Qy: vertical tune</span>
+<span class="sd">        Vrf: RF Voltage set point [V] - can be scalar or sequence of scalars</span>
+<span class="sd">        alpha: momentum compaction factor</span>
+<span class="sd">        betax: horizontal beta function [m], Default=1</span>
+<span class="sd">        betay: vertical beta function [m], Default=1</span>
+<span class="sd">        alphax: horizontal alpha function, Default=0</span>
+<span class="sd">        alphay: vertical alpha function, Default=0</span>
+<span class="sd">        dispx: horizontal dispersion [m], Default=0</span>
+<span class="sd">        dispxp: horizontal dispersion prime, Default=0</span>
+<span class="sd">        dispy: vertical dispersion [m], Default=0</span>
+<span class="sd">        dispyp: vertical dispersion prime, Default=0</span>
+<span class="sd">        Qpx: horizontal linear chromaticity, Default=0</span>
+<span class="sd">        Qpy: vertical linear chromaticity, Default=0</span>
+<span class="sd">        A1: horizontal amplitude detuning coefficient, Default=0</span>
+<span class="sd">        A2: cross term for amplitude detuning coefficient, Default=0</span>
+<span class="sd">        A3: vertical amplitude detuning coefficient, Default=0</span>
+<span class="sd">        emitx: horizontal equilibrium emittance [m.rad], Default=0</span>
+<span class="sd">          ignored if emitx=0</span>
+<span class="sd">        emity: vertical equilibrium emittance [m.rad], Default=0</span>
+<span class="sd">          ignored if emity=0</span>
+<span class="sd">        espread: equilibrium momentum spread, Default=0</span>
+<span class="sd">          ignored if espread=0</span>
+<span class="sd">        taux: horizontal radiation damping time [turns], Default=0</span>
+<span class="sd">          ignored if taux=0</span>
+<span class="sd">        tauy: vertical radiation damping time [turns], Default=0</span>
+<span class="sd">          ignored if tauy=0</span>
+<span class="sd">        tauz: longitudinal radiation damping time [turns], Default=0</span>
+<span class="sd">          ignored if tauz=0</span>
+<span class="sd">        U0: energy loss [eV] (positive number), Default=0</span>
+<span class="sd">        name: Name of the lattice</span>
+<span class="sd">        particle: circulating particle. May be</span>
+<span class="sd">          &#39;relativistic&#39;, &#39;electron&#39;, &#39;positron&#39;, &#39;proton&#39;</span>
+<span class="sd">          or a Particle object</span>
+<span class="sd">        TimeLag: Set the timelag of the cavities, Default=0. Can be scalar</span>
+<span class="sd">          or sequence of scalars (as with harmonic_number and Vrf).</span>
+
+<span class="sd">    If the given emitx, emity or espread is 0, then no equlibrium emittance</span>
+<span class="sd">    is applied in this plane.</span>
+<span class="sd">    If the given tau is 0, then no radiation damping is applied for this plane.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ring:    Simple ring</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rfp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">Vrf</span><span class="p">,</span> <span class="n">harmonic_number</span><span class="p">,</span> <span class="n">TimeLag</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AtError</span><span class="p">(</span><span class="s1">&#39;Vrf, harmonic_number and TimeLag must be broadcastable&#39;</span><span class="p">)</span>
+
+    <span class="c1"># revolution frequency</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="n">clight</span> <span class="o">/</span> <span class="n">circumference</span>
+
+    <span class="n">all_cavities</span> <span class="o">=</span> <span class="p">[</span><span class="n">RFCavity</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;RFC</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">h</span><span class="o">*</span><span class="n">f0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">TimeLag</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rfp</span><span class="p">)]</span>
+
+    <span class="c1"># Now we will use the optics parameters to compute the uncoupled M66 matrix</span>
+
+    <span class="n">s_dphi_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Qx</span><span class="p">)</span>
+    <span class="n">c_dphi_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Qx</span><span class="p">)</span>
+    <span class="n">s_dphi_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Qy</span><span class="p">)</span>
+    <span class="n">c_dphi_y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">Qy</span><span class="p">)</span>
+
+    <span class="n">M00</span> <span class="o">=</span> <span class="n">c_dphi_x</span> <span class="o">+</span> <span class="n">alphax</span> <span class="o">*</span> <span class="n">s_dphi_x</span>
+    <span class="n">M01</span> <span class="o">=</span> <span class="n">betax</span> <span class="o">*</span> <span class="n">s_dphi_x</span>
+    <span class="n">M10</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">alphax</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">betax</span> <span class="o">*</span> <span class="n">s_dphi_x</span>
+    <span class="n">M11</span> <span class="o">=</span> <span class="n">c_dphi_x</span> <span class="o">-</span> <span class="n">alphax</span> <span class="o">*</span> <span class="n">s_dphi_x</span>
+
+    <span class="n">M04</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M00</span><span class="p">)</span> <span class="o">*</span> <span class="n">dispx</span> <span class="o">-</span> <span class="n">M01</span> <span class="o">*</span> <span class="n">dispxp</span>
+    <span class="n">M14</span> <span class="o">=</span> <span class="o">-</span><span class="n">M10</span> <span class="o">*</span> <span class="n">dispx</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M11</span><span class="p">)</span> <span class="o">*</span> <span class="n">dispxp</span>
+    
+    <span class="n">M22</span> <span class="o">=</span> <span class="n">c_dphi_y</span> <span class="o">+</span> <span class="n">alphay</span> <span class="o">*</span> <span class="n">s_dphi_y</span>
+    <span class="n">M23</span> <span class="o">=</span> <span class="n">betay</span> <span class="o">*</span> <span class="n">s_dphi_y</span>
+    <span class="n">M32</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">alphay</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">betay</span> <span class="o">*</span> <span class="n">s_dphi_y</span>
+    <span class="n">M33</span> <span class="o">=</span> <span class="n">c_dphi_y</span> <span class="o">-</span> <span class="n">alphay</span> <span class="o">*</span> <span class="n">s_dphi_y</span>
+
+    <span class="n">M24</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M22</span><span class="p">)</span> <span class="o">*</span> <span class="n">dispy</span> <span class="o">-</span> <span class="n">M23</span> <span class="o">*</span> <span class="n">dispyp</span>
+    <span class="n">M34</span> <span class="o">=</span> <span class="o">-</span><span class="n">M32</span> <span class="o">*</span> <span class="n">dispy</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">M33</span><span class="p">)</span> <span class="o">*</span> <span class="n">dispyp</span>
+    
+    
+    <span class="n">M44</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="n">M45</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="n">M54</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">circumference</span>
+    <span class="n">M55</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">Mat66</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">M00</span><span class="p">,</span> <span class="n">M01</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M04</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                         <span class="p">[</span><span class="n">M10</span><span class="p">,</span> <span class="n">M11</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M14</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M22</span><span class="p">,</span> <span class="n">M23</span><span class="p">,</span> <span class="n">M24</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M32</span><span class="p">,</span> <span class="n">M33</span><span class="p">,</span> <span class="n">M34</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M44</span><span class="p">,</span> <span class="n">M45</span><span class="p">],</span>
+                         <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">M54</span><span class="p">,</span> <span class="n">M55</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+
+    <span class="c1"># generate the linear tracking element, we set a length</span>
+    <span class="c1"># which is needed to give the lattice object the correct length</span>
+    <span class="c1"># (although it is not used for anything else)</span>
+    <span class="n">lin_elem</span> <span class="o">=</span> <span class="n">M66</span><span class="p">(</span><span class="s1">&#39;Linear&#39;</span><span class="p">,</span> <span class="n">m66</span><span class="o">=</span><span class="n">Mat66</span><span class="p">,</span> <span class="n">Length</span><span class="o">=</span><span class="n">circumference</span><span class="p">)</span>
+
+    <span class="c1"># Generate the simple radiation element</span>
+    <span class="n">simplerad</span> <span class="o">=</span> <span class="n">SimpleRadiation</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">,</span> <span class="n">taux</span><span class="o">=</span><span class="n">taux</span><span class="p">,</span> <span class="n">tauy</span><span class="o">=</span><span class="n">tauy</span><span class="p">,</span> 
+                                <span class="n">tauz</span><span class="o">=</span><span class="n">tauz</span><span class="p">,</span> <span class="n">U0</span><span class="o">=</span><span class="n">U0</span><span class="p">,</span> <span class="n">dispx</span><span class="o">=</span><span class="n">dispx</span><span class="p">,</span>
+                                <span class="n">dispy</span><span class="o">=</span><span class="n">dispy</span><span class="p">,</span> <span class="n">dispxp</span><span class="o">=</span><span class="n">dispxp</span><span class="p">,</span> 
+                                <span class="n">dispyp</span><span class="o">=</span><span class="n">dispyp</span><span class="p">)</span>
+                                
+    <span class="c1"># Generate the simple quantum diffusion element</span>
+    <span class="n">quantdiff</span> <span class="o">=</span> <span class="n">SimpleQuantDiff</span><span class="p">(</span><span class="s1">&#39;SQD&#39;</span><span class="p">,</span> <span class="n">betax</span><span class="o">=</span><span class="n">betax</span><span class="p">,</span> <span class="n">betay</span><span class="o">=</span><span class="n">betay</span><span class="p">,</span>
+                                <span class="n">emitx</span><span class="o">=</span><span class="n">emitx</span><span class="p">,</span> <span class="n">emity</span><span class="o">=</span><span class="n">emity</span><span class="p">,</span>
+                                <span class="n">espread</span><span class="o">=</span><span class="n">espread</span><span class="p">,</span> <span class="n">taux</span><span class="o">=</span><span class="n">taux</span><span class="p">,</span>
+                                <span class="n">tauy</span><span class="o">=</span><span class="n">tauy</span><span class="p">,</span> <span class="n">tauz</span><span class="o">=</span><span class="n">tauz</span><span class="p">)</span>
+
+    <span class="c1"># Generate the detuning element</span>
+    <span class="n">nonlin_elem</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s1">&#39;NonLinear&#39;</span><span class="p">,</span> <span class="n">PassMethod</span><span class="o">=</span><span class="s1">&#39;DeltaQPass&#39;</span><span class="p">,</span>
+                          <span class="n">Betax</span><span class="o">=</span><span class="n">betax</span><span class="p">,</span> <span class="n">Betay</span><span class="o">=</span><span class="n">betay</span><span class="p">,</span>
+                          <span class="n">Alphax</span><span class="o">=</span><span class="n">alphax</span><span class="p">,</span> <span class="n">Alphay</span><span class="o">=</span><span class="n">alphay</span><span class="p">,</span>
+                          <span class="n">Qpx</span><span class="o">=</span><span class="n">Qpx</span><span class="p">,</span> <span class="n">Qpy</span><span class="o">=</span><span class="n">Qpy</span><span class="p">,</span>
+                          <span class="n">A1</span><span class="o">=</span><span class="n">A1</span><span class="p">,</span> <span class="n">A2</span><span class="o">=</span><span class="n">A2</span><span class="p">,</span> <span class="n">A3</span><span class="o">=</span><span class="n">A3</span><span class="p">)</span>
+
+    <span class="c1"># Assemble all elements into the lattice object</span>
+    <span class="n">ring</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">all_cavities</span> <span class="o">+</span> <span class="p">[</span><span class="n">lin_elem</span><span class="p">,</span> <span class="n">nonlin_elem</span><span class="p">,</span> <span class="n">simplerad</span><span class="p">,</span> <span class="n">quantdiff</span><span class="p">],</span>
+                   <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span> <span class="n">particle</span><span class="o">=</span><span class="n">particle</span><span class="p">,</span> <span class="n">periodicity</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ring</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

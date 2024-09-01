@@ -1,0 +1,1127 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Variables &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'p/notebooks/variables';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Observables" href="observables.html" />
+    <link rel="prev" title="PyAT Primer" href="../howto/Primer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../howto/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/Primer.html">PyAT Primer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="observables.html">Observables</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">How to:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../howto/multiprocessing.html">Parallel processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/CavityControl.html">Cavity Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/Collective.html">Collective</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.lattice.html">at.lattice</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.axisdef.html">at.lattice.axisdef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.cavity_access.html">at.lattice.cavity_access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.deprecated.html">at.lattice.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.elements.html">at.lattice.elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.idtable_element.html">at.lattice.idtable_element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.lattice_object.html">at.lattice.lattice_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.lattice_variables.html">at.lattice.lattice_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.options.html">at.lattice.options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.particle_object.html">at.lattice.particle_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.rectangular_bend.html">at.lattice.rectangular_bend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.utils.html">at.lattice.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.variable_elements.html">at.lattice.variable_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.variables.html">at.lattice.variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.latticetools.html">at.latticetools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.latticetools.observablelist.html">at.latticetools.observablelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.latticetools.observables.html">at.latticetools.observables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.tracking.html">at.tracking</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.atpass.html">at.tracking.atpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.deprecated.html">at.tracking.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.particles.html">at.tracking.particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.track.html">at.tracking.track</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.utils.html">at.tracking.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.physics.html">at.physics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.amat.html">at.physics.amat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.diffmatrix.html">at.physics.diffmatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.energy_loss.html">at.physics.energy_loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.fastring.html">at.physics.fastring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.frequency_maps.html">at.physics.frequency_maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.harmonic_analysis.html">at.physics.harmonic_analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.linear.html">at.physics.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.magnet_tools.html">at.physics.magnet_tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.matrix.html">at.physics.matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.nonlinear.html">at.physics.nonlinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.orbit.html">at.physics.orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.radiation.html">at.physics.radiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.revolution.html">at.physics.revolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.ring_parameters.html">at.physics.ring_parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.load.html">at.load</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.allfiles.html">at.load.allfiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.elegant.html">at.load.elegant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.file_input.html">at.load.file_input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.json.html">at.load.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.mad8.html">at.load.mad8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.madx.html">at.load.madx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.matfile.html">at.load.matfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.reprfile.html">at.load.reprfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.tracy.html">at.load.tracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.utils.html">at.load.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.matching.html">at.matching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.matching.globalfit.html">at.matching.globalfit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.matching.matching.html">at.matching.matching</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.acceptance.html">at.acceptance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.acceptance.html">at.acceptance.acceptance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.boundary.html">at.acceptance.boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.touschek.html">at.acceptance.touschek</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.collective.html">at.collective</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.beam_loading.html">at.collective.beam_loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.haissinski.html">at.collective.haissinski</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_elements.html">at.collective.wake_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_functions.html">at.collective.wake_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_object.html">at.collective.wake_object</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.plot.html">at.plot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.generic.html">at.plot.generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.resonances.html">at.plot.resonances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.specific.html">at.plot.specific</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.standalone.html">at.plot.standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.synopt.html">at.plot.synopt</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/at.constants.html">at.constants</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Welcome to pyAT’s documentation!</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Variables</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">at</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">importlib.resources</span> <span class="kn">import</span> <span class="n">files</span><span class="p">,</span> <span class="n">as_file</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">at.future</span> <span class="kn">import</span> <span class="n">VariableBase</span><span class="p">,</span> <span class="n">ElementVariable</span><span class="p">,</span> <span class="n">RefptsVariable</span><span class="p">,</span> <span class="n">CustomVariable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="variables">
+<h1>Variables<a class="headerlink" href="#variables" title="Link to this heading">#</a></h1>
+<p>Variables are <strong>references</strong> to any scalar quantity. Predefined classes are available
+for accessing any scalar attribute of an element, or any item of an array attribute.</p>
+<p>Any other quantity may be accessed by either subclassing the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a>
+abstract base class, or by using a <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a>.</p>
+<section id="elementvariable">
+<h2><a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.ElementVariable" title="at.lattice.lattice_variables.ElementVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a><a class="headerlink" href="#elementvariable" title="Link to this heading">#</a></h2>
+<p>An <a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.ElementVariable" title="at.lattice.lattice_variables.ElementVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a> refers to a single attribute (or item of an array attribute) of one or several <a class="reference internal" href="../api/at.lattice.elements.html#at.lattice.elements.Element" title="at.lattice.elements.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a> objects.</p>
+<p>We now create a variable pointing to the length of a QF1 magnet:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qf1</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Quadrupole</span><span class="p">(</span><span class="s2">&quot;QF1&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qf1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Quadrupole:
+       FamName: QF1
+        Length: 0.5
+    PassMethod: StrMPoleSymplectic4Pass
+      MaxOrder: 1
+   NumIntSteps: 10
+      PolynomA: [0. 0.]
+      PolynomB: [0.  2.1]
+             K: 2.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lf1</span> <span class="o">=</span> <span class="n">ElementVariable</span><span class="p">(</span><span class="n">qf1</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;lf1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;lf1: </span><span class="si">{</span><span class="n">lf1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lf1</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lf1: ElementVariable(0.5, name=&#39;lf1&#39;)
+0.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>and another variable pointing to the strength of the same magnet:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span> <span class="o">=</span> <span class="n">ElementVariable</span><span class="p">(</span><span class="n">qf1</span><span class="p">,</span> <span class="s2">&quot;PolynomB&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;kf1&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;kf1:&quot;</span><span class="p">,</span> <span class="n">kf1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kf1</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>kf1: ElementVariable(2.1, name=&#39;kf1&#39;)
+2.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can check which elements are concerned by the <code class="docutils literal notranslate"><span class="pre">kf1</span></code> variable. The element container is a set, so that no element may appear twice:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span><span class="o">.</span><span class="n">elements</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{Quadrupole(&#39;QF1&#39;, 0.5, np.float64(2.1))}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now change the strength of QF1 magnets and check again:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qf1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Quadrupole:
+       FamName: QF1
+        Length: 0.5
+    PassMethod: StrMPoleSymplectic4Pass
+      MaxOrder: 1
+   NumIntSteps: 10
+      PolynomA: [0. 0.]
+      PolynomB: [0.  2.5]
+             K: 2.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can look at the history of <code class="docutils literal notranslate"><span class="pre">kf1</span></code> values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span><span class="o">.</span><span class="n">history</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[np.float64(2.1), 2.5]
+</pre></div>
+</div>
+</div>
+</div>
+<p>And revert to the initial or previous values:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span><span class="o">.</span><span class="n">set_previous</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">qf1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Quadrupole:
+       FamName: QF1
+        Length: 0.5
+    PassMethod: StrMPoleSymplectic4Pass
+      MaxOrder: 1
+   NumIntSteps: 10
+      PolynomA: [0. 0.]
+      PolynomB: [0.  2.1]
+             K: 2.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>An <a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.ElementVariable" title="at.lattice.lattice_variables.ElementVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a> is linked to Elements. It will apply wherever the element appears but it will not follow any copy of the element, neither shallow nor deep. So if we make a copy of QF1:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qf2</span> <span class="o">=</span> <span class="n">qf1</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qf1: </span><span class="si">{</span><span class="n">qf1</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qf2: </span><span class="si">{</span><span class="n">qf2</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>qf1: 2.1
+qf2: 2.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>and modify the <code class="docutils literal notranslate"><span class="pre">kf1</span></code> variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf1</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">2.6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qf1: </span><span class="si">{</span><span class="n">qf1</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;qf2: </span><span class="si">{</span><span class="n">qf2</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>qf1: 2.6
+qf2: 2.1
+</pre></div>
+</div>
+</div>
+</div>
+<p>The copy of QF1 in is not affected.</p>
+<p>One can set upper and lower bounds on a variable. Trying to set a value out of the bounds will raise a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ValueError</span></code></a>. The default is (-<a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.inf" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.inf</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/constants.html#numpy.inf" title="(in NumPy v2.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.inf</span></code></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lfbound</span> <span class="o">=</span> <span class="n">ElementVariable</span><span class="p">(</span><span class="n">qf1</span><span class="p">,</span> <span class="s2">&quot;Length&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.45</span><span class="p">,</span> <span class="mf">0.55</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_raises-exception docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lfbound</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">lfbound</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.19/x64/lib/python3.9/site-packages/at/lattice/variables.py:202,</span> in <span class="ni">VariableBase.set</span><span class="nt">(self, value, ring)</span>
+<span class="g g-Whitespace">    </span><span class="mi">194</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Set the variable value</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">196</span><span class="sd"> Args:</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">199</span><span class="sd">       may be necessary to set the variable.</span>
+<span class="g g-Whitespace">    </span><span class="mi">200</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">201</span> <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+<span class="ne">--&gt; </span><span class="mi">202</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set value must be in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">203</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setfun</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">204</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial</span><span class="p">):</span>
+
+<span class="nn">ValueError: set value must be</span> in <span class="nt">(0.45, 0.55)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Variables also accept a <em>delta</em> keyword argument. Its value is used as the initial step in matching, and in the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase.step_up" title="at.lattice.variables.VariableBase.step_up"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step_up()</span></code></a> and <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase.step_down" title="at.lattice.variables.VariableBase.step_down"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step_down()</span></code></a> methods.</p>
+</section>
+<section id="refptsvariable">
+<h2><a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.RefptsVariable" title="at.lattice.lattice_variables.RefptsVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefptsVariable</span></code></a><a class="headerlink" href="#refptsvariable" title="Link to this heading">#</a></h2>
+<p>An <a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.RefptsVariable" title="at.lattice.lattice_variables.RefptsVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefptsVariable</span></code></a> is similar to an <a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.ElementVariable" title="at.lattice.lattice_variables.ElementVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a> but it is not associated with an <a class="reference internal" href="../api/at.lattice.elements.html#at.lattice.elements.Element" title="at.lattice.elements.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a>
+itself, but with its location in a Lattice. So it will act on any lattice with the same elements.</p>
+<p>But it needs a <em>ring</em> keyword in its <em>set</em> and <em>get</em> methods, to identify the selected lattice.</p>
+<p>Let’s load a test ring and make a copy of it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fname</span> <span class="o">=</span> <span class="s2">&quot;hmba.mat&quot;</span>
+<span class="k">with</span> <span class="n">as_file</span><span class="p">(</span><span class="n">files</span><span class="p">(</span><span class="s2">&quot;machine_data&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">fname</span><span class="p">)</span> <span class="k">as</span> <span class="n">path</span><span class="p">:</span>
+    <span class="n">ring</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">load_lattice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">newring</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>and create a <a class="reference internal" href="../api/at.lattice.lattice_variables.html#at.lattice.lattice_variables.RefptsVariable" title="at.lattice.lattice_variables.RefptsVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefptsVariable</span></code></a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf2</span> <span class="o">=</span> <span class="n">RefptsVariable</span><span class="p">(</span><span class="s2">&quot;QF1[AE]&quot;</span><span class="p">,</span> <span class="s2">&quot;PolynomB&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;kf2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now use this variable on the two rings:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kf2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">2.55</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">)</span>
+<span class="n">kf2</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">2.45</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="n">newring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   ring:   </span><span class="si">{</span><span class="n">ring</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;newring: </span><span class="si">{</span><span class="n">newring</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">PolynomB</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ring:   2.55
+newring: 2.45
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="custom-variables">
+<h2>Custom variables<a class="headerlink" href="#custom-variables" title="Link to this heading">#</a></h2>
+<p>Custom variables allow access to almost any quantity in AT. This can be achieved either by subclassing the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> abstract base class, or by using a <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a>.</p>
+<p>We will take 2 examples:</p>
+<ol class="arabic simple">
+<li><p>A variable accessing the <em>DPStep</em> parameter used in chromaticity computations. It does not look like a very
+useful variable, it’s for demonstration purpose,</p></li>
+<li><p>A variable accessing the energy of a given lattice</p></li>
+</ol>
+<section id="using-the-customvariable">
+<h3>Using the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a><a class="headerlink" href="#using-the-customvariable" title="Link to this heading">#</a></h3>
+<p>Using a <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a> makes it very easy to define simple variables: we just need
+to define two functions for the “get” and “set” actions, and give them to the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a> constructor.</p>
+<section id="example-1">
+<h4>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h4>
+<p>We define 2 functions for setting and getting the variable value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setvar1</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">at</span><span class="o">.</span><span class="n">DConstant</span><span class="o">.</span><span class="n">DPStep</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">getvar1</span><span class="p">(</span><span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">at</span><span class="o">.</span><span class="n">DConstant</span><span class="o">.</span><span class="n">DPStep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dpstep_var</span> <span class="o">=</span> <span class="n">CustomVariable</span><span class="p">(</span><span class="n">setvar1</span><span class="p">,</span> <span class="n">getvar1</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0e-12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dpstep_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3e-06
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dpstep_var</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">2.0e-4</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">DConstant</span><span class="o">.</span><span class="n">DPStep</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0002
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-2">
+<h4>Example 2<a class="headerlink" href="#example-2" title="Link to this heading">#</a></h4>
+<p>We can give to the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a> constructor any positional or keyword argument
+necessary for the <em>set</em> and <em>get</em> functions. Here we will send the lattice as a positional argument:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setvar2</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">lattice</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="k">def</span> <span class="nf">getvar2</span><span class="p">(</span><span class="n">lattice</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lattice</span><span class="o">.</span><span class="n">energy</span>
+
+
+<span class="n">energy_var</span> <span class="o">=</span> <span class="n">CustomVariable</span><span class="p">(</span><span class="n">setvar2</span><span class="p">,</span> <span class="n">getvar2</span><span class="p">,</span> <span class="n">newring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, the <em>newring</em> positional argument given to the variable constructor is available as a positional argument
+in both the <em>set</em> and <em>get</em> functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6000000000.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">6.1e9</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6100000000.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can look at the history of the variable</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span><span class="o">.</span><span class="n">history</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[6000000000.0, 6100000000.0]
+</pre></div>
+</div>
+</div>
+</div>
+<p>and go back to the initial value</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="by-derivation-of-the-variablebase-class">
+<h3>By derivation of the <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> class<a class="headerlink" href="#by-derivation-of-the-variablebase-class" title="Link to this heading">#</a></h3>
+<p>The derivation of <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> allows more control on the created variable by using
+the class constuctor and its arguments to setup the variable.</p>
+<p>We will write a new variable class based on <a class="reference internal" href="../api/at.lattice.variables.html#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> abstract base class. The main task is to implement the <code class="docutils literal notranslate"><span class="pre">_setfun</span></code> and <code class="docutils literal notranslate"><span class="pre">_getfun</span></code> abstract methods.</p>
+<section id="id1">
+<h4>Example 1<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DPStepVariable</span><span class="p">(</span><span class="n">VariableBase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_setfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">at</span><span class="o">.</span><span class="n">DConstant</span><span class="o">.</span><span class="n">DPStep</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_getfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">at</span><span class="o">.</span><span class="n">DConstant</span><span class="o">.</span><span class="n">DPStep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dpstep_var</span> <span class="o">=</span> <span class="n">DPStepVariable</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dpstep_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0002
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dpstep_var</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">3.0e-6</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dpstep_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3e-06
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h4>Example 2<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<p>Here we will store the lattice as an instance variable in the class constructor:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">EnergyVariable</span><span class="p">(</span><span class="n">VariableBase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Store the lattice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">lattice</span>
+        <span class="c1"># Initialise the parent class</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_getfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">energy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We construct the variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span> <span class="o">=</span> <span class="n">EnergyVariable</span><span class="p">(</span><span class="n">ring</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Look at the initial state:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6000000000.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">6.1e9</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">energy_var</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6100000000.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">energy_var</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../howto/Primer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">PyAT Primer</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="observables.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Observables</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#elementvariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refptsvariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefptsVariable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-variables">Custom variables</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-customvariable">Using the <code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#by-derivation-of-the-variablebase-class">By derivation of the <code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code> class</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Example 1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Example 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

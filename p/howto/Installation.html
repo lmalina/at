@@ -1,0 +1,734 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Installation &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'p/howto/Installation';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PyAT Primer" href="Primer.html" />
+    <link rel="prev" title="Welcome to pyAT’s documentation!" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Primer.html">PyAT Primer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/variables.html">Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/observables.html">Observables</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">How to:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="multiprocessing.html">Parallel processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CavityControl.html">Cavity Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Collective.html">Collective</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.lattice.html">at.lattice</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.axisdef.html">at.lattice.axisdef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.cavity_access.html">at.lattice.cavity_access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.deprecated.html">at.lattice.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.elements.html">at.lattice.elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.idtable_element.html">at.lattice.idtable_element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.lattice_object.html">at.lattice.lattice_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.lattice_variables.html">at.lattice.lattice_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.options.html">at.lattice.options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.particle_object.html">at.lattice.particle_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.rectangular_bend.html">at.lattice.rectangular_bend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.utils.html">at.lattice.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.variable_elements.html">at.lattice.variable_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.lattice.variables.html">at.lattice.variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.latticetools.html">at.latticetools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.latticetools.observablelist.html">at.latticetools.observablelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.latticetools.observables.html">at.latticetools.observables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.tracking.html">at.tracking</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.atpass.html">at.tracking.atpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.deprecated.html">at.tracking.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.particles.html">at.tracking.particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.track.html">at.tracking.track</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.tracking.utils.html">at.tracking.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.physics.html">at.physics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.amat.html">at.physics.amat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.diffmatrix.html">at.physics.diffmatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.energy_loss.html">at.physics.energy_loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.fastring.html">at.physics.fastring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.frequency_maps.html">at.physics.frequency_maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.harmonic_analysis.html">at.physics.harmonic_analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.linear.html">at.physics.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.magnet_tools.html">at.physics.magnet_tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.matrix.html">at.physics.matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.nonlinear.html">at.physics.nonlinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.orbit.html">at.physics.orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.radiation.html">at.physics.radiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.revolution.html">at.physics.revolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.physics.ring_parameters.html">at.physics.ring_parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.load.html">at.load</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.allfiles.html">at.load.allfiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.elegant.html">at.load.elegant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.file_input.html">at.load.file_input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.json.html">at.load.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.mad8.html">at.load.mad8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.madx.html">at.load.madx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.matfile.html">at.load.matfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.reprfile.html">at.load.reprfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.tracy.html">at.load.tracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.load.utils.html">at.load.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.matching.html">at.matching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.matching.globalfit.html">at.matching.globalfit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.matching.matching.html">at.matching.matching</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.acceptance.html">at.acceptance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.acceptance.html">at.acceptance.acceptance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.boundary.html">at.acceptance.boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.acceptance.touschek.html">at.acceptance.touschek</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.collective.html">at.collective</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.beam_loading.html">at.collective.beam_loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.haissinski.html">at.collective.haissinski</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_elements.html">at.collective.wake_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_functions.html">at.collective.wake_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.collective.wake_object.html">at.collective.wake_object</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/at.plot.html">at.plot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.generic.html">at.plot.generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.resonances.html">at.plot.resonances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.specific.html">at.plot.specific</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.standalone.html">at.plot.standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/at.plot.synopt.html">at.plot.synopt</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/at.constants.html">at.constants</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Welcome to pyAT’s documentation!</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Installation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<p>pyAT is a Python interface to Accelerator Toolbox. It uses the ‘pass
+methods’ defined in Accelerator Toolbox, implemented by compiling the C
+code used in the AT ‘integrators’ into a Python extension. These pass
+methods are used by higher-level functions to provide physics results.</p>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>pyAT supports Python 3.7 to 3.12.</p>
+</section>
+<section id="id1">
+<h2>Installation<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="from-pypi">
+<h3>From PyPI<a class="headerlink" href="#from-pypi" title="Link to this heading">#</a></h3>
+<p>PyPI maintains PyAT versions for Linux, MacOS and Windows, and python versions:</p>
+<ul class="simple">
+<li><p>CPython 3.7, 3.8, 3.9, 3.10, 3.11, 3.12</p></li>
+<li><p>PyPI does not support PyPy, because of the missing numpy and scipy libraries</p></li>
+</ul>
+<section id="installation-with-minimal-dependencies">
+<h4><em>Installation with minimal dependencies:</em><a class="headerlink" href="#installation-with-minimal-dependencies" title="Link to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install accelerator-toolbox
+</pre></div>
+</div>
+<p>This minimal installation disables all plotting functions. Note that the plotting
+functions can be enabled later by simply installing <a class="reference external" href="https://matplotlib.org">matplotlib</a>.</p>
+</section>
+<section id="standard-installation">
+<h4><em>Standard installation:</em><a class="headerlink" href="#standard-installation" title="Link to this heading">#</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install &quot;accelerator-toolbox[plot]&quot;
+</pre></div>
+</div>
+<p>This installs in addition the <a class="reference external" href="https://matplotlib.org">matplotlib</a> package and its
+dependencies, which enables all plotting functions.</p>
+</section>
+<section id="optional-dependencies">
+<h4><em>Optional dependencies:</em><a class="headerlink" href="#optional-dependencies" title="Link to this heading">#</a></h4>
+<p>In addition to <code class="docutils literal notranslate"><span class="pre">[plot]</span></code>, other modifiers are available for specific purposes:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;accelerator-toolbox[dev]&quot;</span></code></dt><dd><p>Installs the test framework: <a class="reference external" href="https://docs.pytest.org/en/stable/">pytest</a>,
+<a class="reference external" href="https://pypi.org/project/pytest-cov/">pytest-cov</a> and
+<a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a>. This allows to run locally
+the test sequence executed on GitHub.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&quot;accelerator-toolbox[doc]&quot;</span></code></dt><dd><p>Installs <a class="reference external" href="https://www.sphinx-doc.org/en/master/index.html">Sphinx</a> and its
+utilities, allowing the generate locally the HTML documentation.</p>
+</dd>
+</dl>
+<p>These modifiers may be combined. Example: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;accelerator-toolbox[plot,dev]&quot;</span></code></p>
+</section>
+</section>
+<section id="from-conda-forge">
+<h3>From conda-forge<a class="headerlink" href="#from-conda-forge" title="Link to this heading">#</a></h3>
+<p>conda-forge maintains PyAT versions for Linux, MacOS and Windows, and python versions:</p>
+<ul class="simple">
+<li><p>CPython 3.8, 3.9, 3.10, 3.11, 3.12</p></li>
+<li><p>PyPy 3.9</p></li>
+</ul>
+<p>PyAT can be installed in a conda environment with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda install -c conda-forge accelerator-toolbox
+</pre></div>
+</div>
+</section>
+<section id="from-source">
+<h3>From source<a class="headerlink" href="#from-source" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p>Install git on your computer.</p></li>
+<li><p>Download the latest version of AT:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/atcollab/at.git
+</pre></div>
+</div>
+</li>
+<li><p>Go to the pyAT installation directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd at
+</pre></div>
+</div>
+</li>
+<li><p>Build and install:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="parallel-computation">
+<h3>Parallel computation<a class="headerlink" href="#parallel-computation" title="Link to this heading">#</a></h3>
+<p>PyAT can be compiled for parallel processing. See <a class="reference internal" href="multiprocessing.html#parallel"><span class="std std-ref">Parallel processing</span></a></p>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">at</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ring</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;machine_data/hmba.mat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">radiation_parameters</span><span class="p">(</span><span class="n">ring</span><span class="p">))</span>
+<span class="go">          Frac. tunes: [0.2099983  0.34001317 0.00349013]</span>
+<span class="go">                Tunes: [76.2099983  27.34001317]</span>
+<span class="go">       Chromaticities: [5.73409894 3.91761206]</span>
+<span class="go">Momentum compact. factor: 8.506669e-05</span>
+<span class="go">          Slip factor: -8.505944e-05</span>
+<span class="go">               Energy: 6.000000e+09 eV</span>
+<span class="go">   Energy loss / turn: 2.526189e+06 eV</span>
+<span class="go">Radiation integrals - I1: 0.07179435013387388 m</span>
+<span class="go">                   I2: 0.13844595446798158 m^-1</span>
+<span class="go">                   I3: 0.003357584058614851 m^-2</span>
+<span class="go">                   I4: -0.07375725030666251 m^-1</span>
+<span class="go">                   I5: 5.281495714523264e-07 m^-1</span>
+<span class="go">      Mode emittances: [1.3148797e-10           nan           nan]</span>
+<span class="go">Damping partition numbers: [1.53275121 1.         1.46724879]</span>
+<span class="go">        Damping times: [0.00872477 0.0133729  0.00911427] s</span>
+<span class="go">        Energy spread: 0.000934463</span>
+<span class="go">         Bunch length: 0.0030591 m</span>
+<span class="go">     Cavities voltage: 6000000.0 V</span>
+<span class="go">    Synchrotron phase: 2.70701 rd</span>
+<span class="go">Synchrotron frequency: 1239.74 Hz</span>
+</pre></div>
+</div>
+<p>For more examples of how to use pyAT, see <code class="docutils literal notranslate"><span class="pre">pyat_examples.rst</span></code>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to pyAT’s documentation!</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Primer.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">PyAT Primer</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Installation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-pypi">From PyPI</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-with-minimal-dependencies"><em>Installation with minimal dependencies:</em></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-installation"><em>Standard installation:</em></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-dependencies"><em>Optional dependencies:</em></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-conda-forge">From conda-forge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#from-source">From source</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-computation">Parallel computation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

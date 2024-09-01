@@ -1,0 +1,822 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>at.collective.wake_elements &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/at/collective/wake_elements';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../p/index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">at.collectiv...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for at.collective.wake_elements</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">..lattice</span> <span class="kn">import</span> <span class="n">Lattice</span>
+<span class="c1"># noinspection PyProtectedMember</span>
+<span class="kn">from</span> <span class="nn">..lattice.elements</span> <span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">Collective</span><span class="p">,</span> <span class="n">_array</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">clight</span><span class="p">,</span> <span class="n">qe</span>
+<span class="kn">from</span> <span class="nn">.wake_object</span> <span class="kn">import</span> <span class="n">Wake</span><span class="p">,</span> <span class="n">WakeComponent</span>
+
+
+<span class="c1"># noinspection PyPep8Naming</span>
+<div class="viewcode-block" id="WakeElement">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.WakeElement">[docs]</a>
+<span class="k">class</span> <span class="nc">WakeElement</span><span class="p">(</span><span class="n">Collective</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate an AT wake element using the passmethod WakeFieldPass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_BUILD_ATTRIBUTES</span> <span class="o">=</span> <span class="n">Element</span><span class="o">.</span><span class="n">_BUILD_ATTRIBUTES</span>
+    <span class="n">default_pass</span> <span class="o">=</span> <span class="p">{</span><span class="kc">False</span><span class="p">:</span> <span class="s1">&#39;IdentityPass&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">:</span> <span class="s1">&#39;WakeFieldPass&#39;</span><span class="p">}</span>
+    <span class="n">_conversions</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Element</span><span class="o">.</span><span class="n">_conversions</span><span class="p">,</span> <span class="n">_nslice</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">_nturns</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">_nelem</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">_wakeFact</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+                        <span class="n">NormFact</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)),</span>
+                        <span class="n">ZCuts</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeDX</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeDY</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeQX</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeQY</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeZ</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
+                        <span class="n">_wakeT</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">_array</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">wake</span><span class="p">:</span> <span class="n">Wake</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            family name:    Element name</span>
+<span class="sd">            ring:           Lattice in which the element will be inserted</span>
+<span class="sd">            wake:           :py:class:`.Wake` object</span>
+
+<span class="sd">        Keyword Arguments:</span>
+<span class="sd">            Nslice (int):       Number of slices per bunch. Default: 101</span>
+<span class="sd">            Nturns (int):       Number of turn for the wake field. Default: 1</span>
+<span class="sd">            ZCuts:              Limits for fixed slicing, default is adaptive</span>
+<span class="sd">            NormFact (Tuple[float,...]):    Normalization for the 3 planes,</span>
+<span class="sd">              to account for beta function at the observation point for</span>
+<span class="sd">              example. Default: (1,1,1)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;PassMethod&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_pass</span><span class="p">[</span><span class="kc">True</span><span class="p">])</span>
+        <span class="n">zcuts</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;ZCuts&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wakefact</span> <span class="o">=</span> <span class="o">-</span> <span class="n">ring</span><span class="o">.</span><span class="n">circumference</span><span class="o">/</span><span class="p">(</span><span class="n">clight</span> <span class="o">*</span>
+                                               <span class="n">ring</span><span class="o">.</span><span class="n">energy</span><span class="o">*</span><span class="n">ring</span><span class="o">.</span><span class="n">beta</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nslice</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;Nslice&#39;</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nturns</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;Nturns&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turnhistory</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># Defined here to avoid warning</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_history</span><span class="p">(</span><span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NormFact</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;NormFact&#39;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">(</span><span class="n">wake</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">zcuts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ZCuts</span> <span class="o">=</span> <span class="n">zcuts</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">WakeElement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">family_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wake</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wakeT</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">srange</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nelem</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wakeT</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wake</span><span class="o">.</span><span class="n">Z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wakeZ</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">Z</span>
+        <span class="k">if</span> <span class="n">wake</span><span class="o">.</span><span class="n">DX</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wakeDX</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">DX</span>
+        <span class="k">if</span> <span class="n">wake</span><span class="o">.</span><span class="n">DY</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wakeDY</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">DY</span>
+        <span class="k">if</span> <span class="n">wake</span><span class="o">.</span><span class="n">QX</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wakeQX</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">QX</span>
+        <span class="k">if</span> <span class="n">wake</span><span class="o">.</span><span class="n">QY</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wakeQY</span> <span class="o">=</span> <span class="n">wake</span><span class="o">.</span><span class="n">QY</span>
+
+<div class="viewcode-block" id="WakeElement.rebuild_wake">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.WakeElement.rebuild_wake">[docs]</a>
+    <span class="k">def</span> <span class="nf">rebuild_wake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wake</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">(</span><span class="n">wake</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WakeElement.clear_history">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.WakeElement.clear_history">[docs]</a>
+    <span class="k">def</span> <span class="nf">clear_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ring</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nbunch</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">nbunch</span>
+        <span class="n">tl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nturns</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_nslice</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_nbunch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_turnhistory</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tl</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="WakeElement.set_normfactxy">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.WakeElement.set_normfactxy">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_normfactxy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ring</span><span class="p">):</span>
+        <span class="n">l0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">get_optics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NormFact</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">l0</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NormFact</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">l0</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wakeT</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeZ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Longitudinal component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_wakeZ&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeDX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dipole X component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_wakeDX&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeDY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dipole Y component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_wakeDY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeQX</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Quadrupole X component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_wakeQX&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">WakeQY</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Quadrupole Y component&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_wakeQY&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Nslice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of slices per bunch&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nslice</span>
+
+    <span class="nd">@Nslice</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Nslice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nslice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nslice</span> <span class="o">=</span> <span class="n">nslice</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_history</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Nturns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of turn for the wake field&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nturns</span>
+
+    <span class="nd">@Nturns</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Nturns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nturns</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nturns</span> <span class="o">=</span> <span class="n">nturns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_history</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">TurnHistory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turn histroy of the slices center of mass&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_turnhistory</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simplified __repr__ to avoid errors due to arguments</span>
+<span class="sd">        not defined as attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                     <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">(</span><span class="si">{1}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ResonatorElement">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.ResonatorElement">[docs]</a>
+<span class="k">class</span> <span class="nc">ResonatorElement</span><span class="p">(</span><span class="n">WakeElement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a resonator, inherits from WakeElement</span>
+<span class="sd">       additonal argument are frequency, qfactor, rshunt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span>
+                 <span class="n">wakecomp</span><span class="p">:</span> <span class="n">WakeComponent</span><span class="p">,</span>
+                 <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">qfactor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rshunt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">yokoya_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            family name:    Element name</span>
+<span class="sd">            ring:           Lattice in which the element will be inserted</span>
+<span class="sd">            srange:         Vector of s position where to sample the wake</span>
+<span class="sd">            wakecomp:       Wake component</span>
+<span class="sd">            frequency:      Resonator frequency [Hz]</span>
+<span class="sd">            qfactor:        Q factor</span>
+<span class="sd">            rshunt:         Shunt impedance, [:math:`\Omega`] for longitudinal,</span>
+<span class="sd">              [:math:`\Omega/m`] for transverse</span>
+<span class="sd">            yokoya_factor:  Yokoya factor</span>
+
+<span class="sd">        Keyword Arguments:</span>
+<span class="sd">            Nslice (int):       Number of slices per bunch. Default: 101</span>
+<span class="sd">            Nturns (int):       Number of turn for the wake field. Default: 1</span>
+<span class="sd">            ZCuts:              Limits for fixed slicing, default is adaptive</span>
+<span class="sd">            NormFact (Tuple[float,...]):    Normalization for the 3 planes,</span>
+<span class="sd">              to account for beta function at the observation point for</span>
+<span class="sd">              example. Default: (1,1,1)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resfrequency</span> <span class="o">=</span> <span class="n">frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_qfactor</span> <span class="o">=</span> <span class="n">qfactor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rshunt</span> <span class="o">=</span> <span class="n">rshunt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span> <span class="o">=</span> <span class="n">yokoya_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wakecomponent</span> <span class="o">=</span> <span class="n">wakecomp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">beta</span>
+        <span class="n">wake</span> <span class="o">=</span> <span class="n">Wake</span><span class="o">.</span><span class="n">resonator</span><span class="p">(</span><span class="n">srange</span><span class="p">,</span> <span class="n">wakecomp</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">qfactor</span><span class="p">,</span> <span class="n">rshunt</span><span class="p">,</span>
+                              <span class="n">ring</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="n">yokoya_factor</span><span class="o">=</span><span class="n">yokoya_factor</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResonatorElement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">family_name</span><span class="p">,</span> <span class="n">ring</span><span class="p">,</span> <span class="n">wake</span><span class="p">,</span>
+                                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ResonatorElement.rebuild_wake">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.ResonatorElement.rebuild_wake">[docs]</a>
+    <span class="k">def</span> <span class="nf">rebuild_wake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wake</span> <span class="o">=</span> <span class="n">Wake</span><span class="o">.</span><span class="n">resonator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WakeT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wakecomponent</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_resfrequency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qfactor</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_rshunt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">(</span><span class="n">wake</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ResFrequency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resonator frequency [Hz]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resfrequency</span>
+
+    <span class="nd">@ResFrequency</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ResFrequency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resfrequency</span> <span class="o">=</span> <span class="n">frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Qfactor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resonator Q factor&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_qfactor</span>
+
+    <span class="nd">@Qfactor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Qfactor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qfactor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_qfactor</span> <span class="o">=</span> <span class="n">qfactor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Rshunt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Resonator shunt impedance, [:math:`\Omega`] for longitudinal,</span>
+<span class="sd">        [:math:`\Omega/m`] for transverse&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rshunt</span>
+
+    <span class="nd">@Rshunt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Rshunt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rshunt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rshunt</span> <span class="o">=</span> <span class="n">rshunt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Yokoya</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resonator Yokoya factor&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span>
+
+    <span class="nd">@Yokoya</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Yokoya</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yokoya</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span> <span class="o">=</span> <span class="n">yokoya</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="LongResonatorElement">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.LongResonatorElement">[docs]</a>
+<span class="k">class</span> <span class="nc">LongResonatorElement</span><span class="p">(</span><span class="n">ResonatorElement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a longitudinal resonator, inherits from WakeElement</span>
+<span class="sd">       additional argument are frequency, qfactor, rshunt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span>
+                 <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">qfactor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rshunt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            family name:    Element name</span>
+<span class="sd">            ring:           Lattice in which the element will be inserted</span>
+<span class="sd">            srange:         Vector of s position where to sample the wake</span>
+<span class="sd">            frequency:      Resonator frequency [Hz]</span>
+<span class="sd">            qfactor:        Q factor</span>
+<span class="sd">            rshunt:         Shunt impedance, [:math:`\Omega`] for longitudinal,</span>
+<span class="sd">              [:math:`\Omega/m`] for transverse</span>
+
+<span class="sd">        Keyword Arguments:</span>
+<span class="sd">            yokoya_factor:  Yokoya factor</span>
+<span class="sd">            Nslice (int):       Number of slices per bunch. Default: 101</span>
+<span class="sd">            Nturns (int):       Number of turn for the wake field. Default: 1</span>
+<span class="sd">            ZCuts:              Limits for fixed slicing, default is adaptive</span>
+<span class="sd">            NormFact (Tuple[float,...]):    Normalization for the 3 planes,</span>
+<span class="sd">              to account for beta function at the observation point for</span>
+<span class="sd">              example. Default: (1,1,1)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LongResonatorElement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">family_name</span><span class="p">,</span> <span class="n">ring</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span>
+                                                   <span class="n">WakeComponent</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span>
+                                                   <span class="n">qfactor</span><span class="p">,</span> <span class="n">rshunt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ResWallElement">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.ResWallElement">[docs]</a>
+<span class="k">class</span> <span class="nc">ResWallElement</span><span class="p">(</span><span class="n">WakeElement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to generate a resistive wall element, inherits from WakeElement</span>
+<span class="sd">       additional argument are yokoya_factor, length, pipe radius, conductivity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">family_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ring</span><span class="p">:</span> <span class="n">Lattice</span><span class="p">,</span> <span class="n">srange</span><span class="p">,</span>
+                 <span class="n">wakecomp</span><span class="p">:</span> <span class="n">WakeComponent</span><span class="p">,</span> <span class="n">rwlength</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">rvac</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">conduc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">yokoya_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            family name:    Element name</span>
+<span class="sd">            ring:           Lattice in which the element will be inserted</span>
+<span class="sd">            srange:         Vector of s position where to sample the wake</span>
+<span class="sd">            wakecomp:       Wake component</span>
+<span class="sd">            rwlength:</span>
+<span class="sd">            rvac:</span>
+<span class="sd">            conduc:</span>
+<span class="sd">            yokoya_factor:  Yokoya factor</span>
+
+<span class="sd">        Keyword Arguments:</span>
+<span class="sd">            Nslice (int):       Number of slices per bunch. Default: 101</span>
+<span class="sd">            Nturns (int):       Number of turn for the wake field. Default: 1</span>
+<span class="sd">            ZCuts:              Limits for fixed slicing, default is adaptive</span>
+<span class="sd">            NormFact (Tuple[float,...]):    Normalization for the 3 planes,</span>
+<span class="sd">              to account for beta function at the observation point for</span>
+<span class="sd">              example. Default: (1,1,1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wakecomponent</span> <span class="o">=</span> <span class="n">wakecomp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rwlength</span> <span class="o">=</span> <span class="n">rwlength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rvac</span> <span class="o">=</span> <span class="n">rvac</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conductivity</span> <span class="o">=</span> <span class="n">conduc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span> <span class="o">=</span> <span class="n">yokoya_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span> <span class="o">=</span> <span class="n">ring</span><span class="o">.</span><span class="n">beta</span>
+        <span class="n">wake</span> <span class="o">=</span> <span class="n">Wake</span><span class="o">.</span><span class="n">resistive_wall</span><span class="p">(</span><span class="n">srange</span><span class="p">,</span> <span class="n">wakecomp</span><span class="p">,</span> <span class="n">rwlength</span><span class="p">,</span> <span class="n">rvac</span><span class="p">,</span> <span class="n">conduc</span><span class="p">,</span>
+                                   <span class="n">ring</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="n">yokoya_factor</span><span class="o">=</span><span class="n">yokoya_factor</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ResWallElement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">family_name</span><span class="p">,</span> <span class="n">ring</span><span class="p">,</span> <span class="n">wake</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ResWallElement.rebuild_wake">
+<a class="viewcode-back" href="../../../p/api/at.collective.wake_elements.html#at.collective.wake_elements.ResWallElement.rebuild_wake">[docs]</a>
+    <span class="k">def</span> <span class="nf">rebuild_wake</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">wake</span> <span class="o">=</span> <span class="n">Wake</span><span class="o">.</span><span class="n">resistive_wall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">WakeT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wakecomponent</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_rwlength</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rvac</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">_conductivity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="p">,</span>
+                                   <span class="n">yokoya_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">(</span><span class="n">wake</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">RWLength</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Length of the resistive wall&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rwlength</span>
+
+    <span class="nd">@RWLength</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">RWLength</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rwlength</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Conductivity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Conductivity of the beam pipe [S/m]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conductivity</span>
+
+    <span class="nd">@Conductivity</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Conductivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conduct</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conductivity</span> <span class="o">=</span> <span class="n">conduct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Rvac</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Radius of the beam pipe [m]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rvac</span>
+
+    <span class="nd">@Rvac</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Rvac</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rvac</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rvac</span> <span class="o">=</span> <span class="n">rvac</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Yokoya</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Yokoya factor for the reistive wall&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span>
+
+    <span class="nd">@Yokoya</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">Yokoya</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yokoya</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_yokoya</span> <span class="o">=</span> <span class="n">yokoya</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_wake</span><span class="p">()</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

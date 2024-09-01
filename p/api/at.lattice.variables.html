@@ -1,0 +1,1010 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>at.lattice.variables &#8212; Accelerator Toolbox 0.2.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom_at.css?v=bc6ab313" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=d27f7911"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=fd10adb8"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'p/api/at.lattice.variables';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="at.latticetools" href="at.latticetools.html" />
+    <link rel="prev" title="at.lattice.variable_elements" href="at.lattice.variable_elements.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/AT.png" class="logo__image only-light" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>
+    <script>document.write(`<img src="../../_static/AT.png" class="logo__image only-dark" alt="Accelerator Toolbox 0.2.2 documentation - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../common/indx.html">
+    AT basics
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Python
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../m/index.html">
+    Matlab
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/atcollab/at" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../howto/Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/Primer.html">PyAT Primer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/variables.html">Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/observables.html">Observables</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">How to:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../howto/multiprocessing.html">Parallel processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/CavityControl.html">Cavity Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/Collective.html">Collective</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Packages:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="at.lattice.html">at.lattice</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.axisdef.html">at.lattice.axisdef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.cavity_access.html">at.lattice.cavity_access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.deprecated.html">at.lattice.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.elements.html">at.lattice.elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.idtable_element.html">at.lattice.idtable_element</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.lattice_object.html">at.lattice.lattice_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.lattice_variables.html">at.lattice.lattice_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.options.html">at.lattice.options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.particle_object.html">at.lattice.particle_object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.rectangular_bend.html">at.lattice.rectangular_bend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.utils.html">at.lattice.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.lattice.variable_elements.html">at.lattice.variable_elements</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">at.lattice.variables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.latticetools.html">at.latticetools</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.latticetools.observablelist.html">at.latticetools.observablelist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.latticetools.observables.html">at.latticetools.observables</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.tracking.html">at.tracking</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.tracking.atpass.html">at.tracking.atpass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.tracking.deprecated.html">at.tracking.deprecated</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.tracking.particles.html">at.tracking.particles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.tracking.track.html">at.tracking.track</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.tracking.utils.html">at.tracking.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.physics.html">at.physics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.amat.html">at.physics.amat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.diffmatrix.html">at.physics.diffmatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.energy_loss.html">at.physics.energy_loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.fastring.html">at.physics.fastring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.frequency_maps.html">at.physics.frequency_maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.harmonic_analysis.html">at.physics.harmonic_analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.linear.html">at.physics.linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.magnet_tools.html">at.physics.magnet_tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.matrix.html">at.physics.matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.nonlinear.html">at.physics.nonlinear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.orbit.html">at.physics.orbit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.radiation.html">at.physics.radiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.revolution.html">at.physics.revolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.physics.ring_parameters.html">at.physics.ring_parameters</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.load.html">at.load</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.load.allfiles.html">at.load.allfiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.elegant.html">at.load.elegant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.file_input.html">at.load.file_input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.json.html">at.load.json</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.mad8.html">at.load.mad8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.madx.html">at.load.madx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.matfile.html">at.load.matfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.reprfile.html">at.load.reprfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.tracy.html">at.load.tracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.load.utils.html">at.load.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.matching.html">at.matching</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.matching.globalfit.html">at.matching.globalfit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.matching.matching.html">at.matching.matching</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.acceptance.html">at.acceptance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.acceptance.acceptance.html">at.acceptance.acceptance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.acceptance.boundary.html">at.acceptance.boundary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.acceptance.touschek.html">at.acceptance.touschek</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.collective.html">at.collective</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.collective.beam_loading.html">at.collective.beam_loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.collective.haissinski.html">at.collective.haissinski</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.collective.wake_elements.html">at.collective.wake_elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.collective.wake_functions.html">at.collective.wake_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.collective.wake_object.html">at.collective.wake_object</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="at.plot.html">at.plot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="at.plot.generic.html">at.plot.generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.plot.resonances.html">at.plot.resonances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.plot.specific.html">at.plot.specific</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.plot.standalone.html">at.plot.standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="at.plot.synopt.html">at.plot.synopt</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="at.constants.html">at.constants</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Welcome to pyAT’s documentation!</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="at.lattice.html" class="nav-link">at.lattice</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">at.lattice.variables</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-at.lattice.variables">
+<span id="at-lattice-variables"></span><h1>at.lattice.variables<a class="headerlink" href="#module-at.lattice.variables" title="Link to this heading">#</a></h1>
+<p>Definition of <a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> objects used in matching and
+response matrices.</p>
+<p>See <span class="xref std std-ref">example-notebooks</span> for examples of matching and response matrices.</p>
+<p>Each <a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> has a scalar value.</p>
+<p class="rubric">Class hierarchy</p>
+<p><a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a>(name, bounds, delta)</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="at.lattice.lattice_variables.html#at.lattice.lattice_variables.ElementVariable" title="at.lattice.lattice_variables.ElementVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">ElementVariable</span></code></a>(elements, attrname, index, …)</p></li>
+<li><p><a class="reference internal" href="at.lattice.lattice_variables.html#at.lattice.lattice_variables.RefptsVariable" title="at.lattice.lattice_variables.RefptsVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">RefptsVariable</span></code></a>(refpts, attrname, index, …)</p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomVariable</span></code></a>(setfun, getfun, …)</p></li>
+</ul>
+<p class="rubric">VariableBase methods</p>
+<p><a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> provides the following methods:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.get" title="at.lattice.variables.VariableBase.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.set" title="at.lattice.variables.VariableBase.set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.set_previous" title="at.lattice.variables.VariableBase.set_previous"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_previous()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.reset" title="at.lattice.variables.VariableBase.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.increment" title="at.lattice.variables.VariableBase.increment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">increment()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.step_up" title="at.lattice.variables.VariableBase.step_up"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step_up()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.step_down" title="at.lattice.variables.VariableBase.step_down"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step_down()</span></code></a></p></li>
+</ul>
+<p class="rubric">VariableBase properties</p>
+<p><a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> provides the following properties:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.initial_value" title="at.lattice.variables.VariableBase.initial_value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">initial_value</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.last_value" title="at.lattice.variables.VariableBase.last_value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">last_value</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.previous_value" title="at.lattice.variables.VariableBase.previous_value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">previous_value</span></code></a></p></li>
+<li><p><a class="reference internal" href="#at.lattice.variables.VariableBase.history" title="at.lattice.variables.VariableBase.history"><code class="xref py py-attr docutils literal notranslate"><span class="pre">history</span></code></a></p></li>
+</ul>
+<p>The <a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> abstract class may be used as a base class to define
+custom variables (see examples). Typically, this consist in overloading the abstract
+methods <em>_setfun</em> and <em>_getfun</em></p>
+<p class="rubric">Examples</p>
+<p>Write a subclass of <a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a> which varies two drift lengths so
+that their sum is constant:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ElementShifter</span><span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">VariableBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Varies the length of the elements identified by *ref1* and *ref2*</span>
+<span class="sd">    keeping the sum of their lengths equal to *total_length*.</span>
+
+<span class="sd">    If *total_length* is None, it is set to the initial total length</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">drift1</span><span class="p">,</span> <span class="n">drift2</span><span class="p">,</span> <span class="n">total_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># store the 2 variable elements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drift1</span> <span class="o">=</span> <span class="n">drift1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drift2</span> <span class="o">=</span> <span class="n">drift2</span>
+        <span class="c1"># store the initial total length</span>
+        <span class="k">if</span> <span class="n">total_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">total_length</span> <span class="o">=</span> <span class="n">drift1</span><span class="o">.</span><span class="n">Length</span> <span class="o">+</span> <span class="n">drift2</span><span class="o">.</span><span class="n">Length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">total_length</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">total_length</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drift1</span><span class="o">.</span><span class="n">Length</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drift2</span><span class="o">.</span><span class="n">Length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">_getfun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">drift1</span><span class="o">.</span><span class="n">Length</span>
+</pre></div>
+</div>
+<p>And create a variable varying the length of drifts <em>DR_01</em> and <em>DR_01</em> and
+keeping their sum constant:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">drift1</span> <span class="o">=</span> <span class="n">hmba_lattice</span><span class="p">[</span><span class="s2">&quot;DR_01&quot;</span><span class="p">]</span>
+<span class="n">drift2</span> <span class="o">=</span> <span class="n">hmba_lattice</span><span class="p">[</span><span class="s2">&quot;DR_02&quot;</span><span class="p">]</span>
+<span class="n">var2</span> <span class="o">=</span> <span class="n">ElementShifter</span><span class="p">(</span><span class="n">drift1</span><span class="p">,</span> <span class="n">drift2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;DR_01&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Classes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VariableBase</span></code></a>(*[, name, bounds, delta, ...])</p></td>
+<td><p>A Variable abstract base class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#at.lattice.variables.CustomVariable" title="at.lattice.variables.CustomVariable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CustomVariable</span></code></a>(setfun, getfun, *args[, ...])</p></td>
+<td><p>A Variable with user-defined get and set functions</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#at.lattice.variables.VariableList" title="at.lattice.variables.VariableList"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VariableList</span></code></a>([iterable])</p></td>
+<td><p>Container for Variable objects</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="at.lattice.variables.CustomVariable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CustomVariable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setfun</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">getfun</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-inf,</span> <span class="pre">inf)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#CustomVariable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.CustomVariable" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#at.lattice.variables.VariableBase" title="at.lattice.variables.VariableBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableBase</span></code></a></p>
+<p>A Variable with user-defined get and set functions</p>
+<p>This is a convenience function allowing user-defined <em>get</em> and <em>set</em>
+functions. But subclassing <a class="reference internal" href="at.matching.matching.html#at.matching.matching.Variable" title="at.matching.matching.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a> should always be preferred
+for clarity and efficiency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>getfun</strong> (<em>Callable</em>) – Function for getting the variable value. Called as
+<code class="code highlight pycode python docutils literal highlight-python"><span class="n">getfun</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Number</span></code></p></li>
+<li><p><strong>setfun</strong> (<em>Callable</em>) – Function for setting the variable value. Called as
+<code class="code highlight pycode python docutils literal highlight-python"><span class="n">setfun</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="kc">None</span></code></p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the Variable</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – Lower and upper bounds of the variable value</p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Initial variation step</p></li>
+<li><p><strong>*args</strong> – Variable argument list transmitted to both the <em>getfun</em>
+and <em>setfun</em> functions. Such arguments can always be avoided by
+using <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.partial" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">partial()</span></code></a> or callable class objects.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>**kwargs</strong> – Keyword arguments transmitted to both the <em>getfun</em>
+and <em>setfun</em> functions. Such arguments can always be avoided by
+using <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.partial" title="(in Python v3.12)"><code class="xref py py-func docutils literal notranslate"><span class="pre">partial()</span></code></a> or callable class objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VariableBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-inf,</span> <span class="pre">inf)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<p>A Variable abstract base class</p>
+<p>Derived classes must implement the <code class="xref py py-meth docutils literal notranslate"><span class="pre">_getfun()</span></code> and
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_getfun()</span></code> methods</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><em>str</em></a>) – Name of the Variable</p></li>
+<li><p><strong>bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – Lower and upper bounds of the variable value</p></li>
+<li><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Initial variation step</p></li>
+<li><p><strong>history_length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a>) – Maximum length of the history buffer. <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>
+means infinite</p></li>
+<li><p><strong>ring</strong> – provided to an attempt to get the initial value of the
+variable</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the actual variable value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to get the variable value.</p></li>
+<li><p><strong>initial</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, clear the history and set the variable
+initial value</p></li>
+<li><p><strong>check_bounds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><em>bool</em></a>) – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, raise a ValueError if the value is out
+of bounds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>value</strong> – Value of the variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.increment">
+<span class="sig-name descname"><span class="pre">increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">incr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.increment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.increment" title="Link to this definition">#</a></dt>
+<dd><p>Increment the variable value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – Increment value</p></li>
+<li><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to increment the variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.reset" title="Link to this definition">#</a></dt>
+<dd><p>Reset to the initial value and clear the history buffer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to reset the variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the variable value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><em>int</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a>) – New value to be applied on the variable</p></li>
+<li><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.set_previous">
+<span class="sig-name descname"><span class="pre">set_previous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.set_previous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.set_previous" title="Link to this definition">#</a></dt>
+<dd><p>Reset to the value before the last one</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.status" title="Link to this definition">#</a></dt>
+<dd><p>Return a string describing the current status of the variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>status</strong> – Variable description</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.step_down">
+<span class="sig-name descname"><span class="pre">step_down</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.step_down"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.step_down" title="Link to this definition">#</a></dt>
+<dd><p>Set to initial_value - delta</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.step_up">
+<span class="sig-name descname"><span class="pre">step_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableBase.step_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableBase.step_up" title="Link to this definition">#</a></dt>
+<dd><p>Set to initial_value + delta</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#at.lattice.variables.VariableBase.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Variable bounds</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.delta">
+<span class="sig-name descname"><span class="pre">delta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.delta" title="Link to this definition">#</a></dt>
+<dd><p>Increment step</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.history">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">history</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#at.lattice.variables.VariableBase.history" title="Link to this definition">#</a></dt>
+<dd><p>History of the values of the variable</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.history_length">
+<span class="sig-name descname"><span class="pre">history_length</span></span><a class="headerlink" href="#at.lattice.variables.VariableBase.history_length" title="Link to this definition">#</a></dt>
+<dd><p>Maximum length of the history buffer. <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> means infinite</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.initial_value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">initial_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.initial_value" title="Link to this definition">#</a></dt>
+<dd><p>Initial value of the variable</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.last_value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">last_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.last_value" title="Link to this definition">#</a></dt>
+<dd><p>Last value of the variable</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.name" title="Link to this definition">#</a></dt>
+<dd><p>Variable name</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.previous_value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">previous_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.previous_value" title="Link to this definition">#</a></dt>
+<dd><p>Value before the last one</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableBase.value">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a></em><a class="headerlink" href="#at.lattice.variables.VariableBase.value" title="Link to this definition">#</a></dt>
+<dd><p>Actual value</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VariableList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableList" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></p>
+<p>Container for Variable objects</p>
+<p><a class="reference internal" href="#at.lattice.variables.VariableList" title="at.lattice.variables.VariableList"><code class="xref py py-class docutils literal notranslate"><span class="pre">VariableList</span></code></a> supports all <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> methods, like
+appending, insertion or concatenation with the “+” operator.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableList.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableList.get" title="Link to this definition">#</a></dt>
+<dd><p>Get the current values of Variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p>
+</dd>
+<dt class="field-even">Keyword Arguments<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>initial</strong> – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, set the Variables’
+initial value</p></li>
+<li><p><strong>check_bounds</strong> – If <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>, raise a ValueError if the value is out
+of bounds</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>values</strong> – 1D array of values of all variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList.increment">
+<span class="sig-name descname"><span class="pre">increment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">increment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableList.increment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableList.increment" title="Link to this definition">#</a></dt>
+<dd><p>Increment the values of Variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>increment</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.12)"><em>Iterable</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – Iterable of values</p></li>
+<li><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to increment the variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableList.set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableList.set" title="Link to this definition">#</a></dt>
+<dd><p>Set the values of Variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.12)"><em>Iterable</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><em>float</em></a><em>]</em>) – Iterable of values</p></li>
+<li><p><strong>ring</strong> – Depending on the variable type, a <a class="reference internal" href="at.lattice.lattice_object.html#at.lattice.lattice_object.Lattice" title="at.lattice.lattice_object.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> argument
+may be necessary to set the variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/at/lattice/variables.html#VariableList.status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#at.lattice.variables.VariableList.status" title="Link to this definition">#</a></dt>
+<dd><p>String description of the variables</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="at.lattice.variables.VariableList.deltas">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deltas</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.12)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#at.lattice.variables.VariableList.deltas" title="Link to this definition">#</a></dt>
+<dd><p>delta values of the variables</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="at.lattice.variable_elements.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">at.lattice.variable_elements</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="at.latticetools.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">at.latticetools</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.CustomVariable"><code class="docutils literal notranslate"><span class="pre">CustomVariable</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase"><code class="docutils literal notranslate"><span class="pre">VariableBase</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.get"><code class="docutils literal notranslate"><span class="pre">VariableBase.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.increment"><code class="docutils literal notranslate"><span class="pre">VariableBase.increment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.reset"><code class="docutils literal notranslate"><span class="pre">VariableBase.reset()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.set"><code class="docutils literal notranslate"><span class="pre">VariableBase.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.set_previous"><code class="docutils literal notranslate"><span class="pre">VariableBase.set_previous()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.status"><code class="docutils literal notranslate"><span class="pre">VariableBase.status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.step_down"><code class="docutils literal notranslate"><span class="pre">VariableBase.step_down()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.step_up"><code class="docutils literal notranslate"><span class="pre">VariableBase.step_up()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.bounds"><code class="docutils literal notranslate"><span class="pre">VariableBase.bounds</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.delta"><code class="docutils literal notranslate"><span class="pre">VariableBase.delta</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.history"><code class="docutils literal notranslate"><span class="pre">VariableBase.history</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.history_length"><code class="docutils literal notranslate"><span class="pre">VariableBase.history_length</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.initial_value"><code class="docutils literal notranslate"><span class="pre">VariableBase.initial_value</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.last_value"><code class="docutils literal notranslate"><span class="pre">VariableBase.last_value</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.name"><code class="docutils literal notranslate"><span class="pre">VariableBase.name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.previous_value"><code class="docutils literal notranslate"><span class="pre">VariableBase.previous_value</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableBase.value"><code class="docutils literal notranslate"><span class="pre">VariableBase.value</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList"><code class="docutils literal notranslate"><span class="pre">VariableList</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList.get"><code class="docutils literal notranslate"><span class="pre">VariableList.get()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList.increment"><code class="docutils literal notranslate"><span class="pre">VariableList.increment()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList.set"><code class="docutils literal notranslate"><span class="pre">VariableList.set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList.status"><code class="docutils literal notranslate"><span class="pre">VariableList.status()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#at.lattice.variables.VariableList.deltas"><code class="docutils literal notranslate"><span class="pre">VariableList.deltas</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2022, ATCollab.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
